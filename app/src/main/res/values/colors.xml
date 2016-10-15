@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ff4200</color>
+    <color name="colorPrimaryDark">#ff4500</color>
+    <color name="colorAccent">#3d9140</color>
+
+    <color name="top">#3f869b</color>
+    <color name="shuffle">#9f2be3</color>
+    <color name="nervous">#52655b</color>
+    <color name="energy">#6e0428</color>
+    <color name="angry">#c5992a</color>
+    <color name="love">#d7a08c</color>
+    <color name="good">#827de6</color>
+    <color name="calm">#8a2be3</color>
+    <color name="depressed">#00868b</color>
+    <color name="relax">#3d9140</color>
+    <color name="crazy">#ee9a00</color>
+    <color name="bored">#ff4500</color>
+    <color name="sad">#c67171</color>
+
+
+    <color name="topPrimary">#3f969b</color>
+    <color name="shufflePrimary">#9f3be3</color>
+    <color name="nervousPrimary">#52755b</color>
+    <color name="energyPrimary">#6e1428</color>
+    <color name="angryPrimary">#c5a92a</color>
+    <color name="lovePrimary">#d7a18c</color>
+    <color name="goodPrimary">#828de6</color>
+    <color name="calmPrimary">#8a3be3</color>
+    <color name="depressedPrimary">#00968b</color>
+    <color name="relaxPrimary">#3da140</color>
+    <color name="crazyPrimary">#eeaa00</color>
+    <color name="boredPrimary">#ff5500</color>
+    <color name="sadPrimary">#c68171</color>
+
+
+</resources>

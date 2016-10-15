@@ -1,0 +1,95 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+    </style>
+
+    <style name="PlayerTheme" parent="Theme.AppCompat.NoActionBar"/>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- custom themes -->
+
+    <style name="AppTheme.TopMood">
+        <item name="colorPrimary">@color/topPrimary</item>
+        <item name="colorPrimaryDark">@color/top</item>
+    </style>
+
+    <style name="AppTheme.ShuffleMood">
+        <item name="colorPrimary">@color/shufflePrimary</item>
+        <item name="colorPrimaryDark">@color/shuffle</item>
+     </style>
+
+    <style name="AppTheme.NervousMood">
+        <item name="colorPrimary">@color/nervousPrimary</item>
+        <item name="colorPrimaryDark">@color/nervous</item>
+     </style>
+
+    <style name="AppTheme.EnergyMood">
+        <item name="colorPrimary">@color/energyPrimary</item>
+        <item name="colorPrimaryDark">@color/energy</item>
+    </style>
+
+    <style name="AppTheme.AngryMood">
+        <item name="colorPrimary">@color/angryPrimary</item>
+        <item name="colorPrimaryDark">@color/angry</item>
+    </style>
+
+    <style name="AppTheme.LoveMood">
+        <item name="colorPrimary">@color/lovePrimary</item>
+        <item name="colorPrimaryDark">@color/love</item>
+    </style>
+
+    <style name="AppTheme.GoodMood">
+        <item name="colorPrimary">@color/goodPrimary</item>
+        <item name="colorPrimaryDark">@color/good</item>
+    </style>
+
+    <style name="AppTheme.CalmMood">
+        <item name="colorPrimary">@color/calmPrimary</item>
+        <item name="colorPrimaryDark">@color/calm</item>
+    </style>
+
+    <style name="AppTheme.DepressedMood">
+        <item name="colorPrimary">@color/depressedPrimary</item>
+        <item name="colorPrimaryDark">@color/depressed</item>
+    </style>
+
+    <style name="AppTheme.RelaxMood">
+        <item name="colorPrimary">@color/relaxPrimary</item>
+        <item name="colorPrimaryDark">@color/relax</item>
+    </style>
+
+    <style name="AppTheme.CrazyMood">
+        <item name="colorPrimary">@color/crazyPrimary</item>
+        <item name="colorPrimaryDark">@color/crazy</item>
+     </style>
+
+    <style name="AppTheme.BoredMood">
+        <item name="colorPrimary">@color/boredPrimary</item>
+        <item name="colorPrimaryDark">@color/bored</item>
+   </style>
+
+    <style name="AppTheme.SadMood">
+        <item name="colorPrimary">@color/sadPrimary</item>
+        <item name="colorPrimaryDark">@color/sad</item>
+   </style>
+
+
+</resources>

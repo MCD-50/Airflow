@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Airflow</string>
+    <string name="action_about">Settings + More</string>
+    <string name="label_pause">Pause</string>
+    <string name="label_play">Play</string>
+    <string name="musicus">Musicus1</string>
+    <string name="artist_image">Artist image</string>
+    <string name="play_icon">Play icon</string>
+    <string name="next_icon">Next icon</string>
+    <string name="empty_message">Its empty in here. Add a few tracks to get started.</string>
+    <string name="airflow_splash">Airflow</string>
+    <string name="version_1_0">Version 1.0</string>
+    <string name="about_text">Explore music based on your mood with a lightning fast app and enjoy music.</string>
+    <string name="powered_by_text">Powered by SoundCloud</string>
+    <string name="contact_developer">Contact developer </string>
+    <string name="email_addr">Email</string>
+    <string name="my_other_app">My other app</string>
+    <string name="twitter">Twitter</string>
+    <string name="airstem">Get airstem</string>
+    <string name="buy_coffee_for_developer">Buy coffee for developer</string>
+    <string name="contact">contact</string>
+    <string name="follow">Follow</string>
+    <string name="support_development_of_airflow_for_android">Support development of airflow for android. PayPal airflow.</string>
+    <string name="airflow_powered_by_soundcloud">Airflow powered by SoundCloud</string>
+    <string name="checkout_airstem_for_windows_10_a_free_music_search_and_match_engine_for_music_discovery">Checkout airstem for windows 10. A free music search and match engine for music discovery.</string>
+    <string name="home">Home</string>
+    <string name="setting_more">Settings + More</string>
+    <string name="set_airflow_50_based_on_your_region">Set airflow 50 based on your region.</string>
+
+</resources>

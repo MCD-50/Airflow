@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/row_height"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/artist_image"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="5dp"
+        android:id="@+id/i_feel_fragment_content_moodImageView"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:alpha=".5"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/black"/>
+
+    <TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:maxWidth="600dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:id="@+id/i_feel_fragment_content_moodTextView"
+        android:gravity="left"
+        android:layout_centerVertical="true"
+        />
+
+</RelativeLayout>
