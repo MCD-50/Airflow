@@ -53,6 +53,14 @@ public class MyFavFragment extends ListFragment implements DatabaseEvent {
                 ((MainActivity) getActivity()).executeMyFavFragmentListViewOnItemSelected(position, adapter);
             }
         });
+
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ((MainActivity) getActivity()).addRemoveFromToFav(position, adapter);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -63,8 +71,6 @@ public class MyFavFragment extends ListFragment implements DatabaseEvent {
         }else {
             adapter.removeData(((MainActivity)getActivity()).getTracksFromDatabase());
         }
-
-
     }
 }
 

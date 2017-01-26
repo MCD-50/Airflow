@@ -1,4 +1,5 @@
 package com.airstem.airflow.ayush.airflow;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -24,13 +26,17 @@ import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
 import com.airstem.airflow.ayush.airflow.helpers.EventHelper;
 import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
 import com.airstem.airflow.ayush.airflow.helpers.MoodHelper;
+import com.airstem.airflow.ayush.airflow.helpers.YouTubeApiHelper;
 import com.airstem.airflow.ayush.airflow.model.Track;
 import com.airstem.airflow.ayush.airflow.service.MusicService;
 import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
 import com.airstem.airflow.ayush.airflow.utils.DatabaseUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 /**
  * Created by ayush on 08-10-16.
@@ -39,13 +45,16 @@ import java.lang.ref.WeakReference;
 
 public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
 
-    ImageView bgImageView, playPauseImageView, nextImageView, favImageView;
+    ImageView bgImageView, playPauseImageView, nextImageView, favImageView, prevImageView;
     //View bgView;
     TextView titleTextView, artistTextView, positionTextView, durationTextView;
-    SeekBar progressSeekBar;
+    Button similarButton;
 
+    SeekBar progressSeekBar;
+    YouTubeApiHelper youTubeApiHelper;
     boolean isPaused = false;
 
+    ProgressDialog mProgressDialog;
 
     InternetHelper internetHelper;
     DatabaseUtils databaseUtils;
@@ -56,12 +65,21 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
     private Intent playIntent;
     private boolean musicBound = false;
 
+
+    private AdView mAdView;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_activity);
 
+/*
+        mAdView = (AdView) findViewById(R.id.player_activity_adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
+*/
 
        /* //preventing memory leaks memory
         WeakReference<Activity> weakReference =  ActivityReference.getRef();
@@ -76,6 +94,8 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
         databaseUtils = new DatabaseUtils(PlayerActivity.this);
         moodHelper = new MoodHelper();
         internetHelper = new InternetHelper(PlayerActivity.this);
+        youTubeApiHelper = new YouTubeApiHelper(PlayerActivity.this, getApplicationContext());
+        mProgressDialog = new ProgressDialog(PlayerActivity.this);
        /*  if(savedInstanceState != null){
            moodName = moodHelper.getMoodFromString(savedInstanceState.getString("Mood"));
         }
@@ -90,8 +110,9 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
         playPauseImageView = (ImageView) findViewById(R.id.player_activity_playPauseImageView);
         nextImageView = (ImageView) findViewById(R.id.player_activity_nextImageView);
         favImageView = (ImageView) findViewById(R.id.player_activity_favSetImageView);
+        prevImageView = (ImageView) findViewById(R.id.player_activity_prevImageView);
         //bgView = findViewById(R.id.player_activity_colorView);
-
+        similarButton = (Button) findViewById(R.id.player_activity_similarTrackButton);
 
         titleTextView = (TextView) findViewById(R.id.player_activity_titleTextView);
         artistTextView = (TextView) findViewById(R.id.player_activity_artistTextView);
@@ -108,6 +129,12 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
         //bgImageView.getBackground().setAlpha(200);
 
     }
+
+
+    private ArrayList<Track> getSimilarTracks(Track track){
+        return youTubeApiHelper.getYoutubeSimilarTracks(13, track.getId());
+    }
+
 
     private String getTimeString(long millis){
         StringBuffer baf = new StringBuffer();
@@ -130,18 +157,74 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
 
 
     private void updateProgress(){
+
         Track cTrack = musicService.getCurrentData();
-        if(cTrack.getMood().equalsIgnoreCase("AIRFLOW 50")){
+        if(cTrack.getMood().equalsIgnoreCase("Radio")){
+            hideEverything();
+            nextImageView.setVisibility(View.GONE);
+            prevImageView.setVisibility(View.GONE);
+            favImageView.setVisibility(View.GONE);
+
+            boolean isPlaying = musicService.isMediaPlaying();
+            if(isPlaying){
+                playPauseImageView.setImageResource(R.drawable.pause_icon);
+            }else {
+                playPauseImageView.setImageResource(R.drawable.play_icon);
+            }
+
+            titleTextView.setText(cTrack.getTitle());
+            artistTextView.setText(cTrack.getMood());
+            bgImageView.setImageResource(R.drawable.default_art);
+
+        }
+        else if(cTrack.getMood().equalsIgnoreCase("AIRFLOW 50") || cTrack.getMood().equalsIgnoreCase("SEARCH")){
             getAndSetData(cTrack, false);
         }else {
             getAndSetData(cTrack, true);
             setMaxAndDuration(musicService.getDuration());
         }
+
+        /*if(cTrack.getMood().equalsIgnoreCase("Search")){
+            similarButton.setVisibility(View.VISIBLE);
+        }else{
+            similarButton.setVisibility(View.GONE);
+        }*/
     }
 
-    private void getAndSetData(Track t, boolean showPlayPause){
 
-        setPlayPause(t, showPlayPause);
+    public void startSimilarTracks(View view){
+        if (internetHelper.isNetworkAvailable()) {
+            mProgressDialog.setMessage("Starting playback...");
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            Track cTrack = musicService.getCurrentData();
+
+            if(cTrack.getMood().equalsIgnoreCase("Search")){
+                playSong(0, getSimilarTracks(cTrack));
+            }else {
+                mProgressDialog.dismiss();
+                similarButton.setVisibility(View.GONE);
+            }
+
+        } else {
+            showAlert(PlayerActivity.this);
+        }
+    }
+
+    public void playSong(int position, ArrayList<Track> myTracks) {
+        if(musicBound){
+            musicService.setSongs(myTracks);
+            musicService.setSongIndex(position);
+            musicService.play();
+        }else {
+            Toast.makeText (this, "Unable to bind music service.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getAndSetData(Track t, boolean showBar){
+
+        setPlayPause(t, showBar);
 
         if(t == null){
             t = musicService.getCurrentData();
@@ -154,38 +237,39 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
             //Mood getMood = moodHelper.getMoodFromString(t.getMood());
             //bgView.setBackgroundResource(getMood.Color);
 
-            if(t.getBitmap() != null){
-                bgImageView.setImageBitmap(t.getBitmap());
-            }else {
-                try{
+            try{
+                if(t.getBitmap() != null){
+                    bgImageView.setImageBitmap(t.getBitmap());
+                }else {
                     if(t.getArtwork() != null){
-                        Picasso.with(PlayerActivity.this).load(t.getArtwork()).into(bgImageView);
+                        Picasso.with(PlayerActivity.this).load(t.getArtwork()).placeholder(R.drawable.default_art).into(bgImageView);
                     }
                     else {
                         bgImageView.setImageResource(R.drawable.default_art);
                     }
                 }
-                catch(Exception e){
-                    bgImageView.setImageResource(R.drawable.default_art);
-                }
             }
+            catch(Exception e){
+                bgImageView.setImageResource(R.drawable.default_art);
+            }
+
+
         }
     }
 
-    private void setPlayPause(Track t, boolean showPlayPause){
+    private void setPlayPause(Track t, boolean showBar){
 
-        if(showPlayPause){
+        if(showBar){
             showEverything();
-            boolean isPlaying = musicService.isMediaPlaying();
-            if(isPlaying){
-                //isPaused = false;
-                playPauseImageView.setImageResource(R.drawable.pause_icon);
-            }else {
-                //isPaused = true;
-                playPauseImageView.setImageResource(R.drawable.play_icon);
-            }
         }else {
             hideEverything();
+        }
+
+        boolean isPlaying = musicService.isMediaPlaying();
+        if(isPlaying){
+            playPauseImageView.setImageResource(R.drawable.pause_icon);
+        }else {
+             playPauseImageView.setImageResource(R.drawable.play_icon);
         }
 
         if(databaseUtils.isInFavList(t.getId())){
@@ -197,14 +281,12 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
     }
 
     private void hideEverything() {
-        playPauseImageView.setVisibility(View.GONE);
         positionTextView.setVisibility(View.GONE);
         durationTextView.setVisibility(View.GONE);
         progressSeekBar.setVisibility(View.GONE);
     }
 
     private void showEverything(){
-        playPauseImageView.setVisibility(View.VISIBLE);
         positionTextView.setVisibility(View.VISIBLE);
         durationTextView.setVisibility(View.VISIBLE);
         progressSeekBar.setVisibility(View.VISIBLE);
@@ -298,24 +380,21 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
         nextImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                musicService.nextTrack();
+                musicService.nextTrack(true);
             }
         });
 
+        prevImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                musicService.prevTrack(true);
+            }
+        });
 
         favImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addRemoveFromToFav();
-            }
-        });
-
-
-        bgImageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                addRemoveFromToFav();
-                return true;
             }
         });
 
@@ -347,7 +426,7 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
         if(databaseUtils.isInFavList(currentTrack.getId())){
             showRemoveAlert(currentTrack);
         }else {
-            databaseUtils.addTrack(musicService.getCurrentData());
+            databaseUtils.addTrack(currentTrack);
             favImageView.setImageResource(R.drawable.fav_icon);
         }
     }
@@ -408,7 +487,15 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
 
     @Override
     public void trackChanged() {
+        if(mProgressDialog != null){
+            try{
+                mProgressDialog.dismiss();
+            }catch (Exception e){
+                //ignore...
+            }
+        }
         updateProgress();
+
     }
 
     @Override

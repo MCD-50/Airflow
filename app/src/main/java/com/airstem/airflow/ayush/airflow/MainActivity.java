@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,22 +13,29 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -42,13 +50,18 @@ import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.FavAdapter;
+import com.airstem.airflow.ayush.airflow.adapters.ListDiscoverAdapter;
+import com.airstem.airflow.ayush.airflow.adapters.LocalTrackAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.TabsPagerAdapter;
 import com.airstem.airflow.ayush.airflow.helpers.ActivityReference;
 import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
 import com.airstem.airflow.ayush.airflow.helpers.DatabaseEvent;
 import com.airstem.airflow.ayush.airflow.helpers.GenresHelper;
 import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
+import com.airstem.airflow.ayush.airflow.helpers.LocalMusicHelper;
+import com.airstem.airflow.ayush.airflow.helpers.MoodHelper;
 import com.airstem.airflow.ayush.airflow.helpers.YouTubeApiHelper;
+import com.airstem.airflow.ayush.airflow.model.Base;
 import com.airstem.airflow.ayush.airflow.model.Mood;
 import com.airstem.airflow.ayush.airflow.model.Track;
 import com.airstem.airflow.ayush.airflow.service.MusicService;
@@ -56,28 +69,33 @@ import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
 import com.airstem.airflow.ayush.airflow.utils.DatabaseUtils;
 import com.airstem.airflow.ayush.airflow.utils.SoundCloudUtil;
 import com.astuetz.PagerSlidingTabStrip;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements CustomEvent {
+public class MainActivity extends AppCompatActivity implements CustomEvent,NavigationView.OnNavigationItemSelectedListener {
 
-    CoordinatorLayout coordinatorLayout;
-    FloatingActionButton fab;
 
     TabsPagerAdapter tabsPagerAdapter;
+    NavigationView navigationView;
+    FloatingActionButton fab;
+    CoordinatorLayout coordinatorLayout;
+
 
     SoundCloudUtil soundCloudUtils;
     GenresHelper genreHelper;
     InternetHelper internetHelper;
     DatabaseUtils databaseUtils;
 
-    boolean isAllowed = false;
-
     ViewPager viewPager;
     ProgressDialog mProgressDialog;
 
     YouTubeApiHelper youTubeApiHelper;
-
+    ArrayList<Track> tracks;
+    int tryCount = 0;
 
     public MusicService musicService;
 
@@ -85,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
     private boolean musicBound = false;
 
 
+    private AdView mAdView;
 
 
     @Override
@@ -94,12 +113,37 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*mAdView = (AdView) findViewById(R.id.activity_main_adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                viewPager.setPadding(0,0,0,0);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                int heightDp = getHeight();
+                if(heightDp <= 400)
+                    viewPager.setPadding(0,0,0,32);
+                else if(heightDp > 400 &&heightDp <= 720)
+                    viewPager.setPadding(0,0,0,50);
+                else if(heightDp > 720)
+                    viewPager.setPadding(0,0,0,90);
+                else
+                    viewPager.setPadding(0,0,0,0);
+            }
+        });*/
 
         // Initialization
         viewPager = (ViewPager) findViewById(R.id.activity_main_pager);
         tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(tabsPagerAdapter);
-
+        viewPager.setOffscreenPageLimit(3);
         mProgressDialog = new ProgressDialog(MainActivity.this);
 
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.activity_main_slidingTabStrip);
@@ -117,12 +161,20 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
         internetHelper = new InternetHelper(MainActivity.this);
         youTubeApiHelper = new YouTubeApiHelper(MainActivity.this, getApplicationContext());
 
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
-
         fab.setVisibility(View.GONE);
-
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main_coordinatorLayout);
-
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main_cordinateLayout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,18 +189,25 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
             }
         });
 
-        if (internetHelper.isNetworkAvailable()) {
-            isAllowed = true;
-        } else {
+        if (!internetHelper.isNetworkAvailable()) {
             showAlert(MainActivity.this);
-            isAllowed = false;
         }
-
         askPermission();
 
     }
 
 
+    private int getHeight(){
+        int heightDp = 0;
+        Point size = new Point();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            getWindowManager().getDefaultDisplay().getSize(size);
+            heightDp = size.y;
+        }else {
+            heightDp = getWindowManager().getDefaultDisplay().getHeight();
+        }
+        return heightDp;
+    }
 
     @Override
     protected void onPause() {
@@ -175,10 +234,9 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
     }
 
 
-
     public void executeIFeelFragmentListViewOnItemSelected(int position, CategoryAdapter adapter){
-        if (isAllowed) {
-            Mood moodSelected = adapter.getItem(position);
+        if (internetHelper.isNetworkAvailable()) {
+            Base moodSelected = adapter.getItem(position);
             new ExecuteAction().execute(moodSelected);
         } else {
             showAlert(MainActivity.this);
@@ -186,17 +244,73 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
     }
 
     public void executeMyFavFragmentListViewOnItemSelected(int position, FavAdapter favAdapter){
-        if (isAllowed) {
+        if (internetHelper.isNetworkAvailable()) {
             mProgressDialog.setMessage("Starting playback...");
             mProgressDialog.setIndeterminate(true);
             mProgressDialog.setCancelable(false);
             mProgressDialog.show();
-
             playSong(position, favAdapter.getList());
         } else {
             showAlert(MainActivity.this);
         }
     }
+
+    public void executeLocalFragmentListViewOnItemSelected(int position, LocalTrackAdapter localTrackAdapter){
+        playSong(position, localTrackAdapter.getList());
+    }
+
+    public void executeLocalFragmentListViewOnItemSelected(Track track, ArrayList<Track> tracks){
+        int position = tracks.indexOf(track);
+        playSong(position, tracks);
+    }
+
+    public void addRemoveFromToFav(int position, FavAdapter favAdapter) {
+        Track currentTrack = favAdapter.getItem(position);
+        if(databaseUtils.isInFavList(currentTrack.getId())){
+            showRemoveAlert(currentTrack, favAdapter);
+        }
+    }
+
+    public void playRadio(int position, ListDiscoverAdapter adapter){
+        if (internetHelper.isNetworkAvailable()) {
+            mProgressDialog.setMessage("Starting radio within 60 seconds...");
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            playSong(adapter.getItem(position));
+        } else {
+            showAlert(MainActivity.this);
+        }
+    }
+
+
+    public void playRadio(Track track){
+        if (internetHelper.isNetworkAvailable()) {
+            mProgressDialog.setMessage("Starting radio within 60 seconds...");
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+            playSong(track);
+        } else {
+            showAlert(MainActivity.this);
+        }
+    }
+
+    private void showRemoveAlert(final Track currentTrack,final FavAdapter favAdapter) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setTitle("Remove track");
+        alert.setMessage("Are you sure you want to remove this track from your fav list?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                databaseUtils.deleteTrack(currentTrack.getId(), true);
+                favAdapter.removeData(getTracksFromDatabase());
+            }
+        });
+        alert.setNegativeButton("CANCEL", null);
+        alert.show();
+    }
+
 
     public void onStartService() {
         if (playIntent == null) {
@@ -237,6 +351,67 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
                  }
              }
         }
+
+        if(requestCode == 777 && data != null && resultCode == RESULT_OK){
+            ArrayList<String> _stringData = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            playTracks(_stringData.get(0).toString());
+        }
+        else {
+            showSnackBar("Something went wrong. Try again.");
+        }
+    }
+
+    private void playTracks(String query){
+        AsyncTask<String, Void, Void> playTask =  new AsyncTask<String, Void, Void>(){
+
+            String query;
+            private boolean exceptionWhileLoading = false;
+            @Override
+            protected Void doInBackground(String... params) {
+               try{
+                    query = youTubeApiHelper.setAndCleanString(params[0]);
+                    tracks = youTubeApiHelper.getYoutubeSearchResults(20, query);
+                    exceptionWhileLoading = false;
+                }catch (Exception e){
+                    tracks = new ArrayList<>();
+                    exceptionWhileLoading = true;
+                }
+                return null;
+            }
+
+            protected void onPreExecute() {
+                super.onPreExecute();
+                mProgressDialog.setMessage("Starting playback...");
+                mProgressDialog.setIndeterminate(true);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+
+            @Override
+            protected void onPostExecute(Void o) {
+                super.onPostExecute(o);
+                if (!exceptionWhileLoading) {
+                    try {
+                        if(tracks.size() > 0){
+                            tracks = CollectionUtils.shuffleMyList(tracks);
+                            playSong(0, tracks);
+                        }else {
+                            mProgressDialog.dismiss();
+                            showSnackBar("Something went wrong.");
+                        }
+
+                    }catch (Exception ex) {
+                        showSnackBar("Something went wrong.");
+                        ex.printStackTrace();
+                        mProgressDialog.dismiss();
+                    }
+                }else {
+                    showSnackBar("Unable to load tracks.");
+                }
+            }
+        };
+
+        playTask.execute(query);
     }
 
     private void showAlert(Context context) {
@@ -256,7 +431,6 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
 
 
     public void playSong(int position, ArrayList<Track> myTracks) {
-
         if(musicBound){
             musicService.setSongs(myTracks);
             musicService.setSongIndex(position);
@@ -264,11 +438,27 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
         }else {
             showSnackBar("Unable to bind music service.");
         }
-
-
-        //Track t = myTracks.get(0);
-        //setTheme(t);
     }
+
+    public void playSong(Track track){
+        if(musicBound){
+            musicService.setRadio(track);
+            musicService.play();
+        }else {
+            showSnackBar("Unable to bind music service.");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -283,10 +473,59 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
         if (id == R.id.action_settings) {
             startActivity(new Intent(MainActivity.this, AboutActivity.class));
             return true;
+        }else if(id == R.id.action_speech){
+            speakClicked();
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_library)
+            startActivity(new Intent(MainActivity.this, LibraryActivity.class));
+        else if (id == R.id.nav_settings)
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private String sample = "You say we play" + "\n" + "Try saying like play maroon 5...";
+
+    public void speakClicked() {
+
+        Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        _intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        _intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        _intent.putExtra(RecognizerIntent.EXTRA_PROMPT, sample);
+        try{
+            startActivityForResult(_intent, 777);
+        }
+        catch (ActivityNotFoundException e){
+            showSnackBar("Speech to text not supported.");
+        }
+    }
+
+
 
     void setTheme(Track t){
 
@@ -360,9 +599,9 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
                 String permission = permissions[i];
                 int grantResult = grantResults[i];
 
-                if (permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (permission.equals(Manifest.permission.INTERNET) || permission.equals(Manifest.permission.WAKE_LOCK)) {
                     if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.INTERNET, Manifest.permission.WAKE_LOCK}, 100);
                     }
                 }
             }
@@ -387,23 +626,26 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
        showAlert(MainActivity.this);
     }
 
-    ArrayList<Track> tracks;
-    private boolean exceptionWhileLoading = false;
-    int tryCount = 0;
-    class ExecuteAction extends AsyncTask<Mood, Void, Void> {
 
+    class ExecuteAction extends AsyncTask<Base, Void, Void> {
+
+        private boolean exceptionWhileLoading = false;
         Mood mood;
         @Override
-        protected Void doInBackground(Mood... params) {
+        protected Void doInBackground(Base... params) {
 
             try {
-                mood = params[0];
-                if(mood.Name.equalsIgnoreCase("AIRFLOW 50")){
-                     tracks = youTubeApiHelper.getYoutubeTopTracks(50);
-                }else {
-                    String genre = genreHelper.getMoodFromGenre(mood.Name);
-                    tracks = soundCloudUtils.getSoundCloudData(genre, 50, mood.Name);
+                Base base = params[0];
+                if(base.getClass().equals(Mood.class)){
+                    mood = (Mood) base;
+                    if(mood.Name.equalsIgnoreCase("AIRFLOW 50")){
+                        tracks = youTubeApiHelper.getYoutubeTopTracks(50, "");
+                    }else {
+                        String genre = genreHelper.getMoodFromGenre(mood.Name);
+                        tracks = soundCloudUtils.getSoundCloudData(genre, 50, mood.Name);
+                    }
                 }
+
                 exceptionWhileLoading = false;
 
             } catch (Exception e) {
@@ -430,7 +672,10 @@ public class MainActivity extends AppCompatActivity implements CustomEvent {
                 try {
                     if(tracks.size() > 0){
                         tryCount = 0;
-                        tracks = CollectionUtils.shuffleMyList(tracks);
+
+
+
+                      tracks = CollectionUtils.shuffleMyList(tracks);
                         playSong(0, tracks);
                     }else if(tryCount < 2) {
                         tryCount++;

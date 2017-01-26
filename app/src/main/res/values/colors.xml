@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff4200</color>
-    <color name="colorPrimaryDark">#ff4500</color>
-    <color name="colorAccent">#3d9140</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#ff4500</color>
+    <!--<color name="colorAccent">#3d9140</color>-->
 
     <color name="top">#3f869b</color>
     <color name="shuffle">#9f2be3</color>

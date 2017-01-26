@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.helpers.EventHelper;
 import com.airstem.airflow.ayush.airflow.model.Params;
+import com.airstem.airflow.ayush.airflow.model.PlayMode;
 import com.airstem.airflow.ayush.airflow.model.Track;
 
 /**
@@ -27,13 +29,16 @@ import com.airstem.airflow.ayush.airflow.model.Track;
  */
 public class DatabaseUtils extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "airflowDatabaseFavTracks";
 
-    private static final String TABLE_FAV_TRACKS = "favTracksData";
+    public static final String TABLE_FAV_TRACKS = "favTracksData";
+    public static final String TABLE_LOCAL_TRACKS = "localTracksData";
+
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_MOOD = "mood";
+    private static final String KEY_LOCAL_ARTWORK = "localArtwork";
     private static final String KEY_ARTWORK = "artwork";
     private static final String KEY_URL = "url";
 
@@ -47,10 +52,16 @@ public class DatabaseUtils extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_FAV_TRACKS + "("
+        String CREATE_FAV_TRACK__TABLE = "CREATE TABLE " + TABLE_FAV_TRACKS + "("
                 + KEY_ID + " TEXT PRIMARY KEY," + KEY_TITLE + " TEXT,"
-                + KEY_URL + " TEXT," + KEY_MOOD + " TEXT," + KEY_ARTWORK + " BLOB" + ")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
+                + KEY_URL + " TEXT," + KEY_MOOD + " TEXT," + KEY_ARTWORK + " BLOB," + KEY_LOCAL_ARTWORK + " TEXT" + ")";
+
+       /* String CREATE_LOCAL_TRACK_TABLE = "CREATE TABLE " + TABLE_LOCAL_TRACKS + "("
+                + KEY_ID + " TEXT PRIMARY KEY," + KEY_TITLE + " TEXT,"
+                + KEY_URL + " TEXT," + KEY_MOOD + " TEXT," + KEY_ARTWORK + " BLOB" + ")";*/
+
+        db.execSQL(CREATE_FAV_TRACK__TABLE);
+        //db.execSQL(CREATE_LOCAL_TRACK_TABLE);
     }
 
     // Upgrading database
@@ -58,6 +69,7 @@ public class DatabaseUtils extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAV_TRACKS);
+        //db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCAL_TRACKS);
         // Create tables again
         onCreate(db);
     }
@@ -70,23 +82,28 @@ public class DatabaseUtils extends SQLiteOpenHelper {
             showAlert("Couldn't add track", "You can add only 50 tracks to your fav list. Try removing few of them and then add.");
         }else {
             SQLiteDatabase db = this.getWritableDatabase();
-
-
             //insert only once.
             if(getTrack(track.getId()) == null){
                 ContentValues values = new ContentValues();
                 values.put(KEY_ID, track.getId());
                 values.put(KEY_TITLE, track.getTitle());
-                values.put(KEY_URL, track.getUrl());
+                values.put(KEY_URL, track.getTrackUrl());
                 values.put(KEY_MOOD, track.getMood());
-                db.insert(TABLE_FAV_TRACKS, null, values);
+                if(track.getMode() == PlayMode.OFFLINE){
+                    values.put(KEY_LOCAL_ARTWORK, track.getArtwork());
+                    db.insert(TABLE_FAV_TRACKS, null, values);
+                    //EventHelper.Invoke(track, true);
+                }else {
+                    db.insert(TABLE_FAV_TRACKS, null, values);
+                    //EventHelper.Invoke(track, true);
+                    new DownloadImage().execute(new Params(track.getId(), track.getArtwork()));
+                }
 
-
-                db.close();
                 //lets downloadImage
                 //we are not adding the image right now
-                new DownloadImage().execute(new Params(track.getId(), track.getArtwork()));
             }
+
+            db.close();
         }
     }
 
@@ -104,11 +121,16 @@ public class DatabaseUtils extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Track track = new Track(cursor.getString(0), cursor.getString(1), cursor.getString(2)
-                            , true);
+                            , PlayMode.ONLINE);
                     track.setMoodName(cursor.getString(3));
                     try{
-                        byte[] blob = cursor.getBlob(4);
-                        track.setBitmap(BitmapFactory.decodeByteArray(blob, 0,blob.length));
+                        if(cursor.getString(5) != null){
+                            track.setMode(PlayMode.OFFLINE);
+                            track.setArtwork(cursor.getString(5));
+                        }else{
+                            byte[] blob = cursor.getBlob(4);
+                            track.setBitmap(BitmapFactory.decodeByteArray(blob, 0,blob.length));
+                        }
                     }catch (Exception e){
 
                     }
@@ -136,7 +158,7 @@ public class DatabaseUtils extends SQLiteOpenHelper {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             track = new Track(cursor.getString(0),
-                    cursor.getString(1), cursor.getString(2), true);
+                    cursor.getString(1), cursor.getString(2), PlayMode.ONLINE);
             track.setMoodName(cursor.getString(3));
         }
         if(cursor != null)

@@ -1,16 +1,18 @@
 package com.airstem.airflow.ayush.airflow;
 
 
-
-
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
 
 /**
  * Created by ayush on 09-10-16.
@@ -22,6 +24,7 @@ public class IFeelFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.i_feel_fragment, container, false);
         return rootView;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -35,5 +38,6 @@ public class IFeelFragment extends ListFragment {
                 ((MainActivity) getActivity()).executeIFeelFragmentListViewOnItemSelected(position, adapter);
             }
         });
+
     }
 }

@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
 
+
 import android.media.MediaPlayer;
 import android.media.session.MediaController;
 import android.media.session.MediaSession;
@@ -40,16 +41,17 @@ import com.airstem.airflow.ayush.airflow.PlayerActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
 import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
+import com.airstem.airflow.ayush.airflow.model.PlayMode;
 import com.airstem.airflow.ayush.airflow.model.Track;
 import com.airstem.airflow.ayush.airflow.utils.AppConstant;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.view.View;
-import android.widget.RemoteViews.RemoteView;
-import android.widget.Toast;
+
+
 
 
 /**
@@ -57,8 +59,13 @@ import android.widget.Toast;
  */
 
 
-public class MusicService extends Service implements AudioManager.OnAudioFocusChangeListener, MediaPlayer.OnCompletionListener,
-         MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnSeekCompleteListener{
+public class MusicService extends Service implements AudioManager.OnAudioFocusChangeListener ,
+        MediaPlayer.OnCompletionListener,
+        MediaPlayer.OnErrorListener,
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnSeekCompleteListener,
+        MediaPlayer.OnBufferingUpdateListener
+        {
 
 
     public static final String ACTION_NEXT = "com.airstem.airflow.ayush.airflow.NEXT";
@@ -95,6 +102,9 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
 
     ArrayList<Track> mTracks;
+    //private ExoPlayer exoPlayer;
+    private Track radio;
+    private PlayMode playMode;
     private MediaPlayer mPlayer;
     private int mSongPos;
     boolean mIsBound = false;
@@ -131,9 +141,12 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
         mCustomEvent = customEvent;
 
         if(mState == PlaybackStateCompat.STATE_PAUSED || mState == PlaybackStateCompat.STATE_BUFFERING ||
-                mState == PlaybackStateCompat.STATE_PLAYING || mState == PlaybackStateCompat.STATE_CONNECTING)
+                mState == PlaybackStateCompat.STATE_PLAYING || mState == PlaybackStateCompat.STATE_CONNECTING){
             mCustomEvent.trackChanged();
+        }
+
     }
+
 
     public enum PlaybackStatus{
         PLAYING,
@@ -172,7 +185,10 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
             @Override
             public void onSkipToNext() {
                 super.onSkipToNext();
-                updateMetaData();
+                if(playMode != PlayMode.RADIO){
+                    nextTrack(false);
+                    updateMetaData();
+                }
                 buildNotification(PlaybackStatus.PLAYING);
             }
         });
@@ -335,22 +351,45 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
     public void setSongs(ArrayList<Track> tracks){
         mTracks = tracks;
+        playMode = tracks.get(0).getMode();
     }
+
+    public void setRadio(Track track){
+        radio = track;
+        playMode = track.getMode();
+    }
+
 
     public void setSongIndex(int index){
         mSongPos = index;
     }
 
 
-    public void nextTrack(){
-        if(internetHelper.isNetworkAvailable()){
+    public void nextTrack(boolean show){
+        if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE ){
             mSongPos  = (mSongPos + 1) % mTracks.size();
-            Toast.makeText(this, "Changing track...",Toast.LENGTH_SHORT).show();
+            //if(show)
+               //Toast.makeText(this, "Changing track...",Toast.LENGTH_SHORT).show();
             play();
+            mCustomEvent.trackChanged();
         }else {
             mCustomEvent.noInternet();
         }
+    }
 
+    public void prevTrack(boolean show){
+        if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE){
+            if(mSongPos > 0)
+               mSongPos  = (mSongPos - 1) % mTracks.size();
+            else
+                mSongPos =  mTracks.size() - 1;
+            //if(show)
+                //Toast.makeText(this, "Changing track...",Toast.LENGTH_SHORT).show();
+            play();
+            mCustomEvent.trackChanged();
+        }else {
+            mCustomEvent.noInternet();
+        }
     }
 
 
@@ -370,10 +409,6 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
         public void onReceive(Context context, Intent intent) {
             if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
                 if (mPlayer.isPlaying()) {
-                    //Intent i = new Intent(context, MusicService.class);
-                    //i.setAction(ACTION_PAUSE);
-                    //i.putExtra(CMD_NAME, CMD_PAUSE);
-                    //startService(i);
                     pause();
                 }
             }
@@ -393,15 +428,73 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
     public void play() {
 
-        mPlayer.reset();
-        mPlayOnFocusGain = true;
-        tryToGetAudioFocus();
-        registerAudioNoisyReceiver();
-        mCurrentPosition = 0;
-        Track track = mTracks.get(mSongPos);
+        runOnThread();
+
+//        mPlayer.reset();
+//        mPlayOnFocusGain = true;
+//        tryToGetAudioFocus();
+//        registerAudioNoisyReceiver();
+//
+//        if(playMode == PlayMode.RADIO){
+//            if (mState == PlaybackStateCompat.STATE_PAUSED && mPlayer != null) {
+//                configMediaPlayerState();
+//            } else {
+//                mState = PlaybackStateCompat.STATE_STOPPED;
+//                relaxResources(false);
+//                try {
+//                    createMediaPlayerIfNeeded();
+//                    mState = PlaybackStateCompat.STATE_BUFFERING;
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//                    mPlayer.setDataSource(radio.getTrackUrl());
+//                    mPlayer.prepareAsync();
+//                    mWifiLock.acquire();
+//                } catch (Exception ex) {
+//                    mState = PlaybackStateCompat.STATE_ERROR;
+//                }
+//            }
+//        } else {
+//
+//            mCurrentPosition = 0;
+//            Track track = mTracks.get(mSongPos);
+//
+//            if (mState == PlaybackStateCompat.STATE_PAUSED && mPlayer != null) {
+//                configMediaPlayerState();
+//            } else {
+//                mState = PlaybackStateCompat.STATE_STOPPED;
+//                relaxResources(false); // release everything except MediaPlayer
+//
+//                try {
+//                    createMediaPlayerIfNeeded();
+//                    mState = PlaybackStateCompat.STATE_BUFFERING;
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//
+//                    mPlayer.setDataSource(track.getTrackUrl());
+//                    mPlayer.prepareAsync();
+//
+//                    mWifiLock.acquire();
+//                } catch (IOException ex) {
+//                    mState = PlaybackStateCompat.STATE_ERROR;
+//                }
+//            }
+//        }
+    }
 
 
+            public void runOnThread() {
+                mPlayer.reset();
+                mPlayOnFocusGain = true;
+                tryToGetAudioFocus();
+                registerAudioNoisyReceiver();
 
+                if(playMode == PlayMode.RADIO){
+                    startInternally(radio);
+                }else {
+                    mCurrentPosition = 0;
+                    startInternally(mTracks.get(mSongPos));
+                }
+            }
+
+    private void startInternally(Track track){
         if (mState == PlaybackStateCompat.STATE_PAUSED && mPlayer != null) {
             configMediaPlayerState();
         } else {
@@ -412,26 +505,27 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
                 createMediaPlayerIfNeeded();
                 mState = PlaybackStateCompat.STATE_BUFFERING;
                 mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-                String getUrl = track.getUrl();
-                if(getUrl.contains("http://youtubeinmp3.com")){
-                    mPlayer.setDataSource(getUrl);
-                }else {
-                    getUrl = getUrl + AppConstant.PLAYBACK_LAST_URL;
-                    mPlayer.setDataSource(getUrl);
+                mPlayer.setDataSource(track.getTrackUrl());
+                
+                /*try{
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPlayer.prepareAsync();
+                        }
+                    }).start();
+                }catch (Exception e){
+                    mPlayer.prepareAsync();
                 }
-
+               */
 
                 mPlayer.prepareAsync();
-
                 mWifiLock.acquire();
-
             } catch (IOException ex) {
-                 mState = PlaybackStateCompat.STATE_ERROR;
+                mState = PlaybackStateCompat.STATE_ERROR;
             }
-
-
         }
+
     }
 
 
@@ -453,7 +547,8 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
             // Pause media player and cancel the 'foreground service' state.
             if (mPlayer != null && mPlayer.isPlaying()) {
                 mPlayer.pause();
-                mCurrentPosition = mPlayer.getCurrentPosition();
+                if(playMode != PlayMode.RADIO)
+                   mCurrentPosition = mPlayer.getCurrentPosition();
             }
             relaxResources(false);
             giveUpAudioFocus();
@@ -468,7 +563,8 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
         if (mState == PlaybackStateCompat.STATE_PAUSED) {
             tryToGetAudioFocus();
             if (mPlayer != null && !mPlayer.isPlaying()) {
-                mPlayer.seekTo(mCurrentPosition);
+                if(playMode != PlayMode.RADIO)
+                   mPlayer.seekTo(mCurrentPosition);
                 mPlayer.start();
             }
             buildNotification(PlaybackStatus.PLAYING);
@@ -480,7 +576,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
 
     public boolean isMediaPlaying(){
-        return (mPlayer != null && mState == PlaybackStateCompat.STATE_PLAYING) ? true : false;
+        return (mPlayer != null && mState == PlaybackStateCompat.STATE_PLAYING);
     }
 
 
@@ -491,7 +587,9 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
     }
 
     public Track getCurrentData(){
-        if(mTracks != null && mTracks.size() > 0)
+        if(playMode == PlayMode.RADIO)
+            return radio;
+        else if(mTracks != null && mTracks.size() > 0)
             return mTracks.get(mSongPos);
         return null;
     }
@@ -555,7 +653,6 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
                 if (mPlayer != null) {
                     mPlayer.setVolume(VOLUME_NORMAL, VOLUME_NORMAL); // we can be loud again
                 } // else do something for remote client.
-
             }
             // If we were playing when we lost focus, we need to resume playing.
             if (mPlayOnFocusGain) {
@@ -571,7 +668,8 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
                         buildNotification(PlaybackStatus.PLAYING);
 
                     } else {
-                        mPlayer.seekTo(mCurrentPosition);
+                        if(playMode != PlayMode.RADIO)
+                           mPlayer.seekTo(mCurrentPosition);
                         mState = PlaybackStateCompat.STATE_BUFFERING;
                     }
                 }
@@ -615,8 +713,9 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        if(internetHelper.isNetworkAvailable()){
-            mSongPos  = (mSongPos + 1) % mTracks.size();
+        if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE){
+            if(playMode != PlayMode.RADIO)
+              mSongPos  = (mSongPos + 1) % mTracks.size();
             play();
         }else{
             mCustomEvent.noInternet();
@@ -626,19 +725,16 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
     int tryCount = 0;
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        if(internetHelper.isNetworkAvailable()){
-            if(tryCount > 2){
+         if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE){
+            if(playMode != PlayMode.RADIO)
                 mSongPos  = (mSongPos + 1) % mTracks.size();
-                tryCount = 0;
-            }else {
-                tryCount++;
-            }
             play();
         }
-        else {
+        else{
             mCustomEvent.noInternet();
         }
-        return true;
+        //mCustomEvent.noInternet();
+        return false;
     }
 
     @Override
@@ -650,6 +746,13 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
         }
     }
 
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+
+        int i = percent;
+        int j = i;
+
+    }
 
 
     private void createMediaPlayerIfNeeded() {
@@ -657,11 +760,67 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
             mPlayer = new MediaPlayer();
             mPlayer.setWakeMode(getApplicationContext(),
                     PowerManager.PARTIAL_WAKE_LOCK);
-
             mPlayer.setOnPreparedListener(this);
             mPlayer.setOnCompletionListener(this);
             mPlayer.setOnErrorListener(this);
             mPlayer.setOnSeekCompleteListener(this);
+            mPlayer.setOnBufferingUpdateListener(this);
+
+
+           /* mPlayer.setOnCompletionListener(new FFmpegMediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(FFmpegMediaPlayer mp) {
+                    if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE){
+                        if(playMode != PlayMode.RADIO)
+                            mSongPos  = (mSongPos + 1) % mTracks.size();
+                        play();
+                    }else{
+                        mCustomEvent.noInternet();
+                    }
+                }
+            });
+
+            mPlayer.setOnSeekCompleteListener(new FFmpegMediaPlayer.OnSeekCompleteListener() {
+                @Override
+                public void onSeekComplete(FFmpegMediaPlayer mp) {
+                    mCurrentPosition = mp.getCurrentPosition();
+                    if (mState == PlaybackStateCompat.STATE_BUFFERING) {
+                        mPlayer.start();
+                        mState = PlaybackStateCompat.STATE_PLAYING;
+                    }
+                }
+            });
+
+            mPlayer.setOnErrorListener(new FFmpegMediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(FFmpegMediaPlayer mp, int what, int extra) {
+                    if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE){
+                        if(playMode != PlayMode.RADIO)
+                            mSongPos  = (mSongPos + 1) % mTracks.size();
+                        play();
+                    }
+                    else{
+                        mCustomEvent.noInternet();
+                    }
+                    //mCustomEvent.noInternet();
+                    return false;
+                }
+            });
+
+            mPlayer.setOnPreparedListener(new FFmpegMediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(FFmpegMediaPlayer mp) {
+                    configMediaPlayerState();
+                }
+            });
+
+            mPlayer.setOnBufferingUpdateListener(new FFmpegMediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(FFmpegMediaPlayer mp, int percent) {
+                    int i = percent;
+                    int j = i;
+                }
+            });*/
 
         } else {
             mPlayer.reset();

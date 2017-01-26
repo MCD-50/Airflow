@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/row_height"
+    android:layout_height="wrap_content"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -32,8 +32,9 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:id="@+id/i_feel_fragment_content_moodTextView"
-        android:gravity="left"
+        android:gravity="start"
         android:layout_centerVertical="true"
         />
+
 
 </RelativeLayout>

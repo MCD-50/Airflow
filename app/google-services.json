@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "381441477807",
+    "firebase_url": "https://airflow-145603.firebaseio.com",
+    "project_id": "airflow-145603",
+    "storage_bucket": "airflow-145603.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381441477807:android:7b7911ef89d46cae",
+        "android_client_info": {
+          "package_name": "com.airstem.airflow.ayush.airflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "381441477807-bgv0cu8qlckh2ar0j9m49tvotu9h1s5f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airstem.airflow.ayush.airflow",
+            "certificate_hash": "5756784F9FC52B65301F618D4E25F0AE50467EFE"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr66m0E7kFtSpgl5H0l_ZOaWcEoMkTEv4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

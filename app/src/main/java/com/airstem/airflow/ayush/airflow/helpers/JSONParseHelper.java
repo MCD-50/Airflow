@@ -1,6 +1,7 @@
 package com.airstem.airflow.ayush.airflow.helpers;
 
 import com.airstem.airflow.ayush.airflow.model.Mood;
+import com.airstem.airflow.ayush.airflow.model.PlayMode;
 import com.airstem.airflow.ayush.airflow.model.Track;
 import com.airstem.airflow.ayush.airflow.utils.AppConstant;
 import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
@@ -26,14 +27,12 @@ public class JSONParseHelper {
 
         ArrayList<Track> tracks = new ArrayList<Track>();
         try {
-            String id, title, url, artwork, streamable;
+            String id, title, url, artwork;
             JSONObject obj = new JSONObject(mJsonString);
             JSONArray array = obj.getJSONArray("collection");
             for (int i = 0; i < array.length(); i++)
             {
-
                 JSONObject newObj = array.getJSONObject(i).getJSONObject("track");
-
                 id = newObj.getString("id");
                 try{
                     artwork = newObj.getString("artwork_url");
@@ -57,16 +56,6 @@ public class JSONParseHelper {
                     url = "";
                 }
 
-                try{
-                    streamable = newObj.getString("streamable");
-                    if(streamable != null && (streamable.contains("true") || streamable.contains("false")))
-                        streamable = streamable;
-                    else
-                        streamable = "false";
-                }
-                catch(Exception myex){
-                    streamable = "false";
-                }
 
                 try{
                     title = CollectionUtils.capitalizeThisString(title);
@@ -76,12 +65,10 @@ public class JSONParseHelper {
                 }
 
                 //String artist = array.getJSONObject(i).getString("label_name");
-                Track t = new Track(id, title, url, Boolean.valueOf(streamable));
+                Track t = new Track(id, title, url + AppConstant.PLAYBACK_LAST_URL, PlayMode.ONLINE);
                 t.setMoodName(mood);
                 t.setArtwork(artwork);
                 tracks.add(t);
-
-
             }
 
         }

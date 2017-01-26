@@ -10,59 +10,74 @@ import android.net.wifi.ScanResult;
 public class Track {
 
 
-    private String Title;
-    private String MoodName;
-    private String Artwork;
-    private String Url;
-    private String Id;
-    private boolean Streamable;
-    private Bitmap bitmap;
+    private String mId;
+    private String mTitle;
+    private String mMoodName;
+    private String mTrackUrl;
+    private String mArtwork;
+    private Bitmap mBitmap;
+    private Integer mRadioArtwork;
+    private PlayMode mPlayMode;
 
-    public Track(String id, String title, String url, boolean streamable){
-        Id = id;
-        Title = title;
-        Url = url;
-        Streamable = streamable;
+
+    public Track(String id, String title, String url, PlayMode playMode){
+        mId = id;
+        mTitle = title;
+        mTrackUrl = url;
+        mPlayMode = playMode;
     }
 
     public void setMoodName(String moodName) {
-        MoodName = moodName;
+        mMoodName = moodName;
     }
 
     public String getMood() {
-        return MoodName;
+        return mMoodName;
     }
 
     public String getArtwork() {
-        return Artwork;
+        return mArtwork;
     }
 
     public void setArtwork(String artwork) {
-        Artwork = artwork;
+        mArtwork = artwork;
     }
 
     public String getTitle() {
-        return Title;
+        return mTitle;
     }
 
-    public boolean isStreamable() {
-        return Streamable;
+    public void setMode(PlayMode mode){
+        mPlayMode = mode;
     }
 
-    public String getUrl() {
-        return Url;
+    public PlayMode getMode(){
+        return mPlayMode;
+    }
+
+    public String getTrackUrl() {
+        return mTrackUrl;
     }
 
     public String getId() {
-        return Id;
+        return mId;
     }
 
     public Bitmap getBitmap() {
-        return bitmap;
+        return mBitmap;
     }
 
     public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+        mBitmap = bitmap;
     }
+
+    public void setRadioArtwork(Integer artwork){
+        mRadioArtwork = artwork;
+    }
+
+    public Integer getRadioArtwork(){
+        return mRadioArtwork;
+    }
+
 
 }

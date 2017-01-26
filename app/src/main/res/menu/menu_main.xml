@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.airstem.airflow.ayush.airflow.MainActivity" >
 
+    <item android:id="@+id/action_speech"
+        android:title="@string/you_say_we_play"
+        android:orderInCategory="100"
+        android:icon="@drawable/mic_icon"
+        app:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_about"
         android:orderInCategory="100"

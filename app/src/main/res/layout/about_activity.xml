@@ -43,20 +43,22 @@
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="5dp"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:text="@string/set_airflow_50_based_on_your_region"/>
 
             <Spinner
                 android:id="@+id/about_activity_countriesSpinner"
+                android:layout_height="40dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="10dp"
+                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/black"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorPrimary"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

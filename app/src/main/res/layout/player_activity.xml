@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black" />
+
 
     <ImageView
         android:id="@+id/player_activity_artworkImageView"
@@ -18,6 +22,32 @@
         android:contentDescription="@string/artist_image"
         android:scaleType="centerCrop" />
 
+    <Button
+        android:id="@+id/player_activity_similarTrackButton"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startSimilarTracks"
+        android:text="@string/play_similar_tracks"
+        android:gravity="end|top"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:textAllCaps="false"
+        android:visibility="gone"/>
+
+
+<!--
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/player_activity_adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@id/activity_main_pager"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+-->
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,6 +55,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
+
+
 
         <TextView
             android:id="@+id/player_activity_titleTextView"
@@ -75,6 +107,8 @@
 
             </LinearLayout>
 
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,8 +134,10 @@
             android:id="@+id/player_activity_progressSeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp" />
+            />
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -109,6 +145,17 @@
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="2dp">
+
+            <ImageView
+                android:id="@+id/player_activity_prevImageView"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="5dp"
+                android:contentDescription="@string/next_icon"
+                android:scaleType="centerCrop"
+                android:src="@drawable/prev_icon" />
+
 
             <ImageView
                 android:id="@+id/player_activity_playPauseImageView"
@@ -136,8 +183,6 @@
                 android:layout_marginStart="5dp"
                 android:contentDescription="@string/next_icon"
                 android:scaleType="centerCrop" />
-
-
 
         </LinearLayout>
 

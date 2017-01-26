@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.helpers.MoodHelper;
 import com.airstem.airflow.ayush.airflow.model.Mood;
+import com.airstem.airflow.ayush.airflow.model.PlayMode;
 import com.airstem.airflow.ayush.airflow.model.Track;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -81,10 +83,15 @@ public class FavAdapter extends BaseAdapter {
         ViewHolder viewHolder = (ViewHolder) rowView.getTag();
         viewHolder.titleTextView.setText(track.getTitle());
         viewHolder.moodTextView.setText(track.getMood());
-        if(track.getBitmap() == null){
-            viewHolder.imageView.setImageResource(R.drawable.default_art);
-        }else {
-            viewHolder.imageView.setImageBitmap(track.getBitmap());
+
+        if(track.getMode() == PlayMode.OFFLINE){
+            Picasso.with(mContext).load(track.getArtwork()).placeholder(R.drawable.default_art).into(viewHolder.imageView);
+        }else{
+            if(track.getBitmap() == null){
+                viewHolder.imageView.setImageResource(R.drawable.default_art);
+            }else {
+                viewHolder.imageView.setImageBitmap(track.getBitmap());
+            }
         }
 
         return rowView;

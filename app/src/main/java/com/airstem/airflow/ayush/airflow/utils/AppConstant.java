@@ -12,9 +12,15 @@ public class AppConstant {
     public static String YOUTUBE_API_ID_1 = "AIzaSyAcqlxfGVKYkgSJoW0DiW8-AQZAj7jud8w";
     public static String PLAYBACK_LAST_URL= "/stream?client_id=" + CLIENT_ID_1;
     public static String SHARED_PREFERENCES_KEY = "com.ayush.airflow.KEY";
-
+    public static String LAST_FM_KEY="a2be27fc57d01bb6c2f982cf639df152";
+    public static String HALFKEY="http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=";
+    public static String ENDKEY="&api_key=a2be27fc57d01bb6c2f982cf639df152&format=json";
     //t500x500 crop(400*400) t300x300 large
 
+
+    public static String getArtistArtwork(String artistName){
+        return HALFKEY + artistName + ENDKEY;
+    }
 
     public static String getQ(String kind, String genres,String id ,int count, int offset){
 
