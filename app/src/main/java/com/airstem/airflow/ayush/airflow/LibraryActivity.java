@@ -83,13 +83,16 @@ public class LibraryActivity extends AppCompatActivity implements CustomEvent {
 
             @Override
             public void onPageSelected(int position) {
+                fab.setVisibility(View.VISIBLE);
                 if(position == 2){
                     fab.setImageResource(R.drawable.ic_add);
                     isAdd = true;
                 }
-                else{
+                else if(position == 0){
                     fab.setImageResource(R.drawable.ic_shuffle);
                     isAdd = false;
+                }else{
+                    fab.setVisibility(View.GONE);
                 }
 
             }
