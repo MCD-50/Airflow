@@ -1,0 +1,45 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_artist_info_page_material_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/search_artist_info_page_image"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
+
+
+    <jp.satorufujiwara.scrolling.MaterialScrollingViewPager
+        android:id="@+id/search_artist_info_page_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ms_flexible_height="240dp"
+        app:ms_base_height="@dimen/app_bar_height" />
+
+    <View
+        android:id="@+id/search_artist_info_page_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/search_artist_info_page_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:layout_marginTop="192dp"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@android:color/white"
+        />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/search_artist_info_page_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:background="@android:color/transparent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
+</FrameLayout>

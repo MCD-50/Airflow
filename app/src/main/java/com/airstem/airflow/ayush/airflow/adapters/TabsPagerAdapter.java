@@ -15,7 +15,7 @@ import com.airstem.airflow.ayush.airflow.MyFavFragment;
  * Created by ayush on 09-10-16.
  */
 
-public class TabsPagerAdapter extends FragmentPagerAdapter {
+public class TabsPagerAdapter extends FragmentPagerAdapter  {
 
     private String[] tabs = { "LOCAL", "I FEEL", "RADIO", "MY FAV" };
     public TabsPagerAdapter(FragmentManager fm) {

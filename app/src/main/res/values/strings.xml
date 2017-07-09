@@ -26,5 +26,6 @@
     <string name="its_empty_here_no_tracks_found_on_this_device">Its empty here. No tracks found on this device.</string>
     <string name="its_empty_in_here_add_a_few_tracks_to_your_library">Its empty in here, add a few tracks to your library</string>
     <string name="its_empty_in_here_add_a_few_playlists_to_get_started">Its empty in here, add a few playlists to get started</string>
+    <string name="search_empty_message">It\'s empty in here. Make sure you are connected to internet or search anything else.</string>
 
 </resources>

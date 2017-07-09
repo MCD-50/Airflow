@@ -27,11 +27,13 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -49,6 +51,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
+import com.airstem.airflow.ayush.airflow.adapters.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.FavAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.ListDiscoverAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.LocalTrackAdapter;
@@ -141,13 +144,29 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
 
         // Initialization
         viewPager = (ViewPager) findViewById(R.id.activity_main_pager);
-        tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(tabsPagerAdapter);
-        viewPager.setOffscreenPageLimit(3);
+        //tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_main_slidingTabStrip);
+
+        //Add tabs icon with setIcon() or simple text with .setText()
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
+
+        CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new LocalTrackFragment());
+        adapter.addFragment(new DiscoverFragment());
+        adapter.addFragment(new MyFavFragment());
+
+        viewPager.setAdapter(adapter);
+        //viewPager.setOffscreenPageLimit(3);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+
         mProgressDialog = new ProgressDialog(MainActivity.this);
 
-        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.activity_main_slidingTabStrip);
-        pagerSlidingTabStrip.setViewPager(viewPager);
+        //PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.activity_main_slidingTabStrip);
+        //pagerSlidingTabStrip.setViewPager(viewPager);
 
 
         //not required....

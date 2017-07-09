@@ -1,0 +1,58 @@
+<jp.satorufujiwara.scrolling.MaterialScrollingLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_album_info_page_material_scrolling"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:ms_flexible_height="240dp">
+
+    <ImageView
+        android:id="@+id/search_album_info_page_image"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
+
+    <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
+        android:id="@+id/search_album_info_page_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:scrollbars="none" />
+
+    <View android:id="@+id/search_album_info_page_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        />
+
+    <TextView android:id="@+id/search_album_info_page_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:layout_marginTop="@dimen/title_scroll_height"
+        android:gravity="center_vertical"
+        android:paddingStart="62dp"
+        android:paddingEnd="16dp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        />
+
+    <TextView android:id="@+id/search_album_info_page_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="280dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:text="@string/search_empty_message"
+        style="@style/MessageTextView"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/search_album_info_page_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        android:background="@android:color/transparent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
+</jp.satorufujiwara.scrolling.MaterialScrollingLayout>
