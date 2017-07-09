@@ -9,8 +9,9 @@
     <ImageView
         android:id="@+id/search_album_info_page_image"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="240dp"
         android:adjustViewBounds="true"
+        android:background="@color/angryPrimary"
         android:scaleType="centerCrop"/>
 
     <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
@@ -40,7 +41,7 @@
     <TextView android:id="@+id/search_album_info_page_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="245dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="@string/search_empty_message"
