@@ -1,4 +1,4 @@
-package com.airstem.airflow.ayush.airflow.adapters;
+package com.airstem.airflow.ayush.airflow.adapters.tabs;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

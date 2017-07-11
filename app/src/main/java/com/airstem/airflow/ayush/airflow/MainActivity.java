@@ -36,7 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.CustomPagerAdapter;
+import com.airstem.airflow.ayush.airflow.adapters.tabs.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.FavAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.ListDiscoverAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.LocalTrackAdapter;

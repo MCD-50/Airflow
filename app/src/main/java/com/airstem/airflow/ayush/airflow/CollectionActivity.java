@@ -1,48 +1,18 @@
 package com.airstem.airflow.ayush.airflow;
 
-import android.app.ProgressDialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.airstem.airflow.ayush.airflow.adapters.CustomPagerAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.LibraryTabsAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.TabsPagerAdapter;
+import com.airstem.airflow.ayush.airflow.adapters.tabs.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchAlbumFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchArtistFragment;
-import com.airstem.airflow.ayush.airflow.fragments.search.SearchRadioFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchVideoFragment;
-import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
-import com.airstem.airflow.ayush.airflow.helpers.FragmentEvents;
-import com.airstem.airflow.ayush.airflow.model.Artist;
-import com.airstem.airflow.ayush.airflow.model.Playlist;
-import com.airstem.airflow.ayush.airflow.model.Track;
-import com.airstem.airflow.ayush.airflow.service.MusicService;
-import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
-import com.astuetz.PagerSlidingTabStrip;
-
-import java.util.ArrayList;
 
 /**
  * Created by ayush AS on 7/1/17.
