@@ -1,5 +1,7 @@
 package com.airstem.airflow.ayush.airflow.model.search;
 
+import java.util.ArrayList;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
@@ -8,10 +10,10 @@ public class SearchAlbumInfoTrack {
     private String mTitle;
     private String mArtistName;
     private String mAlbumName;
-    private SearchImage[] mArtworkUrl;
+    private ArrayList<SearchImage> mArtworkUrl;
 
 
-    public SearchAlbumInfoTrack(String mTitle, String mArtistName, String mAlbumName, SearchImage[] mArtworkUrl) {
+    public SearchAlbumInfoTrack(String mTitle, String mArtistName, String mAlbumName, ArrayList<SearchImage> mArtworkUrl) {
         this.mTitle = mTitle;
         this.mArtistName = mArtistName;
         this.mAlbumName = mAlbumName;
@@ -30,7 +32,7 @@ public class SearchAlbumInfoTrack {
         return mAlbumName;
     }
 
-    public SearchImage[] getArtworkUrl() {
+    public ArrayList<SearchImage> getArtworkUrl() {
         return mArtworkUrl;
     }
 }

@@ -28,7 +28,7 @@
         </activity>
 
         <activity android:name=".MainActivity" android:label="Discover" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".LibraryActivity" android:label="Library" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CollectionActivity" android:label="Library" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ArtistDetailActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PlaylistDetailActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PlayerActivity" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/PlayerTheme">

@@ -23,6 +23,7 @@ public class SearchActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager viewPager;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void initComponents() {
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.search_page_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.search_page_toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,12 +54,11 @@ public class SearchActivity extends AppCompatActivity {
 
 
     private void setFragments(){
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
-
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_track_white));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_video_white));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_artist_white));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_album_white));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_radio_white));
 
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new SearchTrackFragment());
@@ -66,6 +66,8 @@ public class SearchActivity extends AppCompatActivity {
         adapter.addFragment(new SearchArtistFragment());
         adapter.addFragment(new SearchAlbumFragment());
         adapter.addFragment(new SearchRadioFragment());
+
+        viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));

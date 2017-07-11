@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.adapters.search.AlbumAdapter;
-import com.airstem.airflow.ayush.airflow.helpers.ResourceHelper;
+import com.airstem.airflow.ayush.airflow.adapters.search.TrackAdapter;
+import com.airstem.airflow.ayush.airflow.events.SearchTrackClickListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchTrackFragment extends Fragment {
+public class SearchTrackFragment extends Fragment implements SearchTrackClickListener {
 
 
 
@@ -33,7 +33,8 @@ public class SearchTrackFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
 
 
-
+    ArrayList<SearchTrack> mItems;
+    TrackAdapter mAdapter;
 
     @Nullable
     @Override
@@ -51,4 +52,8 @@ public class SearchTrackFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onItemClick(SearchTrack searchTrack) {
+
+    }
 }

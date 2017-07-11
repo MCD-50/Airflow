@@ -14,20 +14,18 @@ public class CollectionTrack implements Serializable {
     private String mArtistName;
     private String mTrackOnlineUrl;
     private String mTrackOfflineUrl;
-    private String mArtworkOnlineUrl;
-    private String mArtworkOfflineUrl;
-    private Bitmap mArtworkBitmap;
+    private boolean mIsOffline;
+    private String mArtworkUrl;
 
 
-    public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkOnlineUrl, String mArtworkOfflineUrl, Bitmap mArtworkBitmap) {
+    public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkUrl, boolean mIsOffline) {
         this.mTitle = mTitle;
         this.mAlbumName = mAlbumName;
         this.mArtistName = mArtistName;
         this.mTrackOnlineUrl = mTrackOnlineUrl;
         this.mTrackOfflineUrl = mTrackOfflineUrl;
-        this.mArtworkOnlineUrl = mArtworkOnlineUrl;
-        this.mArtworkOfflineUrl = mArtworkOfflineUrl;
-        this.mArtworkBitmap = mArtworkBitmap;
+        this.mArtworkUrl = mArtworkUrl;
+        this.mIsOffline = mIsOffline;
     }
 
     public String getTitle() {
@@ -50,15 +48,12 @@ public class CollectionTrack implements Serializable {
         return mTrackOfflineUrl;
     }
 
-    public String getArtworkOnlineUrl() {
-        return mArtworkOnlineUrl;
+    public String getArtworkUrl() {
+        return mArtworkUrl;
     }
 
-    public String getArtworkOfflineUrl() {
-        return mArtworkOfflineUrl;
+    public boolean getIsOffline() {
+        return mIsOffline;
     }
 
-    public Bitmap getArtworkBitmap() {
-        return mArtworkBitmap;
-    }
 }

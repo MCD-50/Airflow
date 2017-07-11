@@ -1,25 +1,19 @@
 package com.airstem.airflow.ayush.airflow;
 
 import android.Manifest;
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -29,12 +23,8 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -44,11 +34,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.CustomPagerAdapter;
@@ -56,13 +41,9 @@ import com.airstem.airflow.ayush.airflow.adapters.FavAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.ListDiscoverAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.LocalTrackAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.TabsPagerAdapter;
-import com.airstem.airflow.ayush.airflow.helpers.ActivityReference;
 import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
-import com.airstem.airflow.ayush.airflow.helpers.DatabaseEvent;
 import com.airstem.airflow.ayush.airflow.helpers.GenresHelper;
 import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
-import com.airstem.airflow.ayush.airflow.helpers.LocalMusicHelper;
-import com.airstem.airflow.ayush.airflow.helpers.MoodHelper;
 import com.airstem.airflow.ayush.airflow.helpers.YouTubeApiHelper;
 import com.airstem.airflow.ayush.airflow.model.Base;
 import com.airstem.airflow.ayush.airflow.model.Mood;
@@ -71,9 +52,6 @@ import com.airstem.airflow.ayush.airflow.service.MusicService;
 import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
 import com.airstem.airflow.ayush.airflow.utils.DatabaseUtils;
 import com.airstem.airflow.ayush.airflow.utils.SoundCloudUtil;
-import com.astuetz.PagerSlidingTabStrip;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
@@ -505,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
         int id = item.getItemId();
 
         if (id == R.id.nav_library)
-            startActivity(new Intent(MainActivity.this, LibraryActivity.class));
+            startActivity(new Intent(MainActivity.this, CollectionActivity.class));
         else if (id == R.id.nav_settings)
             startActivity(new Intent(MainActivity.this, AboutActivity.class));
 

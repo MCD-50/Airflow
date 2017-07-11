@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.events.SearchRadioClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
@@ -27,12 +28,12 @@ import java.util.ArrayList;
 public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<SearchRadio> mSearchRadios;
-    private ClickListener mListener;
+    private ArrayList<SearchRadio> mItems;
+    private SearchRadioClickListener mListener;
 
-    public RadioAdapter(Context context, ArrayList<SearchRadio> searchRadios, ClickListener listener) {
+    public RadioAdapter(Context context, ArrayList<SearchRadio> searchRadios, SearchRadioClickListener listener) {
         mContext = context;
-        mSearchRadios = searchRadios;
+        mItems = searchRadios;
         mListener = listener;
     }
 
@@ -44,7 +45,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        SearchRadio searchRadio = mSearchRadios.get(position);
+        SearchRadio searchRadio = mItems.get(position);
         holder.bindData(searchRadio, mListener);
 
         holder.title.setText(searchRadio.getTitle());
@@ -54,7 +55,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
 
     @Override
     public int getItemCount() {
-        return mSearchRadios.size();
+        return mItems.size();
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -66,14 +67,14 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
             super(view);
             title = (TextView) view.findViewById(R.id.search_radio_fragment_content_title);
             subTitle = (TextView) view.findViewById(R.id.search_radio_fragment_content_sub_title);
-            _view = (View) view.findViewById(R.id.search_radio_fragment_content_view);
+            _view = view.findViewById(R.id.search_radio_fragment_content_view);
         }
 
-        void bindData(final SearchRadio searchRadio, final ClickListener listener) {
+        void bindData(final SearchRadio searchRadio, final SearchRadioClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(searchRadio);
+                    listener.onItemClick(searchRadio);
                 }
             });
         }

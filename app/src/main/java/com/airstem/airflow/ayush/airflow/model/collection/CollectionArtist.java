@@ -3,6 +3,7 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -10,39 +11,32 @@ import java.io.Serializable;
 
 public class CollectionArtist implements Serializable {
     private String mTitle;
-    private CollectionTrack[] mTracks;
-    private String mArtworkOnlineUrl;
-    private String mArtworkOfflineUrl;
-    private Bitmap mArtworkBitmap;
+    private ArrayList<CollectionTrack> mTracks;
+    private String mArtworkUrl;
 
-    public CollectionArtist(String mTitle, String mArtworkOnlineUrl, String mArtworkOfflineUrl, Bitmap mArtworkBitmap) {
+    public CollectionArtist(String mTitle, String mArtworkUrl) {
         this.mTitle = mTitle;
-        this.mArtworkOnlineUrl = mArtworkOnlineUrl;
-        this.mArtworkOfflineUrl = mArtworkOfflineUrl;
-        this.mArtworkBitmap = mArtworkBitmap;
+        this.mArtworkUrl = mArtworkUrl;
     }
 
     public String getTitle() {
         return mTitle;
     }
 
-    public String getArtworkOnlineUrl() {
-        return mArtworkOnlineUrl;
+
+    public String getArtworkUrl() {
+        return mArtworkUrl;
     }
 
-    public String getArtworkOfflineUrl() {
-        return mArtworkOfflineUrl;
-    }
-
-    public Bitmap getArtworkBitmap() {
-        return mArtworkBitmap;
-    }
-
-    public CollectionTrack[] getTracks() {
+    public ArrayList<CollectionTrack> getTracks() {
         return mTracks;
     }
 
-    public void setTracks(CollectionTrack[] mTracks) {
+    public int getTracksLength(){
+        return mTitle.length();
+    }
+
+    public void setTracks(ArrayList<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.events.SearchArtistInfoTrackClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
@@ -25,12 +26,12 @@ import java.util.ArrayList;
 public class ArtistInfoTrackAdapter extends RecyclerView.Adapter<ArtistInfoTrackAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<SearchArtistInfoTrack> mSearchArtistInfoTracks;
-    private final ClickListener mListener;
+    private ArrayList<SearchArtistInfoTrack> mItems;
+    private final SearchArtistInfoTrackClickListener mListener;
 
-    public ArtistInfoTrackAdapter(Context context, ArrayList<SearchArtistInfoTrack> searchArtistInfoTracks, ClickListener listener) {
+    public ArtistInfoTrackAdapter(Context context, ArrayList<SearchArtistInfoTrack> searchArtistInfoTracks, SearchArtistInfoTrackClickListener listener) {
         mContext = context;
-        mSearchArtistInfoTracks = searchArtistInfoTracks;
+        mItems = searchArtistInfoTracks;
         mListener = listener;
     }
 
@@ -43,17 +44,17 @@ public class ArtistInfoTrackAdapter extends RecyclerView.Adapter<ArtistInfoTrack
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        SearchArtistInfoTrack searchArtistInfoTrack = mSearchArtistInfoTracks.get(position);
+        SearchArtistInfoTrack searchArtistInfoTrack = mItems.get(position);
         holder.bindData(searchArtistInfoTrack, mListener);
 
         holder.title.setText(searchArtistInfoTrack.getTitle());
         holder.subTitle.setText(searchArtistInfoTrack.getArtistName());
-        Picasso.with(mContext).load(searchArtistInfoTrack.getArtworkUrl()[0].getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        Picasso.with(mContext).load(searchArtistInfoTrack.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mSearchArtistInfoTracks.size();
+        return mItems.size();
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -68,11 +69,11 @@ public class ArtistInfoTrackAdapter extends RecyclerView.Adapter<ArtistInfoTrack
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchArtistInfoTrack searchArtistInfoTrack, final ClickListener listener) {
+        void bindData(final SearchArtistInfoTrack searchArtistInfoTrack, final SearchArtistInfoTrackClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(searchArtistInfoTrack);
+                    listener.onItemClick(searchArtistInfoTrack);
                 }
             });
         }

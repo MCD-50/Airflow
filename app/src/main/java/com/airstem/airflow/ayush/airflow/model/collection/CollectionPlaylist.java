@@ -3,6 +3,7 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -10,10 +11,8 @@ import java.io.Serializable;
 
 public class CollectionPlaylist implements Serializable {
     private String mTitle;
-    private CollectionTrack[] mTracks;
-    private Bitmap mArtworkBitmap;
+    private ArrayList<CollectionTrack> mTracks;
     private String mOwner;
-
 
     public CollectionPlaylist(String mTitle, String mOwner) {
         this.mTitle = mTitle;
@@ -25,23 +24,24 @@ public class CollectionPlaylist implements Serializable {
         return mTitle;
     }
 
-    public CollectionTrack[] getTracks() {
+    public ArrayList<CollectionTrack> getTracks() {
         return mTracks;
     }
 
-    public Bitmap getArtworkBitmap() {
-        return mArtworkBitmap;
+    public int getTrackLength(){
+        return mTitle.length();
     }
+
+    public String getArtworkUrl() {
+        return mTracks.get(0).getArtworkUrl();
+    }
+
 
     public String getOwner() {
         return mOwner;
     }
 
-    public void setTracks(CollectionTrack[] mTracks) {
+    public void setTracks(ArrayList<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
-    }
-
-    public void setArtworkBitmap(Bitmap mArtworkBitmap) {
-        this.mArtworkBitmap = mArtworkBitmap;
     }
 }

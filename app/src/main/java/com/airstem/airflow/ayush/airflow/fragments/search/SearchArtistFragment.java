@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.adapters.search.ArtistAdapter;
+import com.airstem.airflow.ayush.airflow.events.SearchArtistClickListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchArtistFragment extends Fragment {
+public class SearchArtistFragment extends Fragment implements SearchArtistClickListener {
 
 
 
@@ -27,6 +29,8 @@ public class SearchArtistFragment extends Fragment {
     RecyclerView listView;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    ArrayList<SearchArtist> mItems;
+    ArtistAdapter mAdapter;
 
     @Nullable
     @Override
@@ -45,5 +49,9 @@ public class SearchArtistFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(SearchArtist searchArtist) {
+
+    }
 }
 

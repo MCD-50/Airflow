@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
+import com.airstem.airflow.ayush.airflow.events.SearchArtistInfoAlbumClickListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
 import com.squareup.picasso.Picasso;
@@ -24,15 +24,14 @@ import java.util.ArrayList;
 public class ArtistInfoAlbumAdapter extends RecyclerView.Adapter<ArtistInfoAlbumAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<SearchArtistInfoAlbum> mSearchArtistInfoAlbums;
-    private final ClickListener mListener;
+    private ArrayList<SearchArtistInfoAlbum> mItems;
+    private final SearchArtistInfoAlbumClickListener mListener;
 
-    public ArtistInfoAlbumAdapter(Context context, ArrayList<SearchArtistInfoAlbum> searchArtistInfoAlbums, ClickListener listener) {
+    public ArtistInfoAlbumAdapter(Context context, ArrayList<SearchArtistInfoAlbum> searchArtistInfoAlbums, SearchArtistInfoAlbumClickListener listener) {
         mContext = context;
-        mSearchArtistInfoAlbums = searchArtistInfoAlbums;
+        mItems = searchArtistInfoAlbums;
         mListener = listener;
     }
-
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,17 +41,17 @@ public class ArtistInfoAlbumAdapter extends RecyclerView.Adapter<ArtistInfoAlbum
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        SearchArtistInfoAlbum searchArtistInfoAlbum = mSearchArtistInfoAlbums.get(position);
+        SearchArtistInfoAlbum searchArtistInfoAlbum = mItems.get(position);
         holder.bindData(searchArtistInfoAlbum, mListener);
 
         holder.title.setText(searchArtistInfoAlbum.getTitle());
         holder.subTitle.setText(searchArtistInfoAlbum.getArtistName());
-        Picasso.with(mContext).load(searchArtistInfoAlbum.getArtworkUrl()[0].getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        Picasso.with(mContext).load(searchArtistInfoAlbum.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mSearchArtistInfoAlbums.size();
+        return mItems.size();
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -67,11 +66,11 @@ public class ArtistInfoAlbumAdapter extends RecyclerView.Adapter<ArtistInfoAlbum
             image = (ImageView) view.findViewById(R.id.search_album_fragment_content_image);
         }
 
-        void bindData(final SearchArtistInfoAlbum searchArtistInfoAlbum, final ClickListener listener) {
+        void bindData(final SearchArtistInfoAlbum searchArtistInfoAlbum, final SearchArtistInfoAlbumClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(searchArtistInfoAlbum);
+                    listener.onItemClick(searchArtistInfoAlbum);
                 }
             });
         }

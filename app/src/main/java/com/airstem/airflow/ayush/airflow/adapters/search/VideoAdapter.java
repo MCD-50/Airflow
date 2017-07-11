@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.events.SearchVideoClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.model.Base;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
@@ -26,12 +27,12 @@ import java.util.ArrayList;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<SearchVideo> mSearchVideos;
-    private ClickListener mListener;
+    private ArrayList<SearchVideo> mItems;
+    private SearchVideoClickListener mListener;
 
-    public VideoAdapter(Context context, ArrayList<SearchVideo> searchVideos, ClickListener listener) {
+    public VideoAdapter(Context context, ArrayList<SearchVideo> searchVideos, SearchVideoClickListener listener) {
         mContext = context;
-        mSearchVideos = searchVideos;
+        mItems = searchVideos;
         mListener = listener;
     }
 
@@ -43,17 +44,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        SearchVideo searchVideo = mSearchVideos.get(position);
+        SearchVideo searchVideo = mItems.get(position);
         holder.bindData(searchVideo, mListener);
 
         holder.title.setText(searchVideo.getTitle());
         holder.subTitle.setText(searchVideo.getAuthor());
-        Picasso.with(mContext).load(searchVideo.getArtworkUrl()[0].getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        Picasso.with(mContext).load(searchVideo.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mSearchVideos.size();
+        return mItems.size();
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -68,11 +69,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.search_video_fragment_content_image);
         }
 
-        void bindData(final SearchVideo searchVideo, final ClickListener listener) {
+        void bindData(final SearchVideo searchVideo, final SearchVideoClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(searchVideo);
+                    listener.onItemClick(searchVideo);
                 }
             });
         }
@@ -81,7 +82,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
 
     public int getCount() {
-        return mSearchVideos.size();
+        return mItems.size();
     }
 
 

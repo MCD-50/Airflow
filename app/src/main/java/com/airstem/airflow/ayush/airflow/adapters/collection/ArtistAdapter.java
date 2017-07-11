@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.events.CollectionArtistClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
@@ -20,56 +21,56 @@ import java.util.ArrayList;
  * Created by mcd-50 on 9/7/17.
  */
 
-public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistViewHolder> {
+public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<CollectionArtist> mCollectionArtists;
-    private final ClickListener mListener;
+    private ArrayList<CollectionArtist> mItems;
+    private final CollectionArtistClickListener mListener;
 
-    public ArtistAdapter(Context context, ArrayList<CollectionArtist> searchArtists, ClickListener listener) {
+    public ArtistAdapter(Context context, ArrayList<CollectionArtist> searchArtists, CollectionArtistClickListener listener) {
         mContext = context;
-        mCollectionArtists = searchArtists;
+        mItems = searchArtists;
         mListener = listener;
     }
 
     @Override
-    public ArtistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.search_album_fragment_content, parent, false);
-        return new ArtistViewHolder(view);
+    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.collection_artist_fragment_content, parent, false);
+        return new RecyclerViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ArtistViewHolder holder, int position) {
-        CollectionArtist collectionArtist = mCollectionArtists.get(position);
+    public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
+        CollectionArtist collectionArtist = mItems.get(position);
         holder.bindData(collectionArtist, mListener);
 
         holder.title.setText(collectionArtist.getTitle());
-        holder.title.setText(collectionArtist.getTitle());
-        Picasso.with(mContext).load(collectionArtist.getArtworkOfflineUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        holder.subTitle.setText(collectionArtist.getTracksLength());
+        Picasso.with(mContext).load(collectionArtist.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mCollectionArtists.size();
+        return mItems.size();
     }
 
-    public static class ArtistViewHolder extends RecyclerView.ViewHolder {
+    public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, subTitle;
         ImageView image;
 
-        ArtistViewHolder(View view) {
+        RecyclerViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.local_track_fragment_content_titleTextView);
-            subTitle = (TextView) view.findViewById(R.id.local_track_fragment_content_titleTextView);
-            image = (ImageView) view.findViewById(R.id.local_track_fragment_content_artworkImageView);
+            title = (TextView) view.findViewById(R.id.collection_artist_fragment_content_title);
+            subTitle = (TextView) view.findViewById(R.id.collection_artist_fragment_content_sub_title);
+            image = (ImageView) view.findViewById(R.id.collection_artist_fragment_content_image);
         }
 
-        public void bindData(final CollectionArtist collectionArtist, final ClickListener listener) {
+        public void bindData(final CollectionArtist collectionArtist, final CollectionArtistClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(collectionArtist);
+                    listener.onItemClick(collectionArtist);
                 }
             });
         }

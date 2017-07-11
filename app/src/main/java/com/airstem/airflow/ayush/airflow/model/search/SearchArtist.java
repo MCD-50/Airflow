@@ -2,6 +2,7 @@ package com.airstem.airflow.ayush.airflow.model.search;
 
 import java.io.Serializable;
 import java.security.Provider;
+import java.util.ArrayList;
 
 /**
  * Created by mcd-50 on 8/7/17.
@@ -9,11 +10,11 @@ import java.security.Provider;
 
 public class SearchArtist implements Serializable {
     private String mTitle;
-    private SearchImage[] mArtworkUrl;
+    private ArrayList<SearchImage> mArtworkUrl;
     private Provider mProvider;
     private String mId;
 
-    public SearchArtist(String mTitle, SearchImage[] mArtworkUrl, Provider mProvider, String mId) {
+    public SearchArtist(String mTitle, ArrayList<SearchImage> mArtworkUrl, Provider mProvider, String mId) {
         this.mTitle = mTitle;
         this.mArtworkUrl = mArtworkUrl;
         this.mProvider = mProvider;
@@ -24,7 +25,7 @@ public class SearchArtist implements Serializable {
         return mTitle;
     }
 
-    public SearchImage[] getArtworkUrl() {
+    public ArrayList<SearchImage> getArtworkUrl() {
         return mArtworkUrl;
     }
 

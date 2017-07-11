@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.adapters.search.RadioAdapter;
+import com.airstem.airflow.ayush.airflow.events.SearchRadioClickListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
 import java.util.ArrayList;
 
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchRadioFragment extends Fragment {
+public class SearchRadioFragment extends Fragment implements SearchRadioClickListener {
 
 
 
@@ -29,6 +31,9 @@ public class SearchRadioFragment extends Fragment {
     RecyclerView listView;
     SwipeRefreshLayout swipeRefreshLayout;
 
+
+    ArrayList<SearchRadio> mItems;
+    RadioAdapter mAdapter;
 
     @Nullable
     @Override
@@ -47,5 +52,9 @@ public class SearchRadioFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(SearchRadio searchRadio) {
+
+    }
 }
 

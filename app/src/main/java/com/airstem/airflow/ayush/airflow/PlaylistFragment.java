@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.adapters.PlaylistAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.TracksAdapter;
 import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.LocalMusicHelper;
 import com.airstem.airflow.ayush.airflow.model.Artist;
@@ -98,7 +96,7 @@ public class PlaylistFragment extends Fragment {
 
 
     private void onPlaylistClicked(Playlist playlist){
-        ((LibraryActivity) getActivity()).navigateToPlaylistPage(playlist);
+        ((CollectionActivity) getActivity()).navigateToPlaylistPage(playlist);
     }
 
 }

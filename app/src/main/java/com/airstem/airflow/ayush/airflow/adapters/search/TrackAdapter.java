@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.TracksAdapter;
+import com.airstem.airflow.ayush.airflow.events.SearchTrackClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
@@ -27,12 +28,12 @@ import java.util.ArrayList;
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<SearchTrack> mSearchTracks;
-    private ClickListener mListener;
+    private ArrayList<SearchTrack> mItems;
+    private SearchTrackClickListener mListener;
 
-    public TrackAdapter(Context context, ArrayList<SearchTrack> searchTracks, ClickListener listener) {
+    public TrackAdapter(Context context, ArrayList<SearchTrack> searchTracks, SearchTrackClickListener listener) {
         mContext = context;
-        mSearchTracks = searchTracks;
+        mItems = searchTracks;
         mListener = listener;
     }
 
@@ -45,17 +46,17 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        SearchTrack searchTrack = mSearchTracks.get(position);
+        SearchTrack searchTrack = mItems.get(position);
         holder.bindData(searchTrack, mListener);
 
         holder.title.setText(searchTrack.getTitle());
         holder.subTitle.setText(searchTrack.getArtistName());
-        Picasso.with(mContext).load(searchTrack.getArtworkUrl()[0].getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        Picasso.with(mContext).load(searchTrack.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mSearchTracks.size();
+        return mItems.size();
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -70,11 +71,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchTrack searchTrack, final ClickListener listener) {
+        void bindData(final SearchTrack searchTrack, final SearchTrackClickListener  listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(searchTrack);
+                    listener.onItemClick(searchTrack);
                 }
             });
         }

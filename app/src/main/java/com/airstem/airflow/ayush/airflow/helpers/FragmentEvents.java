@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface FragmentEvents {
-    public ArrayList<Track> invokeOnShuffleTrack();
+    ArrayList<Track> invokeOnShuffleTrack();
 }

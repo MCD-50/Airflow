@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.search.AlbumInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behavior.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behavior.TitleBehavior;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
+import com.airstem.airflow.ayush.airflow.events.SearchAlbumInfoTrackClickListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 
 import java.util.ArrayList;
@@ -25,12 +25,16 @@ import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
  * Created by mcd-50 on 9/7/17.
  */
 
-public abstract class SearchAlbumInfoActivity extends AppCompatActivity implements ClickListener {
+public class SearchAlbumInfoActivity extends AppCompatActivity implements SearchAlbumInfoTrackClickListener {
+
     TextView empty, title;
     ImageView image;
     View overlayView;
     RecyclerView listView;
     MaterialScrollingLayout scrollingLayout;
+
+    AlbumInfoAdapter mAdapter;
+    ArrayList<SearchAlbumInfoTrack> mItems;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public abstract class SearchAlbumInfoActivity extends AppCompatActivity implemen
         empty = (TextView) findViewById(R.id.search_album_info_page_empty);
         title = (TextView) findViewById(R.id.search_album_info_page_title);
         image = (ImageView) findViewById(R.id.search_album_info_page_image);
-        overlayView = (View) findViewById(R.id.search_album_info_page_overlay);
+        overlayView = findViewById(R.id.search_album_info_page_overlay);
         listView = (RecyclerView) findViewById(R.id.search_album_info_page_list);
         scrollingLayout = (MaterialScrollingLayout) findViewById(R.id.search_album_info_page_material_scrolling);
 
@@ -64,9 +68,10 @@ public abstract class SearchAlbumInfoActivity extends AppCompatActivity implemen
         title.setText(String.valueOf("Loading..."));
 
 
-        AlbumInfoAdapter adapter = new AlbumInfoAdapter(SearchAlbumInfoActivity.this, new ArrayList<SearchAlbumInfoTrack>(), this);
+        mItems = new ArrayList<>();
+        mAdapter = new AlbumInfoAdapter(SearchAlbumInfoActivity.this, mItems, this);
         listView.setLayoutManager(new LinearLayoutManager(this));
-        listView.setAdapter(adapter);
+        listView.setAdapter(mAdapter);
     }
 
     public int dp(final int dp) {
@@ -75,7 +80,7 @@ public abstract class SearchAlbumInfoActivity extends AppCompatActivity implemen
 
 
     @Override
-    public void OnItemClick(SearchAlbumInfoTrack searchAlbumInfoTrack) {
+    public void onItemClick(SearchAlbumInfoTrack searchAlbumInfoTrack) {
 
     }
 }

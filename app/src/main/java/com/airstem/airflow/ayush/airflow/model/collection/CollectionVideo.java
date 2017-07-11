@@ -13,18 +13,16 @@ public class CollectionVideo implements Serializable {
     private String mAuthor;
     private String mVideoOnlineUrl;
     private String mVideoOfflineUrl;
-    private String mArtworkOnlineUrl;
-    private String mArtworkOfflineUrl;
-    private Bitmap mArtworkBitmap;
+    private String mArtworkUrl;
+    private boolean mIsOffline;
 
-    public CollectionVideo(String mTitle, String mAuthor, String mVideoOnlineUrl, String mVideoOfflineUrl, String mArtworkOnlineUrl, String mArtworkOfflineUrl, Bitmap mArtworkBitmap) {
+    public CollectionVideo(String mTitle, String mAuthor, String mVideoOnlineUrl, String mVideoOfflineUrl, String mArtworkUrl, boolean mIsOffline) {
         this.mTitle = mTitle;
         this.mAuthor = mAuthor;
         this.mVideoOnlineUrl = mVideoOnlineUrl;
         this.mVideoOfflineUrl = mVideoOfflineUrl;
-        this.mArtworkOnlineUrl = mArtworkOnlineUrl;
-        this.mArtworkOfflineUrl = mArtworkOfflineUrl;
-        this.mArtworkBitmap = mArtworkBitmap;
+        this.mArtworkUrl = mArtworkUrl;
+        this.mIsOffline = mIsOffline;
     }
 
     public String getTitle() {
@@ -43,15 +41,11 @@ public class CollectionVideo implements Serializable {
         return mVideoOfflineUrl;
     }
 
-    public String getArtworkOnlineUrl() {
-        return mArtworkOnlineUrl;
+    public String getArtworkUrl() {
+        return mArtworkUrl;
     }
 
-    public String getArtworkOfflineUrl() {
-        return mArtworkOfflineUrl;
-    }
-
-    public Bitmap getArtworkBitmap() {
-        return mArtworkBitmap;
+    public boolean getIsOffline() {
+        return mIsOffline;
     }
 }

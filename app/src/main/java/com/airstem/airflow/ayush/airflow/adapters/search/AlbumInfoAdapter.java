@@ -5,14 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
-import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
-import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfo;
+import com.airstem.airflow.ayush.airflow.events.SearchAlbumInfoTrackClickListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 import com.squareup.picasso.Picasso;
 
@@ -25,12 +22,12 @@ import java.util.ArrayList;
 public class AlbumInfoAdapter extends RecyclerView.Adapter<AlbumInfoAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<SearchAlbumInfoTrack> mSearchAlbumInfoTracks;
-    private final ClickListener mListener;
+    private ArrayList<SearchAlbumInfoTrack> mItems;
+    private final SearchAlbumInfoTrackClickListener mListener;
 
-    public AlbumInfoAdapter(Context context, ArrayList<SearchAlbumInfoTrack> searchAlbumInfoTracks, ClickListener listener) {
+    public AlbumInfoAdapter(Context context, ArrayList<SearchAlbumInfoTrack> searchAlbumInfoTracks, SearchAlbumInfoTrackClickListener listener) {
         mContext = context;
-        mSearchAlbumInfoTracks = searchAlbumInfoTracks;
+        mItems = searchAlbumInfoTracks;
         mListener = listener;
     }
 
@@ -42,17 +39,17 @@ public class AlbumInfoAdapter extends RecyclerView.Adapter<AlbumInfoAdapter.Recy
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        SearchAlbumInfoTrack searchAlbumInfoTrack = mSearchAlbumInfoTracks.get(position);
+        SearchAlbumInfoTrack searchAlbumInfoTrack = mItems.get(position);
         holder.bindData(searchAlbumInfoTrack, mListener);
 
         holder.title.setText(searchAlbumInfoTrack.getTitle());
         holder.subTitle.setText(searchAlbumInfoTrack.getArtistName());
-        Picasso.with(mContext).load(searchAlbumInfoTrack.getArtworkUrl()[0].getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        Picasso.with(mContext).load(searchAlbumInfoTrack.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-        return mSearchAlbumInfoTracks.size();
+        return mItems.size();
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -67,11 +64,11 @@ public class AlbumInfoAdapter extends RecyclerView.Adapter<AlbumInfoAdapter.Recy
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchAlbumInfoTrack searchAlbumInfoTrack, final ClickListener listener) {
+        void bindData(final SearchAlbumInfoTrack searchAlbumInfoTrack, final SearchAlbumInfoTrackClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.OnItemClick(searchAlbumInfoTrack);
+                    listener.onItemClick(searchAlbumInfoTrack);
                 }
             });
         }

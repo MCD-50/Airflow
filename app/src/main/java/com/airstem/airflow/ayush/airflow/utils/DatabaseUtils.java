@@ -169,11 +169,7 @@ public class DatabaseUtils extends SQLiteOpenHelper {
 
     public boolean isInFavList(String id){
         try{
-            if(getTrack(id) != null){
-                return true;
-            }else {
-                return false;
-            }
+            return getTrack(id) != null;
         }catch(Exception e){
             return false;
         }

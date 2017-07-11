@@ -530,16 +530,12 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
 
     public boolean canPause(){
-        if (mState == PlaybackStateCompat.STATE_PLAYING)
-            return true;
-        return false;
+        return mState == PlaybackStateCompat.STATE_PLAYING;
     }
 
 
     public boolean canResume(){
-        if(mState == PlaybackStateCompat.STATE_PAUSED)
-            return true;
-        return false;
+        return mState == PlaybackStateCompat.STATE_PAUSED;
     }
 
     public void pause() {
@@ -581,9 +577,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
 
     public boolean isMediaPlayerActive(){
-        if(mPlayer != null && mState != PlaybackStateCompat.STATE_ERROR)
-           return true;
-        return false;
+        return mPlayer != null && mState != PlaybackStateCompat.STATE_ERROR;
     }
 
     public Track getCurrentData(){

@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.adapters.search.VideoAdapter;
+import com.airstem.airflow.ayush.airflow.events.SearchVideoClickListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
@@ -20,16 +22,14 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchVideoFragment extends Fragment {
-
-
-
-
+public class SearchVideoFragment extends Fragment implements SearchVideoClickListener {
 
     TextView textView;
     RecyclerView listView;
     SwipeRefreshLayout swipeRefreshLayout;
 
+    ArrayList<SearchVideo> mItems;
+    VideoAdapter mAdapter;
 
     @Nullable
     @Override
@@ -48,4 +48,8 @@ public class SearchVideoFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(SearchVideo searchVideo) {
+
+    }
 }

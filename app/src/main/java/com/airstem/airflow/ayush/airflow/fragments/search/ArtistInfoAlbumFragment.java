@@ -3,7 +3,6 @@ package com.airstem.airflow.ayush.airflow.fragments.search;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +10,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.adapters.search.ArtistInfoAlbumAdapter;
+import com.airstem.airflow.ayush.airflow.events.SearchArtistInfoAlbumClickListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
+
+import java.util.ArrayList;
 
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
-public class ArtistInfoAlbumFragment extends Fragment {
+public class ArtistInfoAlbumFragment extends Fragment implements SearchArtistInfoAlbumClickListener {
 
     TextView textView;
     RecyclerView listView;
+
+    ArrayList<SearchArtistInfoAlbum> mItems;
+    ArtistInfoAlbumAdapter mAdapter;
 
     @Nullable
     @Override
@@ -38,5 +45,8 @@ public class ArtistInfoAlbumFragment extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(SearchArtistInfoAlbum searchArtistInfoAlbum) {
 
+    }
 }
