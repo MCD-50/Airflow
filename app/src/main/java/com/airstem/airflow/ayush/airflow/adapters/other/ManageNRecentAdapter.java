@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.events.CollectionTrackClickListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.squareup.picasso.Picasso;
@@ -20,13 +19,13 @@ import java.util.ArrayList;
  * Created by mcd-50 on 11/7/17.
  */
 
-public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.RecyclerViewHolder> {
+public class ManageNRecentAdapter extends RecyclerView.Adapter<ManageNRecentAdapter.RecyclerViewHolder> {
 
     private Context mContext;
     private ArrayList<CollectionTrack> mItems;
     private final CollectionTrackClickListener mListener;
 
-    public ManageAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionTrackClickListener listener) {
+    public ManageNRecentAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionTrackClickListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
@@ -76,5 +75,4 @@ public class ManageAdapter extends RecyclerView.Adapter<ManageAdapter.RecyclerVi
         }
 
     }
-
 }

@@ -16,7 +16,9 @@ public class CollectionTrack implements Serializable {
     private String mTrackOfflineUrl;
     private boolean mIsOffline;
     private String mArtworkUrl;
-
+    private int mIsFav;
+    private String mLastPlayed;
+    private int mPlayCount;
 
     public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkUrl, boolean mIsOffline) {
         this.mTitle = mTitle;
@@ -26,6 +28,9 @@ public class CollectionTrack implements Serializable {
         this.mTrackOfflineUrl = mTrackOfflineUrl;
         this.mArtworkUrl = mArtworkUrl;
         this.mIsOffline = mIsOffline;
+
+        mLastPlayed = null;
+        mPlayCount = 0;
     }
 
     public String getTitle() {
@@ -56,4 +61,35 @@ public class CollectionTrack implements Serializable {
         return mIsOffline;
     }
 
+    public int getIsFav() {
+        return mIsFav;
+    }
+
+    public void setIsFav(int mIsFav) {
+        this.mIsFav = mIsFav;
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public String getLastPlayed() {
+        return mLastPlayed;
+    }
+
+    public void setLastPlayed(String mLastPlayed) {
+        this.mLastPlayed = mLastPlayed;
+    }
+
+    public int getPlayCount() {
+        return mPlayCount;
+    }
+
+    public void setPlayCount(int mPlayCount) {
+        this.mPlayCount = mPlayCount;
+    }
 }

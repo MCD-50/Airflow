@@ -15,6 +15,7 @@ public class CollectionVideo implements Serializable {
     private String mVideoOfflineUrl;
     private String mArtworkUrl;
     private boolean mIsOffline;
+    private int mIsFav;
 
     public CollectionVideo(String mTitle, String mAuthor, String mVideoOnlineUrl, String mVideoOfflineUrl, String mArtworkUrl, boolean mIsOffline) {
         this.mTitle = mTitle;
@@ -47,5 +48,13 @@ public class CollectionVideo implements Serializable {
 
     public boolean getIsOffline() {
         return mIsOffline;
+    }
+
+    public int getIsFav() {
+        return mIsFav;
+    }
+
+    public void setIsFav(int mIsFav) {
+        this.mIsFav = mIsFav;
     }
 }

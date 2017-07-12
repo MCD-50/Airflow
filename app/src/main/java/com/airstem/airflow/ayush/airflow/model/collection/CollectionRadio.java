@@ -11,7 +11,7 @@ public class CollectionRadio {
     private String[] mTags;
     private String mCountry;
     private String mColor;
-
+    private int mIsFav;
 
     public CollectionRadio(String mTitle, int mMaxUser, String[] mStreamUrl, String[] mTags, String mCountry, String mColor) {
         this.mTitle = mTitle;
@@ -21,6 +21,7 @@ public class CollectionRadio {
         this.mCountry = mCountry;
         this.mColor = mColor;
     }
+
 
 
     public String getTitle() {
@@ -45,6 +46,14 @@ public class CollectionRadio {
 
     public String getColor() {
         return mColor;
+    }
+
+    public int getIsFav() {
+        return mIsFav;
+    }
+
+    public void setIsFav(int mIsFav) {
+        this.mIsFav = mIsFav;
     }
 }
 
