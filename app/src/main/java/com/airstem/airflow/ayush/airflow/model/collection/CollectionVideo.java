@@ -9,21 +9,29 @@ import java.io.Serializable;
  */
 
 public class CollectionVideo implements Serializable {
+
+    private String mLocalId;
     private String mTitle;
     private String mAuthor;
     private String mVideoOnlineUrl;
     private String mVideoOfflineUrl;
     private String mArtworkUrl;
-    private boolean mIsOffline;
+    private int mIsOffline;
     private int mIsFav;
 
-    public CollectionVideo(String mTitle, String mAuthor, String mVideoOnlineUrl, String mVideoOfflineUrl, String mArtworkUrl, boolean mIsOffline) {
+    private String mModifiedOn;
+
+    public CollectionVideo(String mTitle, String mAuthor, String mVideoOnlineUrl, String mVideoOfflineUrl, String mArtworkUrl, int mIsOffline) {
         this.mTitle = mTitle;
         this.mAuthor = mAuthor;
         this.mVideoOnlineUrl = mVideoOnlineUrl;
         this.mVideoOfflineUrl = mVideoOfflineUrl;
         this.mArtworkUrl = mArtworkUrl;
         this.mIsOffline = mIsOffline;
+
+        this.mIsFav = 0;
+        this.mModifiedOn = "";
+        this.mLocalId = "";
     }
 
     public String getTitle() {
@@ -46,8 +54,12 @@ public class CollectionVideo implements Serializable {
         return mArtworkUrl;
     }
 
-    public boolean getIsOffline() {
+    public int getIsOffline() {
         return mIsOffline;
+    }
+
+    public void setIsOffline(int mIsOffline) {
+        this.mIsOffline = mIsOffline;
     }
 
     public int getIsFav() {
@@ -57,4 +69,22 @@ public class CollectionVideo implements Serializable {
     public void setIsFav(int mIsFav) {
         this.mIsFav = mIsFav;
     }
+
+    public String getLocalId() {
+        return mLocalId;
+    }
+
+    public void setLocalId(String mLocalId) {
+        this.mLocalId = mLocalId;
+    }
+
+    public String getModifiedOn() {
+        return mModifiedOn;
+    }
+
+    public void setModifiedOn(String mModifiedOn) {
+        this.mModifiedOn = mModifiedOn;
+    }
+
+
 }

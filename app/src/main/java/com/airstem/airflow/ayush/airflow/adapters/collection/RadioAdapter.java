@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.CollectionRadioClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionRadioListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 
 import java.util.ArrayList;
@@ -22,9 +22,9 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
 
     private Context mContext;
     private ArrayList<CollectionRadio> mItems;
-    private CollectionRadioClickListener mListener;
+    private CollectionRadioListener mListener;
 
-    public RadioAdapter(Context context, ArrayList<CollectionRadio> searchRadios, CollectionRadioClickListener listener) {
+    public RadioAdapter(Context context, ArrayList<CollectionRadio> searchRadios, CollectionRadioListener listener) {
         mContext = context;
         mItems = searchRadios;
         mListener = listener;
@@ -63,11 +63,11 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
             _view = view.findViewById(R.id.search_radio_fragment_content_view);
         }
 
-        void bindData(final CollectionRadio collectionRadio, final CollectionRadioClickListener listener) {
+        void bindData(final CollectionRadio collectionRadio, final CollectionRadioListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(collectionRadio);
+                    listener.onRadioClick(collectionRadio);
                 }
             });
         }

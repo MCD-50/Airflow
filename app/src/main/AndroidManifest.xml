@@ -28,13 +28,25 @@
         </activity>
 
         <activity android:name=".MainActivity" android:label="Discover" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".CollectionActivity" android:label="Library" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ArtistDetailActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PlaylistDetailActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".PlayerActivity" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/PlayerTheme">
          <meta-data android:name="android.support.PARENT_ACTIVITY"
                     android:value=".MainActivity"/>
         </activity>
+
+
+
+        <activity android:name=".FavActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SearchActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CollectionActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SearchAlbumInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SearchArtistInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CollectionArtistInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".CollectionPlaylistInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
+
+
+
 
         <service android:name=".service.MusicService" android:enabled="true"/>
 

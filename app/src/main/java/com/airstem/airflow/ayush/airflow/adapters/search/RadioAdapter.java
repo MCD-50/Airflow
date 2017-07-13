@@ -6,18 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.SearchRadioClickListener;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
-import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchRadioListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
-import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -29,9 +22,9 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
 
     private Context mContext;
     private ArrayList<SearchRadio> mItems;
-    private SearchRadioClickListener mListener;
+    private SearchRadioListener mListener;
 
-    public RadioAdapter(Context context, ArrayList<SearchRadio> searchRadios, SearchRadioClickListener listener) {
+    public RadioAdapter(Context context, ArrayList<SearchRadio> searchRadios, SearchRadioListener listener) {
         mContext = context;
         mItems = searchRadios;
         mListener = listener;
@@ -70,11 +63,11 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
             _view = view.findViewById(R.id.search_radio_fragment_content_view);
         }
 
-        void bindData(final SearchRadio searchRadio, final SearchRadioClickListener listener) {
+        void bindData(final SearchRadio searchRadio, final SearchRadioListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchRadio);
+                    listener.onRadioClick(searchRadio);
                 }
             });
         }

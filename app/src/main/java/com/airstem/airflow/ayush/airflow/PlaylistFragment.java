@@ -17,6 +17,18 @@ import com.airstem.airflow.ayush.airflow.helpers.LocalMusicHelper;
 import com.airstem.airflow.ayush.airflow.model.Artist;
 import com.airstem.airflow.ayush.airflow.model.Playlist;
 import com.airstem.airflow.ayush.airflow.model.Track;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
+import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
+import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
+import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
@@ -89,6 +101,66 @@ public class PlaylistFragment extends Fragment {
                     public void OnItemClick(Playlist playlist) {
                         onPlaylistClicked(playlist);
                     }
+
+                    @Override
+                    public void OnItemClick(CollectionArtist collectionArtist) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(CollectionPlaylist collectionPlaylist) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(CollectionTrack collectionTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(CollectionVideo collectionVideo) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchAlbum searchAlbum) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchArtist searchArtist) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchRadio searchRadio) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchVideo searchVideo) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchTrack searchTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchAlbumInfoTrack searchAlbumInfoTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchArtistInfoTrack searchArtistInfoTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchArtistInfoAlbum searchArtistInfoAlbum) {
+
+                    }
                 }, playlists));
             }
         }
@@ -96,7 +168,7 @@ public class PlaylistFragment extends Fragment {
 
 
     private void onPlaylistClicked(Playlist playlist){
-        ((CollectionActivity) getActivity()).navigateToPlaylistPage(playlist);
+        //((CollectionActivity) getActivity()).navigateToPlaylistPage(playlist);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.airstem.airflow.ayush.airflow.model.collection;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 
 import java.io.Serializable;
 
@@ -9,18 +10,24 @@ import java.io.Serializable;
  */
 
 public class CollectionTrack implements Serializable {
+
+    private String mLocalId;
     private String mTitle;
     private String mAlbumName;
     private String mArtistName;
     private String mTrackOnlineUrl;
     private String mTrackOfflineUrl;
-    private boolean mIsOffline;
+    private int mIsOffline;
     private String mArtworkUrl;
     private int mIsFav;
     private String mLastPlayed;
     private int mPlayCount;
+    private int mHasArtwork;
 
-    public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkUrl, boolean mIsOffline) {
+    private String mModifiedOn;
+
+
+    public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkUrl, int mIsOffline) {
         this.mTitle = mTitle;
         this.mAlbumName = mAlbumName;
         this.mArtistName = mArtistName;
@@ -29,8 +36,13 @@ public class CollectionTrack implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
         this.mIsOffline = mIsOffline;
 
-        mLastPlayed = null;
-        mPlayCount = 0;
+        this.mLastPlayed = "";
+        this.mPlayCount = 0;
+        this.mHasArtwork = TextUtils.isEmpty(mArtworkUrl) ? 0 : 1;
+
+        this.mIsFav = 0;
+        this.mModifiedOn = "";
+        this.mLocalId = "";
     }
 
     public String getTitle() {
@@ -57,7 +69,7 @@ public class CollectionTrack implements Serializable {
         return mArtworkUrl;
     }
 
-    public boolean getIsOffline() {
+    public int getIsOffline() {
         return mIsOffline;
     }
 
@@ -69,11 +81,7 @@ public class CollectionTrack implements Serializable {
         this.mIsFav = mIsFav;
     }
 
-    public String getmTitle() {
-        return mTitle;
-    }
-
-    public void setmTitle(String mTitle) {
+    public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 
@@ -91,5 +99,33 @@ public class CollectionTrack implements Serializable {
 
     public void setPlayCount(int mPlayCount) {
         this.mPlayCount = mPlayCount;
+    }
+
+    public int getHasArtwork() {
+        return mHasArtwork;
+    }
+
+    public void setHasArtwork(int mHasArtwork) {
+        this.mHasArtwork = mHasArtwork;
+    }
+
+    public void setIsOffline(int mIsOffline) {
+        this.mIsOffline = mIsOffline;
+    }
+
+    public String getLocalId() {
+        return mLocalId;
+    }
+
+    public void setLocalId(String mLocalId) {
+        this.mLocalId = mLocalId;
+    }
+
+    public String getModifiedOn() {
+        return mModifiedOn;
+    }
+
+    public void setModifiedOn(String mModifiedOn) {
+        this.mModifiedOn = mModifiedOn;
     }
 }

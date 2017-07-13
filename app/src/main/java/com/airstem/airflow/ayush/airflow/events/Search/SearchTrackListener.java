@@ -1,4 +1,4 @@
-package com.airstem.airflow.ayush.airflow.events;
+package com.airstem.airflow.ayush.airflow.events.Search;
 
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
@@ -7,6 +7,6 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
  * Created by mcd-50 on 10/7/17.
  */
 
-public interface SearchTrackClickListener {
-    void onItemClick(SearchTrack searchTrack);
+public interface SearchTrackListener {
+    void onTrackClick(SearchTrack searchTrack);
 }

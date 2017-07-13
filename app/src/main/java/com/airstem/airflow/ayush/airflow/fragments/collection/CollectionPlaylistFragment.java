@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistAdapter;
-import com.airstem.airflow.ayush.airflow.events.CollectionPlaylistClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 10/7/17.
  */
 
-public class CollectionPlaylistFragment  extends Fragment implements CollectionPlaylistClickListener {
+public class CollectionPlaylistFragment  extends Fragment implements CollectionPlaylistListener {
 
     TextView textView;
     RecyclerView listView;
@@ -45,7 +46,12 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
     }
 
     @Override
-    public void onItemClick(CollectionPlaylist collectionPlaylist) {
+    public void onPlaylistClick(CollectionPlaylist collectionPlaylist) {
+
+    }
+
+    @Override
+    public void onPlaylistTrackClick(CollectionTrack collectionTrack) {
 
     }
 }

@@ -5,14 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.SearchArtistInfoAlbumClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchArtistListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
-import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,9 +23,9 @@ public class ArtistInfoAlbumAdapter extends RecyclerView.Adapter<ArtistInfoAlbum
 
     private Context mContext;
     private ArrayList<SearchArtistInfoAlbum> mItems;
-    private final SearchArtistInfoAlbumClickListener mListener;
+    private final SearchArtistListener mListener;
 
-    public ArtistInfoAlbumAdapter(Context context, ArrayList<SearchArtistInfoAlbum> searchArtistInfoAlbums, SearchArtistInfoAlbumClickListener listener) {
+    public ArtistInfoAlbumAdapter(Context context, ArrayList<SearchArtistInfoAlbum> searchArtistInfoAlbums, SearchArtistListener listener) {
         mContext = context;
         mItems = searchArtistInfoAlbums;
         mListener = listener;
@@ -66,11 +64,11 @@ public class ArtistInfoAlbumAdapter extends RecyclerView.Adapter<ArtistInfoAlbum
             image = (ImageView) view.findViewById(R.id.search_album_fragment_content_image);
         }
 
-        void bindData(final SearchArtistInfoAlbum searchArtistInfoAlbum, final SearchArtistInfoAlbumClickListener listener) {
+        void bindData(final SearchArtistInfoAlbum searchArtistInfoAlbum, final SearchArtistListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchArtistInfoAlbum);
+                    listener.onArtistAlbumClick(searchArtistInfoAlbum);
                 }
             });
         }

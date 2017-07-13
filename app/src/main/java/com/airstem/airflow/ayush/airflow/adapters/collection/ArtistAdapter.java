@@ -9,10 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.CollectionArtistClickListener;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
-import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,9 +23,9 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerVi
 
     private Context mContext;
     private ArrayList<CollectionArtist> mItems;
-    private final CollectionArtistClickListener mListener;
+    private final CollectionArtistListener mListener;
 
-    public ArtistAdapter(Context context, ArrayList<CollectionArtist> searchArtists, CollectionArtistClickListener listener) {
+    public ArtistAdapter(Context context, ArrayList<CollectionArtist> searchArtists, CollectionArtistListener listener) {
         mContext = context;
         mItems = searchArtists;
         mListener = listener;
@@ -66,7 +64,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerVi
             image = (ImageView) view.findViewById(R.id.collection_artist_fragment_content_image);
         }
 
-        public void bindData(final CollectionArtist collectionArtist, final CollectionArtistClickListener listener) {
+        public void bindData(final CollectionArtist collectionArtist, final CollectionArtistListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

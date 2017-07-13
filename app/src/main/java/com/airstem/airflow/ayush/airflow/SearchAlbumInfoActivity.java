@@ -13,7 +13,8 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.search.AlbumInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behavior.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behavior.TitleBehavior;
-import com.airstem.airflow.ayush.airflow.events.SearchAlbumInfoTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchAlbumListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
  * Created by mcd-50 on 9/7/17.
  */
 
-public class SearchAlbumInfoActivity extends AppCompatActivity implements SearchAlbumInfoTrackClickListener {
+public class SearchAlbumInfoActivity extends AppCompatActivity implements SearchAlbumListener {
 
     TextView empty, title;
     ImageView image;
@@ -80,7 +81,12 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
 
 
     @Override
-    public void onItemClick(SearchAlbumInfoTrack searchAlbumInfoTrack) {
+    public void onAlbumClick(SearchAlbum searchAlbum) {
+
+    }
+
+    @Override
+    public void onAlbumTrackClick(SearchAlbumInfoTrack searchAlbumInfoTrack) {
 
     }
 }

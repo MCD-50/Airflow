@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 
 public class CollectionPlaylist implements Serializable {
+
     private String mTitle;
     private ArrayList<CollectionTrack> mTracks;
     private String mOwner;
@@ -17,6 +18,7 @@ public class CollectionPlaylist implements Serializable {
     public CollectionPlaylist(String mTitle, String mOwner) {
         this.mTitle = mTitle;
         this.mOwner = mOwner;
+        this.mTracks = new ArrayList<>();
     }
 
 

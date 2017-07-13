@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.ArtistInfoTrackAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchArtistInfoTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchArtistListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 9/7/17.
  */
 
-public class ArtistInfoTrackFragment extends Fragment implements SearchArtistInfoTrackClickListener{
+public class ArtistInfoTrackFragment extends Fragment implements SearchArtistListener {
 
     TextView textView;
     RecyclerView listView;
@@ -46,7 +48,17 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchArtistInf
 
 
     @Override
-    public void onItemClick(SearchArtistInfoTrack searchArtistInfoTrack) {
+    public void onArtistClick(SearchArtist searchArtist) {
+
+    }
+
+    @Override
+    public void onArtistTrackClick(SearchArtistInfoTrack searchArtistInfoTrack) {
+
+    }
+
+    @Override
+    public void onArtistAlbumClick(SearchArtistInfoAlbum searchArtistInfoAlbum) {
 
     }
 }

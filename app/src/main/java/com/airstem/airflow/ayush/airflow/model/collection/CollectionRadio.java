@@ -20,6 +20,8 @@ public class CollectionRadio {
         this.mTags = mTags;
         this.mCountry = mCountry;
         this.mColor = mColor;
+
+        this.mIsFav = 0;
     }
 
 

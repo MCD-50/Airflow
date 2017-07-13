@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.CollectionPlaylistClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +23,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Recycl
 
     private Context mContext;
     private ArrayList<CollectionPlaylist> mItems;
-    private final CollectionPlaylistClickListener mListener;
+    private final CollectionPlaylistListener mListener;
 
-    public PlaylistAdapter(Context context, ArrayList<CollectionPlaylist> collectionPlaylists, CollectionPlaylistClickListener listener) {
+    public PlaylistAdapter(Context context, ArrayList<CollectionPlaylist> collectionPlaylists, CollectionPlaylistListener listener) {
         mContext = context;
         mItems = collectionPlaylists;
         mListener = listener;
@@ -67,11 +67,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Recycl
             smallImage = (ImageView) view.findViewById(R.id.collection_playlist_fragment_content_small_image);
         }
 
-        public void bindData(final CollectionPlaylist collectionPlaylist, final CollectionPlaylistClickListener listener) {
+        public void bindData(final CollectionPlaylist collectionPlaylist, final CollectionPlaylistListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(collectionPlaylist);
+                    listener.onPlaylistClick(collectionPlaylist);
                 }
             });
         }

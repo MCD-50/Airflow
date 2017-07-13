@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.TrackAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchTrackListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchTrackFragment extends Fragment implements SearchTrackClickListener {
+public class SearchTrackFragment extends Fragment implements SearchTrackListener {
 
 
 
@@ -53,7 +53,7 @@ public class SearchTrackFragment extends Fragment implements SearchTrackClickLis
     }
 
     @Override
-    public void onItemClick(SearchTrack searchTrack) {
+    public void onTrackClick(SearchTrack searchTrack) {
 
     }
 }

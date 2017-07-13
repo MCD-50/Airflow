@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.VideoAdapter;
-import com.airstem.airflow.ayush.airflow.events.CollectionVideoClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionVideoListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 10/7/17.
  */
 
-public class CollectionVideoFragment  extends Fragment implements CollectionVideoClickListener {
+public class CollectionVideoFragment  extends Fragment implements CollectionVideoListener {
     TextView textView;
     RecyclerView listView;
 
@@ -44,7 +44,7 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
     }
 
     @Override
-    public void onItemClick(CollectionVideo collectionVideo) {
+    public void onVideoClick(CollectionVideo collectionVideo) {
 
     }
 }

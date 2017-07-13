@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.CollectionTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionTrackListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +23,9 @@ public class ManageNRecentAdapter extends RecyclerView.Adapter<ManageNRecentAdap
 
     private Context mContext;
     private ArrayList<CollectionTrack> mItems;
-    private final CollectionTrackClickListener mListener;
+    private final CollectionTrackListener mListener;
 
-    public ManageNRecentAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionTrackClickListener listener) {
+    public ManageNRecentAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionTrackListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
@@ -65,11 +65,11 @@ public class ManageNRecentAdapter extends RecyclerView.Adapter<ManageNRecentAdap
             image = (ImageView) view.findViewById(R.id.collection_track_fragment_content_image);
         }
 
-        public void bindData(final CollectionTrack collectionTrack, final CollectionTrackClickListener listener) {
+        public void bindData(final CollectionTrack collectionTrack, final CollectionTrackListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(collectionTrack);
+                    listener.onTrackClick(collectionTrack);
                 }
             });
         }

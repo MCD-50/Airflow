@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.VideoAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchVideoClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchVideoListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchVideoFragment extends Fragment implements SearchVideoClickListener {
+public class SearchVideoFragment extends Fragment implements SearchVideoListener {
 
     TextView textView;
     RecyclerView listView;
@@ -49,7 +49,7 @@ public class SearchVideoFragment extends Fragment implements SearchVideoClickLis
 
 
     @Override
-    public void onItemClick(SearchVideo searchVideo) {
+    public void onVideoClick(SearchVideo searchVideo) {
 
     }
 }

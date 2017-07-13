@@ -13,7 +13,8 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behavior.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behavior.TitleBehavior;
-import com.airstem.airflow.ayush.airflow.events.CollectionPlaylistInfoTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionPlaylistListener;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
  * Created by mcd-50 on 10/7/17.
  */
 
-public class CollectionPlaylistInfoActivity extends AppCompatActivity implements CollectionPlaylistInfoTrackClickListener {
+public class CollectionPlaylistInfoActivity extends AppCompatActivity implements CollectionPlaylistListener {
 
 
     TextView empty, title;
@@ -80,7 +81,12 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onItemClick(CollectionTrack collectionTrack) {
+    public void onPlaylistClick(CollectionPlaylist collectionPlaylist) {
+
+    }
+
+    @Override
+    public void onPlaylistTrackClick(CollectionTrack collectionTrack) {
 
     }
 }

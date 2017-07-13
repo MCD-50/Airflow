@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.ArtistAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchArtistClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchArtistListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchArtistFragment extends Fragment implements SearchArtistClickListener {
+public class SearchArtistFragment extends Fragment implements SearchArtistListener {
 
 
 
@@ -50,7 +50,7 @@ public class SearchArtistFragment extends Fragment implements SearchArtistClickL
 
 
     @Override
-    public void onItemClick(SearchArtist searchArtist) {
+    public void onArtistClick(SearchArtist searchArtist) {
 
     }
 }

@@ -5,16 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.SearchVideoClickListener;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
-import com.airstem.airflow.ayush.airflow.model.Base;
-import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
-import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchVideoListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 import com.squareup.picasso.Picasso;
 
@@ -28,9 +23,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
     private Context mContext;
     private ArrayList<SearchVideo> mItems;
-    private SearchVideoClickListener mListener;
+    private SearchVideoListener mListener;
 
-    public VideoAdapter(Context context, ArrayList<SearchVideo> searchVideos, SearchVideoClickListener listener) {
+    public VideoAdapter(Context context, ArrayList<SearchVideo> searchVideos, SearchVideoListener listener) {
         mContext = context;
         mItems = searchVideos;
         mListener = listener;
@@ -69,11 +64,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.search_video_fragment_content_image);
         }
 
-        void bindData(final SearchVideo searchVideo, final SearchVideoClickListener listener) {
+        void bindData(final SearchVideo searchVideo, final SearchVideoListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchVideo);
+                    listener.onVideoClick(searchVideo);
                 }
             });
         }

@@ -5,13 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.SearchAlbumClickListener;
-import com.airstem.airflow.ayush.airflow.model.Track;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.squareup.picasso.Picasso;
 
@@ -25,9 +23,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.RecyclerView
 
     private Context mContext;
     private ArrayList<SearchAlbum> mItems;
-    private final SearchAlbumClickListener mListener;
+    private final SearchAlbumListener mListener;
 
-    public AlbumAdapter(Context context, ArrayList<SearchAlbum> searchAlbums, SearchAlbumClickListener listener) {
+    public AlbumAdapter(Context context, ArrayList<SearchAlbum> searchAlbums, SearchAlbumListener listener) {
         mContext = context;
         mItems = searchAlbums;
         mListener = listener;
@@ -66,11 +64,11 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.search_album_fragment_content_image);
         }
 
-        void bindData(final SearchAlbum searchAlbum, final SearchAlbumClickListener listener) {
+        void bindData(final SearchAlbum searchAlbum, final SearchAlbumListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchAlbum);
+                    listener.onAlbumClick(searchAlbum);
                 }
             });
         }

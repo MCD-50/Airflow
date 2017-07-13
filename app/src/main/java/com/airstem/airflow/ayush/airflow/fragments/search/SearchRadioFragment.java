@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.RadioAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchRadioClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchRadioListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchRadioFragment extends Fragment implements SearchRadioClickListener {
+public class SearchRadioFragment extends Fragment implements SearchRadioListener {
 
 
 
@@ -53,7 +53,7 @@ public class SearchRadioFragment extends Fragment implements SearchRadioClickLis
 
 
     @Override
-    public void onItemClick(SearchRadio searchRadio) {
+    public void onRadioClick(SearchRadio searchRadio) {
 
     }
 }

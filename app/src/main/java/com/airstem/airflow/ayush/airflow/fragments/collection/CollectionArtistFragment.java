@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistAdapter;
-import com.airstem.airflow.ayush.airflow.events.CollectionArtistClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 10/7/17.
  */
 
-public class CollectionArtistFragment extends Fragment implements CollectionArtistClickListener {
+public class CollectionArtistFragment extends Fragment implements CollectionArtistListener {
 
     TextView textView;
     RecyclerView listView;
@@ -47,8 +48,14 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
         super.onActivityCreated(savedInstanceState);
     }
 
+
     @Override
-    public void onItemClick(CollectionArtist collectionArtist) {
+    public void onArtistClick(CollectionArtist collectionArtist) {
+
+    }
+
+    @Override
+    public void onArtistTrackClick(CollectionTrack collectionTrack) {
 
     }
 }

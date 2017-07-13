@@ -13,7 +13,8 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behavior.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behavior.TitleBehavior;
-import com.airstem.airflow.ayush.airflow.events.CollectionArtistInfoTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
  * Created by mcd-50 on 10/7/17.
  */
 
-public class CollectionArtistInfoActivity extends AppCompatActivity implements CollectionArtistInfoTrackClickListener {
+public class CollectionArtistInfoActivity extends AppCompatActivity implements CollectionArtistListener {
 
 
     TextView empty, title;
@@ -79,8 +80,14 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
         return (int) (dp * getResources().getDisplayMetrics().density);
     }
 
+
     @Override
-    public void onItemClick(CollectionTrack collectionTrack) {
+    public void onArtistClick(CollectionArtist collectionArtist) {
+
+    }
+
+    @Override
+    public void onArtistTrackClick(CollectionTrack collectionTrack) {
 
     }
 }

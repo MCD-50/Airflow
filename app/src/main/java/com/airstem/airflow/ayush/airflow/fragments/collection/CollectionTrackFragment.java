@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
-import com.airstem.airflow.ayush.airflow.events.CollectionTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionTrackListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 9/7/17.
  */
 
-public class CollectionTrackFragment  extends Fragment implements CollectionTrackClickListener {
+public class CollectionTrackFragment  extends Fragment implements CollectionTrackListener {
     TextView textView;
     RecyclerView listView;
 
@@ -44,7 +44,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
     }
 
     @Override
-    public void onItemClick(CollectionTrack collectionTrack) {
+    public void onTrackClick(CollectionTrack collectionTrack) {
 
     }
 }

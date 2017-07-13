@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.RadioAdapter;
-import com.airstem.airflow.ayush.airflow.events.CollectionRadioClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionRadioListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by mcd-50 on 11/7/17.
  */
 
-public class FavRadioFragment  extends Fragment implements CollectionRadioClickListener {
+public class FavRadioFragment  extends Fragment implements CollectionRadioListener {
     TextView textView;
     RecyclerView listView;
 
@@ -44,7 +44,7 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioClickL
     }
 
     @Override
-    public void onItemClick(CollectionRadio collectionRadio) {
+    public void onRadioClick(CollectionRadio collectionRadio) {
 
     }
 }

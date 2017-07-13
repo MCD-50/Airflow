@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.SearchAlbumInfoTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +23,9 @@ public class AlbumInfoAdapter extends RecyclerView.Adapter<AlbumInfoAdapter.Recy
 
     private Context mContext;
     private ArrayList<SearchAlbumInfoTrack> mItems;
-    private final SearchAlbumInfoTrackClickListener mListener;
+    private final SearchAlbumListener mListener;
 
-    public AlbumInfoAdapter(Context context, ArrayList<SearchAlbumInfoTrack> searchAlbumInfoTracks, SearchAlbumInfoTrackClickListener listener) {
+    public AlbumInfoAdapter(Context context, ArrayList<SearchAlbumInfoTrack> searchAlbumInfoTracks, SearchAlbumListener listener) {
         mContext = context;
         mItems = searchAlbumInfoTracks;
         mListener = listener;
@@ -64,11 +64,11 @@ public class AlbumInfoAdapter extends RecyclerView.Adapter<AlbumInfoAdapter.Recy
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchAlbumInfoTrack searchAlbumInfoTrack, final SearchAlbumInfoTrackClickListener listener) {
+        void bindData(final SearchAlbumInfoTrack searchAlbumInfoTrack, final SearchAlbumListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchAlbumInfoTrack);
+                    listener.onAlbumTrackClick(searchAlbumInfoTrack);
                 }
             });
         }

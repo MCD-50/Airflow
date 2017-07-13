@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +12,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.adapters.TracksAdapter;
+import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
 import com.airstem.airflow.ayush.airflow.helpers.FragmentEvents;
 import com.airstem.airflow.ayush.airflow.helpers.LocalMusicHelper;
+import com.airstem.airflow.ayush.airflow.model.Artist;
+import com.airstem.airflow.ayush.airflow.model.Playlist;
 import com.airstem.airflow.ayush.airflow.model.Track;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
+import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
+import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
+import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.view.CardListView;
 
 /**
  * Created by ayush AS on 7/1/17.
@@ -29,20 +41,14 @@ import it.gmariotti.cardslib.library.view.CardListView;
 public class TracksFragment extends Fragment implements FragmentEvents {
 
     TracksAdapter adapter;
-    CardArrayAdapter cardArrayAdapter;
     RecyclerView recyclerView;
     TextView message;
     ProgressDialog dialog;
     LocalMusicHelper localMusicHelper;
-
-    CardListView cardListView;
-    ArrayList<Card> cards;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.library_tracks_fragment, container, false);
-        //recyclerView = (RecyclerView) rootView.findViewById(R.id.dataList);
-        cardListView = (CardListView) rootView.findViewById(R.id.dataList);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.dataList);
         message = (TextView) rootView.findViewById(R.id.emptyMessage);
         return rootView;
     }
@@ -50,10 +56,10 @@ public class TracksFragment extends Fragment implements FragmentEvents {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         localMusicHelper = new LocalMusicHelper(getContext());
         dialog = new ProgressDialog(getContext());
-        ((CollectionActivity)getActivity()).setFragmentsEvent(this);
+        //((LibraryActivity)getActivity()).setFragmentsEvent(this);
         new getTracks().execute();
     }
 
@@ -72,7 +78,6 @@ public class TracksFragment extends Fragment implements FragmentEvents {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            cards = new ArrayList<Card>();
             dialog.setMessage("Please wait...");
             dialog.setIndeterminate(true);
             dialog.setCancelable(false);
@@ -87,7 +92,7 @@ public class TracksFragment extends Fragment implements FragmentEvents {
                 message.setVisibility(View.VISIBLE);
             }else {
                 message.setVisibility(View.GONE);
-                /*adapter = new TracksAdapter(getActivity(), new ClickListener() {
+                adapter = new TracksAdapter(getActivity(), new ClickListener() {
                     @Override
                     public void OnItemClick(Track track) {
                         onTrackClicked(track, tracks);
@@ -102,36 +107,75 @@ public class TracksFragment extends Fragment implements FragmentEvents {
                     public void OnItemClick(Playlist playlist) {
 
                     }
+
+                    @Override
+                    public void OnItemClick(CollectionArtist collectionArtist) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(CollectionPlaylist collectionPlaylist) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(CollectionTrack collectionTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(CollectionVideo collectionVideo) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchAlbum searchAlbum) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchArtist searchArtist) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchRadio searchRadio) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchVideo searchVideo) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchTrack searchTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchAlbumInfoTrack searchAlbumInfoTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchArtistInfoTrack searchArtistInfoTrack) {
+
+                    }
+
+                    @Override
+                    public void OnItemClick(SearchArtistInfoAlbum searchArtistInfoAlbum) {
+
+                    }
                 }, tracks);
 
-                recyclerView.setAdapter(adapter);*/
-
-                setCards(tracks);
-
-                CardArrayAdapter cardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
-                cardListView.setAdapter(cardArrayAdapter);
+                recyclerView.setAdapter(adapter);
 
             }
         }
     }
 
-    private void setCards(ArrayList<Track> tracks){
-        for (Track track: tracks){
-            Card card = new Card(getContext(), R.layout.card_layout);
-            card.setTitle(track.getTitle());
-            card.setClickable(true);
-            card.setOnClickListener(new Card.OnCardClickListener() {
-                @Override
-                public void onClick(Card card, View view) {
-                    Card x = card;
-                }
-            });
-            cards.add(card);
-        }
-    }
-
-
     private void onTrackClicked(Track track, ArrayList<Track> tracks){
-        ((CollectionActivity) getActivity()).playTrack(track, tracks);
+        //((CollectionActivity) getActivity()).playTrack(track, tracks);
     }
 }

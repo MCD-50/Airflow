@@ -1,21 +1,15 @@
 package com.airstem.airflow.ayush.airflow.adapters.search;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.adapters.TracksAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchTrackClickListener;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
-import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
-import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchTrackListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.squareup.picasso.Picasso;
 
@@ -29,9 +23,9 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
 
     private Context mContext;
     private ArrayList<SearchTrack> mItems;
-    private SearchTrackClickListener mListener;
+    private SearchTrackListener mListener;
 
-    public TrackAdapter(Context context, ArrayList<SearchTrack> searchTracks, SearchTrackClickListener listener) {
+    public TrackAdapter(Context context, ArrayList<SearchTrack> searchTracks, SearchTrackListener listener) {
         mContext = context;
         mItems = searchTracks;
         mListener = listener;
@@ -71,11 +65,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchTrack searchTrack, final SearchTrackClickListener  listener) {
+        void bindData(final SearchTrack searchTrack, final SearchTrackListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchTrack);
+                    listener.onTrackClick(searchTrack);
                 }
             });
         }

@@ -9,8 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.adapters.search.TrackAdapter;
-import com.airstem.airflow.ayush.airflow.events.SearchTrackClickListener;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchTrackListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.squareup.picasso.Picasso;
 
@@ -24,9 +23,9 @@ public class SimilarTrackAdapter  extends RecyclerView.Adapter<SimilarTrackAdapt
 
     private Context mContext;
     private ArrayList<SearchTrack> mItems;
-    private SearchTrackClickListener mListener;
+    private SearchTrackListener mListener;
 
-    public SimilarTrackAdapter(Context context, ArrayList<SearchTrack> searchTracks, SearchTrackClickListener listener) {
+    public SimilarTrackAdapter(Context context, ArrayList<SearchTrack> searchTracks, SearchTrackListener listener) {
         mContext = context;
         mItems = searchTracks;
         mListener = listener;
@@ -66,11 +65,11 @@ public class SimilarTrackAdapter  extends RecyclerView.Adapter<SimilarTrackAdapt
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchTrack searchTrack, final SearchTrackClickListener  listener) {
+        void bindData(final SearchTrack searchTrack, final SearchTrackListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchTrack);
+                    listener.onTrackClick(searchTrack);
                 }
             });
         }

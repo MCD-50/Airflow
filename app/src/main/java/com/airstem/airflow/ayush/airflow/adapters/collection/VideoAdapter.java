@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.CollectionVideoClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionVideoListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +23,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
     private Context mContext;
     private ArrayList<CollectionVideo> mItems;
-    private final CollectionVideoClickListener mListener;
+    private final CollectionVideoListener mListener;
 
-    public VideoAdapter(Context context, ArrayList<CollectionVideo> collectionTracks, CollectionVideoClickListener listener) {
+    public VideoAdapter(Context context, ArrayList<CollectionVideo> collectionTracks, CollectionVideoListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
@@ -65,11 +65,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.collection_video_fragment_content_image);
         }
 
-        public void bindData(final CollectionVideo collectionVideo, final CollectionVideoClickListener listener) {
+        public void bindData(final CollectionVideo collectionVideo, final CollectionVideoListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(collectionVideo);
+                    listener.onVideoClick(collectionVideo);
                 }
             });
         }

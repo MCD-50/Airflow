@@ -5,15 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.SearchArtistInfoTrackClickListener;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
-import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
-import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
+import com.airstem.airflow.ayush.airflow.events.Search.SearchArtistListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
 import com.squareup.picasso.Picasso;
 
@@ -27,9 +23,9 @@ public class ArtistInfoTrackAdapter extends RecyclerView.Adapter<ArtistInfoTrack
 
     private Context mContext;
     private ArrayList<SearchArtistInfoTrack> mItems;
-    private final SearchArtistInfoTrackClickListener mListener;
+    private final SearchArtistListener mListener;
 
-    public ArtistInfoTrackAdapter(Context context, ArrayList<SearchArtistInfoTrack> searchArtistInfoTracks, SearchArtistInfoTrackClickListener listener) {
+    public ArtistInfoTrackAdapter(Context context, ArrayList<SearchArtistInfoTrack> searchArtistInfoTracks, SearchArtistListener listener) {
         mContext = context;
         mItems = searchArtistInfoTracks;
         mListener = listener;
@@ -69,11 +65,11 @@ public class ArtistInfoTrackAdapter extends RecyclerView.Adapter<ArtistInfoTrack
             image = (ImageView) view.findViewById(R.id.search_track_fragment_content_image);
         }
 
-        void bindData(final SearchArtistInfoTrack searchArtistInfoTrack, final SearchArtistInfoTrackClickListener listener) {
+        void bindData(final SearchArtistInfoTrack searchArtistInfoTrack, final SearchArtistListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(searchArtistInfoTrack);
+                    listener.onArtistTrackClick(searchArtistInfoTrack);
                 }
             });
         }

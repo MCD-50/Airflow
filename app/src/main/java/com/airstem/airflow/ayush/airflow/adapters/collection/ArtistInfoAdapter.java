@@ -9,11 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.CollectionArtistInfoTrackClickListener;
-import com.airstem.airflow.ayush.airflow.events.CollectionPlaylistInfoTrackClickListener;
-import com.airstem.airflow.ayush.airflow.helpers.ClickListener;
+import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
-import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,9 +23,9 @@ public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.Re
 
     private Context mContext;
     private ArrayList<CollectionTrack> mItems;
-    private final CollectionArtistInfoTrackClickListener mListener;
+    private final CollectionArtistListener mListener;
 
-    public ArtistInfoAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionArtistInfoTrackClickListener listener) {
+    public ArtistInfoAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionArtistListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
@@ -68,11 +65,11 @@ public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.Re
             image = (ImageView) view.findViewById(R.id.collection_track_fragment_content_image);
         }
 
-        public void bindData(final CollectionTrack collectionTrack, final CollectionArtistInfoTrackClickListener listener) {
+        public void bindData(final CollectionTrack collectionTrack, final CollectionArtistListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(collectionTrack);
+                    listener.onArtistTrackClick(collectionTrack);
                 }
             });
         }
