@@ -15,6 +15,8 @@ public class CollectionArtist implements Serializable {
 
 
     private String mLocalId;
+
+    private String mDatabaseId;
     private String mTitle;
     private ArrayList<CollectionTrack> mTracks;
     private String mArtworkUrl;
@@ -26,6 +28,7 @@ public class CollectionArtist implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
         this.mHasArtwork = TextUtils.isEmpty(mArtworkUrl) ? 0 : 1;
 
+        this.mDatabaseId = "";
         this.mLocalId = "";
         this.mTracks = new ArrayList<>();
     }
@@ -69,5 +72,13 @@ public class CollectionArtist implements Serializable {
 
     public void setLocalId(String mLocalId) {
         this.mLocalId = mLocalId;
+    }
+
+    public String getDatabaseId() {
+        return mDatabaseId;
+    }
+
+    public void setDatabaseId(String mDatabaseId) {
+        this.mDatabaseId = mDatabaseId;
     }
 }

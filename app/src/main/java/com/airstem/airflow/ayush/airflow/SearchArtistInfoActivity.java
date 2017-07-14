@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.adapters.tabs.CustomPagerAdapter;
-import com.airstem.airflow.ayush.airflow.behavior.OverlayViewBehavior;
-import com.airstem.airflow.ayush.airflow.behavior.TitleBehavior;
+import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
+import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
 import com.airstem.airflow.ayush.airflow.fragments.search.ArtistInfoAlbumFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.ArtistInfoTrackFragment;
 

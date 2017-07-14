@@ -8,4 +8,5 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 public interface CollectionTrackListener {
     void onTrackClick(CollectionTrack collectionTrack);
+    void onFav(CollectionTrack collectionTrack, boolean addToFav);
 }

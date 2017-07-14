@@ -9,4 +9,5 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
 public interface CollectionRadioListener {
     void onRadioClick(CollectionRadio collectionRadio);
+    void onFav(CollectionRadio collectionRadio, boolean addToFav);
 }

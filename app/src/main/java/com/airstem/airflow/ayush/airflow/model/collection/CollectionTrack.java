@@ -11,6 +11,9 @@ import java.io.Serializable;
 
 public class CollectionTrack implements Serializable {
 
+
+
+    private String mDatabaseId;
     private String mLocalId;
     private String mTitle;
     private String mAlbumName;
@@ -25,6 +28,8 @@ public class CollectionTrack implements Serializable {
     private int mHasArtwork;
 
     private String mModifiedOn;
+    private String mPlaylistId;
+    private String mArtistId;
 
 
     public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkUrl, int mIsOffline) {
@@ -40,9 +45,12 @@ public class CollectionTrack implements Serializable {
         this.mPlayCount = 0;
         this.mHasArtwork = TextUtils.isEmpty(mArtworkUrl) ? 0 : 1;
 
+        this.mDatabaseId = "";
         this.mIsFav = 0;
         this.mModifiedOn = "";
         this.mLocalId = "";
+        this.mPlaylistId = "";
+        this. mArtistId = "";
     }
 
     public String getTitle() {
@@ -117,9 +125,6 @@ public class CollectionTrack implements Serializable {
         return mLocalId;
     }
 
-    public void setLocalId(String mLocalId) {
-        this.mLocalId = mLocalId;
-    }
 
     public String getModifiedOn() {
         return mModifiedOn;
@@ -127,5 +132,34 @@ public class CollectionTrack implements Serializable {
 
     public void setModifiedOn(String mModifiedOn) {
         this.mModifiedOn = mModifiedOn;
+    }
+
+    public void setLocalId(String mLocalId) {
+        this.mLocalId = mLocalId;
+    }
+
+    public String getPlaylistId() {
+        return mPlaylistId;
+    }
+
+    public void setPlaylistId(String mPlaylistId) {
+        this.mPlaylistId = mPlaylistId;
+    }
+
+    public String getArtistId() {
+        return mArtistId;
+    }
+
+    public void setArtistId(String mArtistId) {
+        this.mArtistId = mArtistId;
+    }
+
+
+    public String getDatabaseId() {
+        return mDatabaseId;
+    }
+
+    public void setDatabaseId(String mDatabaseId) {
+        this.mDatabaseId = mDatabaseId;
     }
 }

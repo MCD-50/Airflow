@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistInfoAdapter;
-import com.airstem.airflow.ayush.airflow.behavior.OverlayViewBehavior;
-import com.airstem.airflow.ayush.airflow.behavior.TitleBehavior;
+import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
+import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
 import com.airstem.airflow.ayush.airflow.events.Collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;

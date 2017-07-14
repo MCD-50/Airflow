@@ -1,4 +1,4 @@
-package com.airstem.airflow.ayush.airflow.behavior;
+package com.airstem.airflow.ayush.airflow.behaviors;
 
 import android.graphics.Color;
 import android.support.v4.view.ViewCompat;

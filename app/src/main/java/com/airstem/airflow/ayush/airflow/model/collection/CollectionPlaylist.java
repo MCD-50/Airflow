@@ -12,12 +12,15 @@ import java.util.ArrayList;
 public class CollectionPlaylist implements Serializable {
 
     private String mTitle;
+    private String mDatabaseId;
     private ArrayList<CollectionTrack> mTracks;
     private String mOwner;
 
     public CollectionPlaylist(String mTitle, String mOwner) {
         this.mTitle = mTitle;
         this.mOwner = mOwner;
+
+        this.mDatabaseId = "";
         this.mTracks = new ArrayList<>();
     }
 
@@ -45,5 +48,13 @@ public class CollectionPlaylist implements Serializable {
 
     public void setTracks(ArrayList<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
+    }
+
+    public String getDatabaseId() {
+        return mDatabaseId;
+    }
+
+    public void setDatabaseId(String mDatabaseId) {
+        this.mDatabaseId = mDatabaseId;
     }
 }

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.airstem.airflow.ayush.airflow.constants.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;

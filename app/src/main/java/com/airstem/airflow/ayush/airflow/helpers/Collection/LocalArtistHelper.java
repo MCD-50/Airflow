@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
-import com.airstem.airflow.ayush.airflow.constants.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 

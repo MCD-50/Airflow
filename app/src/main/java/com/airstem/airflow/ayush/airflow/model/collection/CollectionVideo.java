@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class CollectionVideo implements Serializable {
 
+
+    private String mDatabaseId;
     private String mLocalId;
     private String mTitle;
     private String mAuthor;
@@ -29,6 +31,7 @@ public class CollectionVideo implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
         this.mIsOffline = mIsOffline;
 
+        this.mDatabaseId = "";
         this.mIsFav = 0;
         this.mModifiedOn = "";
         this.mLocalId = "";
@@ -84,6 +87,14 @@ public class CollectionVideo implements Serializable {
 
     public void setModifiedOn(String mModifiedOn) {
         this.mModifiedOn = mModifiedOn;
+    }
+
+    public String getDatabaseId() {
+        return mDatabaseId;
+    }
+
+    public void setDatabaseId(String mDatabaseId) {
+        this.mDatabaseId = mDatabaseId;
     }
 
 

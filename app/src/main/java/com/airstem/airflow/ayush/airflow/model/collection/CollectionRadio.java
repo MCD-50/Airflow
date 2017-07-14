@@ -5,6 +5,9 @@ package com.airstem.airflow.ayush.airflow.model.collection;
  */
 
 public class CollectionRadio {
+
+
+    private String mDatabaseId;
     private String mTitle;
     private int mMaxUser;
     private String[] mStreamUrl;
@@ -21,6 +24,7 @@ public class CollectionRadio {
         this.mCountry = mCountry;
         this.mColor = mColor;
 
+        this.mDatabaseId = "";
         this.mIsFav = 0;
     }
 
@@ -56,6 +60,14 @@ public class CollectionRadio {
 
     public void setIsFav(int mIsFav) {
         this.mIsFav = mIsFav;
+    }
+
+    public String getDatabaseId() {
+        return mDatabaseId;
+    }
+
+    public void setDatabaseId(String mDatabaseId) {
+        this.mDatabaseId = mDatabaseId;
     }
 }
 
