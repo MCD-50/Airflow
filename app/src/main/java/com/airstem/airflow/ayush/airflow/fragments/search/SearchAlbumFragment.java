@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.AlbumAdapter;
-import com.airstem.airflow.ayush.airflow.events.Search.SearchAlbumListener;
+import com.airstem.airflow.ayush.airflow.events.search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 
 import java.util.ArrayList;

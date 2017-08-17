@@ -2,7 +2,6 @@ package com.airstem.airflow.ayush.airflow.service;
 
 
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.app.Service;
 
 import android.content.BroadcastReceiver;
@@ -17,15 +16,11 @@ import android.media.AudioManager;
 
 
 import android.media.MediaPlayer;
-import android.media.session.MediaController;
-import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
-import android.media.session.PlaybackState;
 import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 
 import android.support.v4.app.TaskStackBuilder;
@@ -34,21 +29,13 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
-import android.widget.Toast;
-
-import com.airstem.airflow.ayush.airflow.MainActivity;
 import com.airstem.airflow.ayush.airflow.PlayerActivity;
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
-import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
-import com.airstem.airflow.ayush.airflow.model.PlayMode;
-import com.airstem.airflow.ayush.airflow.model.Track;
-import com.airstem.airflow.ayush.airflow.utils.AppConstant;
 
 
 import java.io.IOException;
 import java.util.ArrayList;
-import android.app.Notification;
+
 import android.app.PendingIntent;
 
 

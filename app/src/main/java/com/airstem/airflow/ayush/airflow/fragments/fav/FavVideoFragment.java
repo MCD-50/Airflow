@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.VideoAdapter;
-import com.airstem.airflow.ayush.airflow.events.Collection.CollectionVideoListener;
+import com.airstem.airflow.ayush.airflow.events.collection.CollectionVideoListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 import java.util.ArrayList;

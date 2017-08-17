@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.ArtistInfoTrackAdapter;
-import com.airstem.airflow.ayush.airflow.events.Search.SearchArtistListener;
+import com.airstem.airflow.ayush.airflow.events.search.SearchArtistListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtistInfoTrack;
@@ -33,7 +33,7 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchArtistLis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.search_artist_info_track_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.search_artist_info_page_track_fragment, container, false);
 
         textView = (TextView) rootView.findViewById(R.id.search_artist_info_track_fragment_empty);
         listView = (RecyclerView) rootView.findViewById(R.id.search_artist_info_track_fragment_list);

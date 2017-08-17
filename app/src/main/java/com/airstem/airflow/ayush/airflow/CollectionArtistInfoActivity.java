@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
-import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 

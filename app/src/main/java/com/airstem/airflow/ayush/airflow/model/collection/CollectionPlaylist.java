@@ -3,33 +3,27 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
-public class CollectionPlaylist implements Serializable {
+public class CollectionPlaylist extends RealmObject implements Serializable {
 
     private String mTitle;
     private String mDatabaseId;
-    private ArrayList<CollectionTrack> mTracks;
+    private RealmResults<CollectionTrack> mTracks;
     private String mOwner;
 
-    public CollectionPlaylist(String mTitle, String mOwner) {
-        this.mTitle = mTitle;
-        this.mOwner = mOwner;
-
-        this.mDatabaseId = "";
-        this.mTracks = new ArrayList<>();
-    }
 
 
     public String getTitle() {
         return mTitle;
     }
 
-    public ArrayList<CollectionTrack> getTracks() {
+    public RealmResults<CollectionTrack> getTracks() {
         return mTracks;
     }
 
@@ -46,7 +40,7 @@ public class CollectionPlaylist implements Serializable {
         return mOwner;
     }
 
-    public void setTracks(ArrayList<CollectionTrack> mTracks) {
+    public void setTracks(RealmResults<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
     }
 

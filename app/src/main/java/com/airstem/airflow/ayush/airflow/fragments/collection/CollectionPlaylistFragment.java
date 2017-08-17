@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistAdapter;
-import com.airstem.airflow.ayush.airflow.events.Collection.CollectionPlaylistListener;
+import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 

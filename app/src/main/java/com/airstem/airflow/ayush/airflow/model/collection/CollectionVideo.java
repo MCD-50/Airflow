@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
-public class CollectionVideo implements Serializable {
+public class CollectionVideo extends RealmObject implements Serializable {
 
 
     private String mDatabaseId;
@@ -18,24 +20,12 @@ public class CollectionVideo implements Serializable {
     private String mVideoOnlineUrl;
     private String mVideoOfflineUrl;
     private String mArtworkUrl;
-    private int mIsOffline;
-    private int mIsFav;
+
+    private boolean mIsOffline;
+    private boolean mIsFav;
 
     private String mModifiedOn;
 
-    public CollectionVideo(String mTitle, String mAuthor, String mVideoOnlineUrl, String mVideoOfflineUrl, String mArtworkUrl, int mIsOffline) {
-        this.mTitle = mTitle;
-        this.mAuthor = mAuthor;
-        this.mVideoOnlineUrl = mVideoOnlineUrl;
-        this.mVideoOfflineUrl = mVideoOfflineUrl;
-        this.mArtworkUrl = mArtworkUrl;
-        this.mIsOffline = mIsOffline;
-
-        this.mDatabaseId = "";
-        this.mIsFav = 0;
-        this.mModifiedOn = "";
-        this.mLocalId = "";
-    }
 
     public String getTitle() {
         return mTitle;
@@ -57,19 +47,19 @@ public class CollectionVideo implements Serializable {
         return mArtworkUrl;
     }
 
-    public int getIsOffline() {
+    public boolean getIsOffline() {
         return mIsOffline;
     }
 
-    public void setIsOffline(int mIsOffline) {
+    public void setIsOffline(boolean mIsOffline) {
         this.mIsOffline = mIsOffline;
     }
 
-    public int getIsFav() {
+    public boolean getIsFav() {
         return mIsFav;
     }
 
-    public void setIsFav(int mIsFav) {
+    public void setIsFav(boolean mIsFav) {
         this.mIsFav = mIsFav;
     }
 

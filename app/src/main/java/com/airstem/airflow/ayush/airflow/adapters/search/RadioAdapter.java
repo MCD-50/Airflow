@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.Search.SearchRadioListener;
+import com.airstem.airflow.ayush.airflow.events.search.SearchRadioListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
 import java.util.ArrayList;

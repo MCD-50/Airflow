@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.search.AlbumInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
-import com.airstem.airflow.ayush.airflow.events.Search.SearchAlbumListener;
+import com.airstem.airflow.ayush.airflow.events.search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbumInfoTrack;
 

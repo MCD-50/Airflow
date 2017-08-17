@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.VideoAdapter;
-import com.airstem.airflow.ayush.airflow.events.Search.SearchVideoListener;
+import com.airstem.airflow.ayush.airflow.events.search.SearchVideoListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;

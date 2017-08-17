@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.airstem.airflow.ayush.airflow.adapters.tabs.CustomPagerAdapter;
+import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchAlbumFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchArtistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchTrackFragment;

@@ -5,11 +5,13 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
-public class CollectionTrack implements Serializable {
+public class CollectionTrack extends RealmObject implements Serializable {
 
 
 
@@ -20,38 +22,18 @@ public class CollectionTrack implements Serializable {
     private String mArtistName;
     private String mTrackOnlineUrl;
     private String mTrackOfflineUrl;
-    private int mIsOffline;
     private String mArtworkUrl;
-    private int mIsFav;
-    private String mLastPlayed;
+    private boolean mIsFav;
+    private boolean mIsOffline;
+
     private int mPlayCount;
     private int mHasArtwork;
 
+    private String mLastPlayed;
     private String mModifiedOn;
     private String mPlaylistId;
     private String mArtistId;
 
-
-    public CollectionTrack(String mTitle, String mAlbumName, String mArtistName, String mTrackOnlineUrl, String mTrackOfflineUrl, String mArtworkUrl, int mIsOffline) {
-        this.mTitle = mTitle;
-        this.mAlbumName = mAlbumName;
-        this.mArtistName = mArtistName;
-        this.mTrackOnlineUrl = mTrackOnlineUrl;
-        this.mTrackOfflineUrl = mTrackOfflineUrl;
-        this.mArtworkUrl = mArtworkUrl;
-        this.mIsOffline = mIsOffline;
-
-        this.mLastPlayed = "";
-        this.mPlayCount = 0;
-        this.mHasArtwork = TextUtils.isEmpty(mArtworkUrl) ? 0 : 1;
-
-        this.mDatabaseId = "";
-        this.mIsFav = 0;
-        this.mModifiedOn = "";
-        this.mLocalId = "";
-        this.mPlaylistId = "";
-        this. mArtistId = "";
-    }
 
     public String getTitle() {
         return mTitle;
@@ -77,15 +59,15 @@ public class CollectionTrack implements Serializable {
         return mArtworkUrl;
     }
 
-    public int getIsOffline() {
+    public boolean getIsOffline() {
         return mIsOffline;
     }
 
-    public int getIsFav() {
+    public boolean getIsFav() {
         return mIsFav;
     }
 
-    public void setIsFav(int mIsFav) {
+    public void setIsFav(boolean mIsFav) {
         this.mIsFav = mIsFav;
     }
 
@@ -117,7 +99,7 @@ public class CollectionTrack implements Serializable {
         this.mHasArtwork = mHasArtwork;
     }
 
-    public void setIsOffline(int mIsOffline) {
+    public void setIsOffline(boolean mIsOffline) {
         this.mIsOffline = mIsOffline;
     }
 

@@ -6,39 +6,31 @@ import android.text.TextUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
-public class CollectionArtist implements Serializable {
+public class CollectionArtist extends RealmObject implements Serializable {
 
 
 
     private String mLocalId;
-
     private String mDatabaseId;
     private String mTitle;
-    private ArrayList<CollectionTrack> mTracks;
+    private RealmResults<CollectionTrack> mTracks;
     private String mArtworkUrl;
-    private int mHasArtwork;
+    private boolean mHasArtwork;
 
-
-    public CollectionArtist(String mTitle, String mArtworkUrl) {
-        this.mTitle = mTitle;
-        this.mArtworkUrl = mArtworkUrl;
-        this.mHasArtwork = TextUtils.isEmpty(mArtworkUrl) ? 0 : 1;
-
-        this.mDatabaseId = "";
-        this.mLocalId = "";
-        this.mTracks = new ArrayList<>();
-    }
 
     public String getTitle() {
         return mTitle;
     }
     
 
-    public ArrayList<CollectionTrack> getTracks() {
+    public RealmResults<CollectionTrack> getTracks() {
         return mTracks;
     }
 
@@ -46,7 +38,7 @@ public class CollectionArtist implements Serializable {
         return mTitle.length();
     }
 
-    public void setTracks(ArrayList<CollectionTrack> mTracks) {
+    public void setTracks(RealmResults<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
     }
 
@@ -58,11 +50,11 @@ public class CollectionArtist implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
     }
 
-    public int getHasArtwork() {
+    public boolean getHasArtwork() {
         return mHasArtwork;
     }
 
-    public void setHasArtwork(int mHasArtwork) {
+    public void setHasArtwork(boolean mHasArtwork) {
         this.mHasArtwork = mHasArtwork;
     }
 

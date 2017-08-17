@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistAdapter;
-import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
@@ -25,9 +25,6 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
 
     TextView textView;
     RecyclerView listView;
-
-
-
     @Nullable
     ArrayList<CollectionArtist> mItems;
     ArtistAdapter mAdapter;

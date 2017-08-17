@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.Collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.squareup.picasso.Picasso;
 
@@ -68,7 +68,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(collectionArtist);
+                    listener.onArtistClick(collectionArtist);
                 }
             });
         }

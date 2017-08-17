@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -16,26 +14,16 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
-import com.airstem.airflow.ayush.airflow.helpers.EventHelper;
-import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
-import com.airstem.airflow.ayush.airflow.helpers.MoodHelper;
-import com.airstem.airflow.ayush.airflow.helpers.YouTubeApiHelper;
-import com.airstem.airflow.ayush.airflow.model.Track;
+
 import com.airstem.airflow.ayush.airflow.service.MusicService;
-import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
 import com.airstem.airflow.ayush.airflow.utils.DatabaseUtils;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.squareup.picasso.Picasso;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +32,6 @@ import java.util.ArrayList;
 
 
 public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
-
     ImageView bgImageView, playPauseImageView, nextImageView, favImageView, prevImageView;
     //View bgView;
     TextView titleTextView, artistTextView, positionTextView, durationTextView;
@@ -72,7 +59,7 @@ public class PlayerActivity extends  AppCompatActivity implements CustomEvent {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_activity);
+        setContentView(R.layout.player_page);
 
 /*
         mAdView = (AdView) findViewById(R.id.player_activity_adView);

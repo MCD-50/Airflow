@@ -35,19 +35,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.airstem.airflow.ayush.airflow.adapters.CategoryAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.tabs.CustomPagerAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.FavAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.ListDiscoverAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.LocalTrackAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.TabsPagerAdapter;
-import com.airstem.airflow.ayush.airflow.helpers.CustomEvent;
-import com.airstem.airflow.ayush.airflow.helpers.GenresHelper;
-import com.airstem.airflow.ayush.airflow.helpers.InternetHelper;
-import com.airstem.airflow.ayush.airflow.helpers.YouTubeApiHelper;
-import com.airstem.airflow.ayush.airflow.model.Base;
-import com.airstem.airflow.ayush.airflow.model.Mood;
-import com.airstem.airflow.ayush.airflow.model.Track;
+import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.service.MusicService;
 import com.airstem.airflow.ayush.airflow.utils.CollectionUtils;
 import com.airstem.airflow.ayush.airflow.utils.DatabaseUtils;
@@ -468,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            startActivity(new Intent(MainActivity.this, AppInfoActivity.class));
             return true;
         }else if(id == R.id.action_speech){
             speakClicked();
@@ -485,7 +473,7 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
         if (id == R.id.nav_library)
             startActivity(new Intent(MainActivity.this, CollectionActivity.class));
         else if (id == R.id.nav_settings)
-            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            startActivity(new Intent(MainActivity.this, AppInfoActivity.class));
 
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action

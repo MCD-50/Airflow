@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.RadioAdapter;
-import com.airstem.airflow.ayush.airflow.events.Collection.CollectionRadioListener;
+import com.airstem.airflow.ayush.airflow.events.collection.CollectionRadioListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 
 import java.util.ArrayList;

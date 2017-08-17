@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.events.Search.SearchArtistListener;
+import com.airstem.airflow.ayush.airflow.events.search.SearchArtistListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.squareup.picasso.Picasso;
 

@@ -1,10 +1,14 @@
 package com.airstem.airflow.ayush.airflow.model.collection;
 
+import java.io.Serializable;
+
+import io.realm.RealmObject;
+
 /**
  * Created by mcd-50 on 11/7/17.
  */
 
-public class CollectionRadio {
+public class CollectionRadio extends RealmObject implements Serializable {
 
 
     private String mDatabaseId;
@@ -14,20 +18,7 @@ public class CollectionRadio {
     private String[] mTags;
     private String mCountry;
     private String mColor;
-    private int mIsFav;
-
-    public CollectionRadio(String mTitle, int mMaxUser, String[] mStreamUrl, String[] mTags, String mCountry, String mColor) {
-        this.mTitle = mTitle;
-        this.mMaxUser = mMaxUser;
-        this.mStreamUrl = mStreamUrl;
-        this.mTags = mTags;
-        this.mCountry = mCountry;
-        this.mColor = mColor;
-
-        this.mDatabaseId = "";
-        this.mIsFav = 0;
-    }
-
+    private boolean mIsFav;
 
 
     public String getTitle() {
@@ -54,11 +45,11 @@ public class CollectionRadio {
         return mColor;
     }
 
-    public int getIsFav() {
+    public boolean getIsFav() {
         return mIsFav;
     }
 
-    public void setIsFav(int mIsFav) {
+    public void setIsFav(boolean mIsFav) {
         this.mIsFav = mIsFav;
     }
 
