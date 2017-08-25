@@ -11,10 +11,10 @@ import java.util.ArrayList;
 public class SearchArtist implements Serializable {
     private String mTitle;
     private ArrayList<SearchImage> mArtworkUrl;
-    private Provider mProvider;
+    private String mProvider;
     private String mId;
 
-    public SearchArtist(String mTitle, ArrayList<SearchImage> mArtworkUrl, Provider mProvider, String mId) {
+    public SearchArtist(String mTitle, ArrayList<SearchImage> mArtworkUrl, String mProvider, String mId) {
         this.mTitle = mTitle;
         this.mArtworkUrl = mArtworkUrl;
         this.mProvider = mProvider;
@@ -29,7 +29,7 @@ public class SearchArtist implements Serializable {
         return mArtworkUrl;
     }
 
-    public Provider getProvider() {
+    public String getProvider() {
         return mProvider;
     }
 

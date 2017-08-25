@@ -12,16 +12,14 @@ public class AirstemApplication  extends Application {
 
     public void onCreate() {
         super.onCreate();
+
+
         // Initialize Realm. Should only be done once when the application starts.
         Realm.init(this);
-
         initDatabase();
     }
 
     private void initDatabase() {
 
     }
-
-
-
 }

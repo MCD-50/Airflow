@@ -48,7 +48,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements CustomEvent,NavigationView.OnNavigationItemSelectedListener {
 
 
-    TabsPagerAdapter tabsPagerAdapter;
+    CustomPagerAdapter tabsPagerAdapter;
     NavigationView navigationView;
     FloatingActionButton fab;
     CoordinatorLayout coordinatorLayout;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
 
         /*mAdView = (AdView) findViewById(R.id.activity_main_adView);
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
         viewPager = (ViewPager) findViewById(R.id.activity_main_pager);
         //tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_main_slidingTabStrip);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_main_tab);
 
         //Add tabs icon with setIcon() or simple text with .setText()
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.app_icon));
@@ -157,9 +157,9 @@ public class MainActivity extends AppCompatActivity implements CustomEvent,Navig
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         fab.setVisibility(View.GONE);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main_cordinateLayout);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main_coordinate_layout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -8,5 +8,6 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 public interface CollectionVideoListener {
     void onVideoClick(CollectionVideo collectionVideo);
+    void onVideoRemove(CollectionVideo collectionVideo);
     void onVideoFav(CollectionVideo collectionVideo, boolean addToFav);
 }

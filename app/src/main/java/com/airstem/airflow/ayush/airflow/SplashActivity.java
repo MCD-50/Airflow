@@ -15,8 +15,6 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_page);
-
-        
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -25,7 +23,7 @@ public class SplashActivity extends Activity {
 
                 finish();
             }
-        }, 1000);
+        }, 2000);
 
     }
 }

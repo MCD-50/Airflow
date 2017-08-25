@@ -36,4 +36,14 @@
         android:layout_marginTop="@dimen/app_bar_full_top_margin" />
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/collection_page_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_shuffle"
+        app:rippleColor="@color/top"
+        android:tint="@android:color/white" />
+
 </android.support.design.widget.CoordinatorLayout>

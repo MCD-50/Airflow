@@ -144,4 +144,24 @@ public class CollectionTrack extends RealmObject implements Serializable {
     public void setDatabaseId(String mDatabaseId) {
         this.mDatabaseId = mDatabaseId;
     }
+
+    public void setAlbumName(String mAlbumName) {
+        this.mAlbumName = mAlbumName;
+    }
+
+    public void setArtistName(String mArtistName) {
+        this.mArtistName = mArtistName;
+    }
+
+    public void setTrackOnlineUrl(String mTrackOnlineUrl) {
+        this.mTrackOnlineUrl = mTrackOnlineUrl;
+    }
+
+    public void setTrackOfflineUrl(String mTrackOfflineUrl) {
+        this.mTrackOfflineUrl = mTrackOfflineUrl;
+    }
+
+    public void setArtworkUrl(String mArtworkUrl) {
+        this.mArtworkUrl = mArtworkUrl;
+    }
 }

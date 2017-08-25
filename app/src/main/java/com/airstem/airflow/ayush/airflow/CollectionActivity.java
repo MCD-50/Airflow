@@ -2,17 +2,22 @@ package com.airstem.airflow.ayush.airflow;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
-import com.airstem.airflow.ayush.airflow.fragments.search.SearchAlbumFragment;
-import com.airstem.airflow.ayush.airflow.fragments.search.SearchArtistFragment;
-import com.airstem.airflow.ayush.airflow.fragments.search.SearchTrackFragment;
-import com.airstem.airflow.ayush.airflow.fragments.search.SearchVideoFragment;
+import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionPlaylistFragment;
+import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionTrackFragment;
+import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionArtistFragment;
+import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionVideoFragment;
+
+import io.realm.Realm;
 
 /**
  * Created by ayush AS on 7/1/17.
@@ -20,16 +25,25 @@ import com.airstem.airflow.ayush.airflow.fragments.search.SearchVideoFragment;
 
 public class CollectionActivity extends AppCompatActivity{
 
+    Realm realm;
 
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
+    CoordinatorLayout coordinatorLayout;
+    FloatingActionButton floatingActionButton;
 
+    
+    
     @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_page);
+
+        //init realm
+        realm = Realm.getDefaultInstance();
+
 
         //init components
         initComponent();
@@ -44,11 +58,17 @@ public class CollectionActivity extends AppCompatActivity{
 
         tabLayout = (TabLayout) findViewById(R.id.collection_page_tab);
         viewPager = (ViewPager) findViewById(R.id.collection_page_pager);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.collection_page_coordinate_layout);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.collection_page_fab);
 
-
+        //set fragments
         setFragments();
-    }
 
+
+        //set click listeners
+        setListeners();
+
+    }
 
     private void setFragments(){
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_track_white));
@@ -58,15 +78,51 @@ public class CollectionActivity extends AppCompatActivity{
 
 
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SearchTrackFragment());
-        adapter.addFragment(new SearchVideoFragment());
-        adapter.addFragment(new SearchArtistFragment());
-        adapter.addFragment(new SearchAlbumFragment());
+        adapter.addFragment(new CollectionTrackFragment());
+        adapter.addFragment(new CollectionArtistFragment());
+        adapter.addFragment(new CollectionPlaylistFragment());
+        adapter.addFragment(new CollectionVideoFragment());
 
         viewPager.setAdapter(adapter);
+    }
 
+    private void setListeners() {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //when page is changed
+                if(position == 0){
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                }else{
+                    floatingActionButton.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //play music
+                
+            }
+        });
+    }
+
+    public Realm getRealm(){
+        return realm;
     }
 
 

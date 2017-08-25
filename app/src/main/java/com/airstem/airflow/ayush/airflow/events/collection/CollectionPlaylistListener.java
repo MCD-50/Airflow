@@ -10,4 +10,6 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 public interface CollectionPlaylistListener {
     void onPlaylistClick(CollectionPlaylist collectionPlaylist);
     void onPlaylistTrackClick(CollectionTrack collectionTrack);
+    void onPlaylistRemove(CollectionPlaylist collectionPlaylist);
+    void onPlaylistTrackRemove(CollectionTrack collectionTrack);
 }

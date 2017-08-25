@@ -5,8 +5,7 @@
     android:id="@+id/search_page_coordinate_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.airstem.airflow.ayush.airflow.MainActivity">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -36,6 +35,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/app_bar_full_top_margin" />
-
 
 </android.support.design.widget.CoordinatorLayout>

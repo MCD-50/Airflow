@@ -12,11 +12,11 @@ public class SearchAlbum implements Serializable {
     private String mTitle;
     private String mArtistName;
     private ArrayList<SearchImage> mArtworkUrl;
-    private Provider mProvider;
+    private String mProvider;
     private String mId;
 
 
-    public SearchAlbum(String mTitle, String mArtistName, ArrayList<SearchImage> mArtworkUrl, Provider mProvider, String mId) {
+    public SearchAlbum(String mTitle, String mArtistName, ArrayList<SearchImage> mArtworkUrl, String mProvider, String mId) {
         this.mTitle = mTitle;
         this.mArtistName = mArtistName;
         this.mArtworkUrl = mArtworkUrl;
@@ -37,7 +37,7 @@ public class SearchAlbum implements Serializable {
         return mArtworkUrl;
     }
 
-    public Provider getProvider() {
+    public String getProvider() {
         return mProvider;
     }
 

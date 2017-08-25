@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import io.realm.RealmObject;
-import io.realm.RealmResults;
+import io.realm.RealmList;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -20,17 +20,20 @@ public class CollectionArtist extends RealmObject implements Serializable {
     private String mLocalId;
     private String mDatabaseId;
     private String mTitle;
-    private RealmResults<CollectionTrack> mTracks;
+    private RealmList<CollectionTrack> mTracks;
     private String mArtworkUrl;
     private boolean mHasArtwork;
 
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
 
     public String getTitle() {
         return mTitle;
     }
     
 
-    public RealmResults<CollectionTrack> getTracks() {
+    public RealmList<CollectionTrack> getTracks() {
         return mTracks;
     }
 
@@ -38,7 +41,7 @@ public class CollectionArtist extends RealmObject implements Serializable {
         return mTitle.length();
     }
 
-    public void setTracks(RealmResults<CollectionTrack> mTracks) {
+    public void setTracks(RealmList<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
     }
 

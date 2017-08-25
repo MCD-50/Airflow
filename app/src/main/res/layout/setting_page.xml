@@ -21,5 +21,4 @@
         android:scaleType="centerCrop"
         android:src="@drawable/app_icon" />
 
-
 </RelativeLayout>

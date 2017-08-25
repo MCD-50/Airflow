@@ -13,15 +13,17 @@ public class SearchTrack implements Serializable {
     private String mArtistName;
     private String mAlbumName;
     private ArrayList<SearchImage> mArtworkUrl;
-    private Provider mProvider;
+    private String mProvider;
+    private String mId;
 
 
-    public SearchTrack(String mTitle, String mArtistName, String mAlbumName, ArrayList<SearchImage> mArtworkUrl, Provider mProvider) {
+    public SearchTrack(String mTitle, String mArtistName, String mAlbumName, ArrayList<SearchImage> mArtworkUrl, String mProvider, String mId) {
         this.mTitle = mTitle;
         this.mArtistName = mArtistName;
         this.mAlbumName = mAlbumName;
         this.mArtworkUrl = mArtworkUrl;
         this.mProvider = mProvider;
+        this.mId = mId;
     }
 
 
@@ -41,7 +43,11 @@ public class SearchTrack implements Serializable {
         return mArtworkUrl;
     }
 
-    public Provider getProvider() {
+    public String getProvider() {
         return mProvider;
+    }
+
+    public String getId() {
+        return mId;
     }
 }

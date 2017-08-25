@@ -8,14 +8,14 @@ import java.io.Serializable;
 
 public class SearchRadio  implements Serializable  {
     private String mTitle;
-    private int mMaxUser;
+    private String mMaxUser;
     private String[] mStreamUrl;
     private String[] mTags;
     private String mCountry;
     private String mColor;
 
 
-    public SearchRadio(String mTitle, int mMaxUser, String[] mStreamUrl, String[] mTags, String mCountry, String mColor) {
+    public SearchRadio(String mTitle, String mMaxUser, String[] mStreamUrl, String[] mTags, String mCountry, String mColor) {
         this.mTitle = mTitle;
         this.mMaxUser = mMaxUser;
         this.mStreamUrl = mStreamUrl;
@@ -29,7 +29,7 @@ public class SearchRadio  implements Serializable  {
         return mTitle;
     }
 
-    public int getUser() {
+    public String getUser() {
         return mMaxUser;
     }
 

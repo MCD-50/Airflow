@@ -1,6 +1,5 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -27,8 +26,8 @@
             android:id="@+id/search_radio_fragment_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none" />
-
+            android:scrollbars="none"
+            android:clipToPadding="false" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

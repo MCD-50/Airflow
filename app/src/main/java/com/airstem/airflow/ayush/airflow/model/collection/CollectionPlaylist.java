@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import java.io.Serializable;
 
 import io.realm.RealmObject;
-import io.realm.RealmResults;
+import io.realm.RealmList;
 /**
  * Created by mcd-50 on 9/7/17.
  */
@@ -14,16 +14,23 @@ public class CollectionPlaylist extends RealmObject implements Serializable {
 
     private String mTitle;
     private String mDatabaseId;
-    private RealmResults<CollectionTrack> mTracks;
+    private RealmList<CollectionTrack> mTracks;
     private String mOwner;
 
 
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public void setOwner(String mOwner) {
+        this.mOwner = mOwner;
+    }
 
     public String getTitle() {
         return mTitle;
     }
 
-    public RealmResults<CollectionTrack> getTracks() {
+    public RealmList<CollectionTrack> getTracks() {
         return mTracks;
     }
 
@@ -40,7 +47,7 @@ public class CollectionPlaylist extends RealmObject implements Serializable {
         return mOwner;
     }
 
-    public void setTracks(RealmResults<CollectionTrack> mTracks) {
+    public void setTracks(RealmList<CollectionTrack> mTracks) {
         this.mTracks = mTracks;
     }
 

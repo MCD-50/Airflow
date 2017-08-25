@@ -10,10 +10,10 @@ import java.security.Provider;
 public class SearchImage implements Serializable {
     private String mSize;
     private String mUri;
-    private Provider mProvider;
+    private String mProvider;
 
 
-    public SearchImage(String mSize, String mUri, Provider mProvider) {
+    public SearchImage(String mSize, String mUri, String mProvider) {
         this.mSize = mSize;
         this.mUri = mUri;
         this.mProvider = mProvider;
@@ -27,7 +27,7 @@ public class SearchImage implements Serializable {
         return mUri;
     }
 
-    public Provider getProvider() {
+    public String getProvider() {
         return mProvider;
     }
 }

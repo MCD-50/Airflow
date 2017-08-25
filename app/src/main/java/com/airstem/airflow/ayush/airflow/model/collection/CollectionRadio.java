@@ -14,12 +14,36 @@ public class CollectionRadio extends RealmObject implements Serializable {
     private String mDatabaseId;
     private String mTitle;
     private int mMaxUser;
+
     private String[] mStreamUrl;
     private String[] mTags;
     private String mCountry;
     private String mColor;
     private boolean mIsFav;
 
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public void setMaxUser(int mMaxUser) {
+        this.mMaxUser = mMaxUser;
+    }
+
+    public void setStreamUrl(String[] mStreamUrl) {
+        this.mStreamUrl = mStreamUrl;
+    }
+
+    public void setTags(String[] mTags) {
+        this.mTags = mTags;
+    }
+
+    public void setCountry(String mCountry) {
+        this.mCountry = mCountry;
+    }
+
+    public void setColor(String mColor) {
+        this.mColor = mColor;
+    }
 
     public String getTitle() {
         return mTitle;

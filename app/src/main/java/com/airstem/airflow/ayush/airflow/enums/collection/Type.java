@@ -1,10 +1,10 @@
-package com.airstem.airflow.ayush.airflow.enums;
+package com.airstem.airflow.ayush.airflow.enums.collection;
 
 /**
  * Created by mcd-50 on 14/7/17.
  */
 
-public enum  CollectionItemType {
+public enum Type {
     TRACK,
     ARTIST,
     PLAYLIST,

@@ -35,5 +35,4 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/app_bar_full_top_margin" />
 
-
 </android.support.design.widget.CoordinatorLayout>

@@ -88,4 +88,23 @@ public class CollectionVideo extends RealmObject implements Serializable {
     }
 
 
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public void setAuthor(String mAuthor) {
+        this.mAuthor = mAuthor;
+    }
+
+    public void setVideoOnlineUrl(String mVideoOnlineUrl) {
+        this.mVideoOnlineUrl = mVideoOnlineUrl;
+    }
+
+    public void setVideoOfflineUrl(String mVideoOfflineUrl) {
+        this.mVideoOfflineUrl = mVideoOfflineUrl;
+    }
+
+    public void setArtworkUrl(String mArtworkUrl) {
+        this.mArtworkUrl = mArtworkUrl;
+    }
 }

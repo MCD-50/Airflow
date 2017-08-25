@@ -13,7 +13,6 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"/>
 
-
     <jp.satorufujiwara.scrolling.MaterialScrollingViewPager
         android:id="@+id/search_artist_info_page_pager"
         android:layout_width="match_parent"

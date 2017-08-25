@@ -15,4 +15,5 @@
         android:text="@string/collection_empty_message"
         style="@style/MessageTextView" />
 
+
 </ScrollView>

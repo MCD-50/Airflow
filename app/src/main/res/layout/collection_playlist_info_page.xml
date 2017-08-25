@@ -1,13 +1,13 @@
 <jp.satorufujiwara.scrolling.MaterialScrollingLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/search_album_info_page_material_scrolling"
+    android:id="@+id/collection_playlist_info_page_material_scrolling"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:ms_flexible_height="240dp">
 
     <ImageView
-        android:id="@+id/search_album_info_page_image"
+        android:id="@+id/collection_playlist_info_page_image"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:adjustViewBounds="true"
@@ -15,18 +15,18 @@
         android:scaleType="centerCrop"/>
 
     <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
-        android:id="@+id/search_album_info_page_list"
+        android:id="@+id/collection_playlist_info_page_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:scrollbars="none" />
 
-    <View android:id="@+id/search_album_info_page_overlay"
+    <View android:id="@+id/collection_playlist_info_page_overlay"
         android:layout_width="match_parent"
         android:layout_height="240dp" />
 
-    <TextView android:id="@+id/search_album_info_page_title"
+    <TextView android:id="@+id/collection_playlist_info_page_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:layout_marginTop="@dimen/title_scroll_height"
@@ -37,7 +37,7 @@
         android:textSize="24sp"
         />
 
-    <TextView android:id="@+id/search_album_info_page_empty"
+    <TextView android:id="@+id/collection_playlist_info_page_empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="245dp"
@@ -48,7 +48,7 @@
         android:visibility="gone" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/search_album_info_page_toolbar"
+        android:id="@+id/collection_playlist_info_page_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:background="@android:color/transparent"

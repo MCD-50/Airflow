@@ -9,16 +9,20 @@ import java.util.ArrayList;
 
 public class SearchVideo implements Serializable {
     private String mTitle;
+    private String mDescription;
     private String mAuthor;
-    private String[] mTags;
+    private ArrayList<String> mTags;
     private ArrayList<SearchImage> mArtworkUrl;
+    private String mProvider;
     private String mId;
 
-    public SearchVideo(String mTitle, String mAuthor, String[] mTags, ArrayList<SearchImage> mArtworkUrl, String mId) {
+    public SearchVideo(String mTitle, String mDescription, String mAuthor, ArrayList<String> mTags, ArrayList<SearchImage> mArtworkUrl, String mProvider, String mId) {
         this.mTitle = mTitle;
+        this.mDescription = mDescription;
         this.mAuthor = mAuthor;
         this.mTags = mTags;
         this.mArtworkUrl = mArtworkUrl;
+        this.mProvider = mProvider;
         this.mId = mId;
     }
 
@@ -26,16 +30,24 @@ public class SearchVideo implements Serializable {
         return mTitle;
     }
 
+    public String getDescription() {
+        return mDescription;
+    }
+
     public String getAuthor() {
         return mAuthor;
     }
 
-    public String[] getTags() {
+    public ArrayList<String> getTags() {
         return mTags;
     }
 
     public ArrayList<SearchImage> getArtworkUrl() {
         return mArtworkUrl;
+    }
+
+    public String getProvider(){
+        return mProvider;
     }
 
     public String getId() {
