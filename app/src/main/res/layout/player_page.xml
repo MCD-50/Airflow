@@ -35,4 +35,11 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/app_bar_full_top_margin" />
 
+    <ImageView
+        android:id="@+id/player_page_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/app_bar_full_top_margin"
+        style="@style/CoverImageStyle"/>
+
 </android.support.design.widget.CoordinatorLayout>
