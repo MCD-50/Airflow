@@ -2,50 +2,82 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.airstem.airflow.ayush.airflow">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <application
+        android:name=".AirstemApplication"
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:fullBackupContent="false"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".AirstemApplication">
-
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".SplashActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" android:label="Discover" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".PlayerActivity" android:parentActivityName=".MainActivity" android:screenOrientation="portrait" android:theme="@style/PlayerTheme">
-         <meta-data android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".MainActivity"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlayerActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PlayerTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CollectionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FavActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchAlbumInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchArtistInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CollectionArtistInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CollectionPlaylistInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
-        <activity android:name=".SearchActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".CollectionActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SearchAlbumInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".SearchArtistInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".CollectionArtistInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".CollectionPlaylistInfoActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar"/>
-
-
-
-
-        <service android:name=".service.MusicService" android:enabled="true"/>
+        <service
+            android:name=".service.MusicService"
+            android:enabled="true" />
 
     </application>
 

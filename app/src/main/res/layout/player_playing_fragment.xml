@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,19 +32,29 @@
                 android:orientation="horizontal"
                 android:gravity="center">
 
-                <ImageView
+                <ImageButton
+                    android:background="@android:color/transparent"
                     android:id="@+id/player_playing_fragment_previous"
-                    android:src="@drawable/prev_icon"
+                    android:src="@drawable/ic_prev_white"
                     style="@style/MusicButtonStyle" />
 
-                <ImageView
+                <ImageButton
+                    android:background="@android:color/transparent"
                     android:id="@+id/player_playing_fragment_play_pause"
-                    android:src="@drawable/pause_icon"
+                    android:src="@drawable/ic_pause_white"
                     style="@style/MusicButtonStyle.CenterButtonStyle" />
 
-                <ImageView
+                <ImageButton
+                    android:background="@android:color/transparent"
                     android:id="@+id/player_playing_fragment_next"
-                    android:src="@drawable/next_icon"
+                    android:src="@drawable/ic_next_white"
+                    style="@style/MusicButtonStyle"
+                    android:layout_marginEnd="16dp"/>
+
+                <ImageButton
+                    android:background="@android:color/transparent"
+                    android:id="@+id/player_playing_fragment_fav"
+                    android:src="@drawable/ic_no_fav_white"
                     style="@style/MusicButtonStyle" />
 
             </LinearLayout>

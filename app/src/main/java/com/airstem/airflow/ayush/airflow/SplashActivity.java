@@ -20,10 +20,9 @@ public class SplashActivity extends Activity {
             public void run() {
                 Intent nIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(nIntent);
-
                 finish();
             }
-        }, 2000);
+        }, 1000);
 
     }
 }

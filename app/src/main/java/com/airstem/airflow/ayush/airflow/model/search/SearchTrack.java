@@ -1,14 +1,15 @@
 package com.airstem.airflow.ayush.airflow.model.search;
 
+import com.airstem.airflow.ayush.airflow.model.home.DiscoverItem;
+
 import java.io.Serializable;
-import java.security.Provider;
 import java.util.ArrayList;
 
 /**
  * Created by mcd-50 on 8/7/17.
  */
 
-public class SearchTrack implements Serializable {
+public class SearchTrack extends DiscoverItem implements Serializable {
     private String mTitle;
     private String mArtistName;
     private String mAlbumName;

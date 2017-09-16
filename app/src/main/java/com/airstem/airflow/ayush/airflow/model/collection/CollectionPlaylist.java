@@ -18,6 +18,13 @@ public class CollectionPlaylist extends RealmObject implements Serializable {
     private String mOwner;
 
 
+    public void init(){
+        mDatabaseId = "";
+        mTitle = "";
+        mTracks = new RealmList<CollectionTrack>();
+        mOwner = "";
+    }
+
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }

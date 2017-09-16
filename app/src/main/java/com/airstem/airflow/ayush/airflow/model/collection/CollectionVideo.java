@@ -27,6 +27,19 @@ public class CollectionVideo extends RealmObject implements Serializable {
     private String mModifiedOn;
 
 
+    public void init(){
+        mDatabaseId = "";
+        mLocalId = "";
+        mTitle = "";
+        mAuthor = "";
+        mVideoOnlineUrl = "";
+        mVideoOfflineUrl = "";
+        mArtworkUrl = "";
+        mIsOffline = true;
+        mIsFav = false;
+        mModifiedOn = "";
+    }
+
     public String getTitle() {
         return mTitle;
     }

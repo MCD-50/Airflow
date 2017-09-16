@@ -31,6 +31,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.airstem.airflow.ayush.airflow.PlayerActivity;
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 
 import java.io.IOException;
@@ -46,25 +47,22 @@ import android.app.PendingIntent;
  */
 
 
-public class MusicService extends Service implements AudioManager.OnAudioFocusChangeListener ,
+public class MusicService extends Service
+        /*implements AudioManager.OnAudioFocusChangeListener ,
         MediaPlayer.OnCompletionListener,
         MediaPlayer.OnErrorListener,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnSeekCompleteListener,
-        MediaPlayer.OnBufferingUpdateListener
+        MediaPlayer.OnBufferingUpdateListener*/
         {
+            @Nullable
+            @Override
+            public IBinder onBind(Intent intent) {
+                return null;
+            }
 
 
-    public static final String ACTION_NEXT = "com.airstem.airflow.ayush.airflow.NEXT";
-    public static final String ACTION_PLAY = "com.airstem.airflow.ayush.airflow.PLAY";
-    public static final String ACTION_PAUSE = "com.airstem.airflow.ayush.airflow.PAUSE";
-
-
-
-
-    public static final String WIFI_CONST="com.airstem.airflow.ayush.airflow.WIFI";
-
-    // The volume we set the media player to when we lose audio focus, but are
+    /*// The volume we set the media player to when we lose audio focus, but are
     // allowed to reduce the volume instead of stopping playback.
     public static final float VOLUME_DUCK = 0.2f;
     // The volume we set the media player when we have audio focus.
@@ -80,15 +78,9 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
     private int mAudioFocus = AUDIO_NO_FOCUS_NO_DUCK;
     private AudioManager mAudioManager;
-
-
-
-
-
     WifiManager.WifiLock mWifiLock;
+    ArrayList<CollectionTrack> mItems;
 
-
-    ArrayList<Track> mTracks;
     //private ExoPlayer exoPlayer;
     private Track radio;
     private PlayMode playMode;
@@ -278,7 +270,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
     }
 
 
-  /*  private void showNotification(String title, String mood){
+  *//*  private void showNotification(String title, String mood){
 
 
         Intent playIntent = new Intent(ACTION_PLAY);
@@ -298,7 +290,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    }*/
+    }*//*
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -494,7 +486,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
                 mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 mPlayer.setDataSource(track.getTrackUrl());
                 
-                /*try{
+                *//*try{
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -504,7 +496,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
                 }catch (Exception e){
                     mPlayer.prepareAsync();
                 }
-               */
+               *//*
 
                 mPlayer.prepareAsync();
                 mWifiLock.acquire();
@@ -748,7 +740,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
             mPlayer.setOnBufferingUpdateListener(this);
 
 
-           /* mPlayer.setOnCompletionListener(new FFmpegMediaPlayer.OnCompletionListener() {
+           *//* mPlayer.setOnCompletionListener(new FFmpegMediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(FFmpegMediaPlayer mp) {
                     if(internetHelper.isNetworkAvailable() || playMode == PlayMode.OFFLINE){
@@ -801,7 +793,7 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
                     int i = percent;
                     int j = i;
                 }
-            });*/
+            });*//*
 
         } else {
             mPlayer.reset();
@@ -840,5 +832,5 @@ public class MusicService extends Service implements AudioManager.OnAudioFocusCh
         public MusicService getService(){
             return MusicService.this;
         }
-    }
+    }*/
 }

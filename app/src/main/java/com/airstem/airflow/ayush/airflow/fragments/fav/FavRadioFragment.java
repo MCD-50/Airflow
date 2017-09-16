@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
+import com.airstem.airflow.ayush.airflow.FavActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.RadioAdapter;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionRadioListener;
@@ -59,7 +60,7 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        realm = ((CollectionActivity)getActivity()).getRealm();
+        realm = ((FavActivity)getActivity()).getRealm();
         setAdapter();
     }
 

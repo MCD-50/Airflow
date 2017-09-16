@@ -1,5 +1,6 @@
 package com.airstem.airflow.ayush.airflow;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -8,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -16,11 +18,15 @@ import com.airstem.airflow.ayush.airflow.fragments.fav.FavRadioFragment;
 import com.airstem.airflow.ayush.airflow.fragments.fav.FavTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.fav.FavVideoFragment;
 
+import io.realm.Realm;
+
 /**
  * Created by mcd-50 on 15/8/17.
  */
 
-public class FavActivity extends AppCompatActivity {
+public class FavActivity extends MainActivity {
+
+    Realm realm;
 
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -33,7 +39,13 @@ public class FavActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fav_page);
+
+        LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        drawerLayout.addView(layoutInflater.inflate(R.layout.fav_page, null, false));
+
+        //init realm
+        realm = Realm.getDefaultInstance();
+
 
         //init components
         initComponent();
@@ -109,6 +121,10 @@ public class FavActivity extends AppCompatActivity {
         });
     }
 
+
+    public Realm getRealm(){
+        return realm;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

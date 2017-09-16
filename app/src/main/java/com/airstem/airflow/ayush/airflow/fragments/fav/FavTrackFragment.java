@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
+import com.airstem.airflow.ayush.airflow.FavActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
@@ -60,7 +61,7 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        realm = ((CollectionActivity)getActivity()).getRealm();
+        realm = ((FavActivity)getActivity()).getRealm();
         setAdapter();
     }
 

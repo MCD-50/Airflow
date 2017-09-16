@@ -103,7 +103,6 @@ public class DatabaseHelper{
         collectionTrack.setArtworkUrl(item.getArtworkUrl());
         collectionTrack.setIsFav(item.getIsFav());
         collectionTrack.setIsOffline(item.getIsOffline());
-        collectionTrack.setHasArtwork(item.getHasArtwork());
 
 
         //utils
@@ -127,7 +126,6 @@ public class DatabaseHelper{
         collectionArtist.setDatabaseId(item.getDatabaseId());
         collectionArtist.setLocalId(item.getLocalId());
         collectionArtist.setArtworkUrl(item.getArtworkUrl());
-        collectionArtist.setHasArtwork(item.getHasArtwork());
         collectionArtist.setTitle(item.getTitle());
         collectionArtist.setTracks(item.getTracks());
     }

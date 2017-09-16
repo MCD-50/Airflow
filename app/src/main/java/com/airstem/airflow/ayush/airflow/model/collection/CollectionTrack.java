@@ -27,12 +27,33 @@ public class CollectionTrack extends RealmObject implements Serializable {
     private boolean mIsOffline;
 
     private int mPlayCount;
-    private int mHasArtwork;
 
     private String mLastPlayed;
     private String mModifiedOn;
     private String mPlaylistId;
     private String mArtistId;
+
+
+    public void init(){
+        mDatabaseId = "";
+        mLocalId = "";
+        mTitle = "";
+        mAlbumName = "";
+        mArtistName = "";
+        mTrackOfflineUrl = "";
+        mTrackOnlineUrl = "";
+        mArtworkUrl = "";
+        mIsOffline = true;
+        mIsFav = false;
+
+        mPlayCount = 0;
+
+        mLastPlayed = "";
+        mModifiedOn = "";
+
+        mPlaylistId = "";
+        mArtistId = "";
+    }
 
 
     public String getTitle() {
@@ -91,13 +112,6 @@ public class CollectionTrack extends RealmObject implements Serializable {
         this.mPlayCount = mPlayCount;
     }
 
-    public int getHasArtwork() {
-        return mHasArtwork;
-    }
-
-    public void setHasArtwork(int mHasArtwork) {
-        this.mHasArtwork = mHasArtwork;
-    }
 
     public void setIsOffline(boolean mIsOffline) {
         this.mIsOffline = mIsOffline;

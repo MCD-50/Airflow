@@ -6,11 +6,21 @@
     <item android:id="@+id/action_speech"
         android:title="@string/you_say_we_play"
         android:orderInCategory="100"
-        android:icon="@drawable/mic_icon"
+        android:icon="@drawable/ic_speak_black"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_settings"
-        android:title="@string/action_about"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_share"
+        android:title="@string/action_share"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_rate"
+        android:title="@string/action_rate"
         android:orderInCategory="100"
         app:showAsAction="never" />
 

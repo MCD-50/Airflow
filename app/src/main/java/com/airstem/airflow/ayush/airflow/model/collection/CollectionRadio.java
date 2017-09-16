@@ -1,7 +1,11 @@
 package com.airstem.airflow.ayush.airflow.model.collection;
 
-import java.io.Serializable;
+import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -15,11 +19,25 @@ public class CollectionRadio extends RealmObject implements Serializable {
     private String mTitle;
     private int mMaxUser;
 
-    private String[] mStreamUrl;
-    private String[] mTags;
+    private RealmList<RealmString> mStreamUrl;
+    private RealmList<RealmString> mTags;
     private String mCountry;
     private String mColor;
     private boolean mIsFav;
+
+
+    public void init(){
+        mDatabaseId = "";
+        mTitle = "";
+        mMaxUser = 0;
+
+        mStreamUrl = new RealmList<RealmString>();
+        mTags = new RealmList<RealmString>();
+        mCountry = "";
+        mColor = "";
+        mIsFav = false;
+    }
+
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
@@ -29,11 +47,11 @@ public class CollectionRadio extends RealmObject implements Serializable {
         this.mMaxUser = mMaxUser;
     }
 
-    public void setStreamUrl(String[] mStreamUrl) {
+    public void setStreamUrl(RealmList<RealmString> mStreamUrl) {
         this.mStreamUrl = mStreamUrl;
     }
 
-    public void setTags(String[] mTags) {
+    public void setTags(RealmList<RealmString> mTags) {
         this.mTags = mTags;
     }
 
@@ -53,11 +71,11 @@ public class CollectionRadio extends RealmObject implements Serializable {
         return mMaxUser;
     }
 
-    public String[] getStreamUrl() {
+    public RealmList<RealmString> getStreamUrl() {
         return mStreamUrl;
     }
 
-    public String[] getTags() {
+    public RealmList<RealmString> getTags() {
         return mTags;
     }
 

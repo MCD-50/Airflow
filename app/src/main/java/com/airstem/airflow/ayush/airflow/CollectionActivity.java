@@ -1,5 +1,6 @@
 package com.airstem.airflow.ayush.airflow;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -8,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,7 +25,7 @@ import io.realm.Realm;
  * Created by ayush AS on 7/1/17.
  */
 
-public class CollectionActivity extends AppCompatActivity{
+public class CollectionActivity extends MainActivity {
 
     Realm realm;
 
@@ -39,11 +41,12 @@ public class CollectionActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.collection_page);
+
+        LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        drawerLayout.addView(layoutInflater.inflate(R.layout.collection_page, null, false));
 
         //init realm
         realm = Realm.getDefaultInstance();
-
 
         //init components
         initComponent();
@@ -53,7 +56,7 @@ public class CollectionActivity extends AppCompatActivity{
         toolbar = (Toolbar) findViewById(R.id.collection_page_toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
         tabLayout = (TabLayout) findViewById(R.id.collection_page_tab);

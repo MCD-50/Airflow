@@ -7,15 +7,23 @@
             android:id="@+id/nav_discover"
             android:icon="@drawable/ic_discover"
             android:title="Discover" />
-        <item
-            android:id="@+id/nav_library"
-            android:icon="@drawable/ic_library"
-            android:title="Library" />
 
         <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings" />
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_fav"
+            android:title="Favorites" />
+
+        <item
+            android:id="@+id/nav_music_library"
+            android:icon="@drawable/ic_track"
+            android:title="Music Library" />
+
+        <item
+            android:id="@+id/nav_releases"
+            android:icon="@drawable/ic_new"
+            android:title="New Releases" />
+
+
     </group>
 
 </menu>

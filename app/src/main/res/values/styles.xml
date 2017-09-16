@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- DiscoverItem application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -81,18 +81,18 @@
 
     <style name="AlbumTitleStyle">
         <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="ArtistNameStyle">
         <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
@@ -104,8 +104,8 @@
     </style>
 
     <style name="MusicBarStyle">
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:max">100</item>
@@ -117,8 +117,8 @@
     </style>
 
     <style name="MusicButtonStyle.CenterButtonStyle">
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginStart">16dp</item>
     </style>
 
 

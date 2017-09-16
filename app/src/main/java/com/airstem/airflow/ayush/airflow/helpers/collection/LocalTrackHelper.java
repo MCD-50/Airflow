@@ -26,7 +26,19 @@ public class LocalTrackHelper {
                 Uri artworkUrl = ContentUris.withAppendedId(Uri.parse(CollectionConstant.COLLECTION_LOCAL_TRACK_ARTWORK_BASE), CollectionCursorHelper.getAlbumId(context, songId));
                 String trackName = cursor.getString(1);
                 if (!TextUtils.isEmpty(trackName) && !trackName.toLowerCase().contains("Unknown")) {
-                    CollectionTrack item = new CollectionTrack(trackName, cursor.getString(2), cursor.getString(3), "", cursor.getString(4), artworkUrl.toString(), 1);
+                    CollectionTrack item = new CollectionTrack();
+
+
+                    item.init();
+
+
+                    item.setTitle(trackName);
+                    item.setAlbumName(cursor.getString(2));
+                    item.setArtistName(cursor.getString(3));
+                    item.setTrackOnlineUrl("");
+                    item.setTrackOfflineUrl(cursor.getString(4));
+                    item.setArtworkUrl(String.valueOf(artworkUrl));
+                    item.setIsOffline(true);
                     item.setLocalId(String.valueOf(songId));
                     item.setModifiedOn(cursor.getString(5));
                     items.add(item);

@@ -22,7 +22,16 @@ public class CollectionArtist extends RealmObject implements Serializable {
     private String mTitle;
     private RealmList<CollectionTrack> mTracks;
     private String mArtworkUrl;
-    private boolean mHasArtwork;
+
+
+    public void init(){
+        mLocalId = "";
+        mDatabaseId = "";
+        mTitle = "";
+        mTracks = new RealmList<CollectionTrack>();
+        mArtworkUrl = "";
+    }
+
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
@@ -53,13 +62,6 @@ public class CollectionArtist extends RealmObject implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
     }
 
-    public boolean getHasArtwork() {
-        return mHasArtwork;
-    }
-
-    public void setHasArtwork(boolean mHasArtwork) {
-        this.mHasArtwork = mHasArtwork;
-    }
 
     public String getLocalId() {
         return mLocalId;

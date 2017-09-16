@@ -27,9 +27,19 @@ public class LocalVideoHelper {
                 Uri artworkUrl = ContentUris.withAppendedId(Uri.parse(CollectionConstant.COLLECTION_LOCAL_VIDEO_ARTWORK_BASE), videoId);
                 String videoName = cursor.getString(1);
                 if (!TextUtils.isEmpty(videoName) && !videoName.toLowerCase().contains("Unknown")) {
-                    CollectionVideo item = new CollectionVideo(videoName, cursor.getString(2), "", cursor.getString(3), artworkUrl.toString(), 1);
+                    CollectionVideo item = new CollectionVideo();
+
+                    item.init();
+
+                    item.setTitle(videoName);
+                    item.setAuthor(cursor.getString(2));
+                    item.setVideoOnlineUrl("");
+                    item.setVideoOfflineUrl(cursor.getString(3));
+                    item.setArtworkUrl(String.valueOf(artworkUrl));
+                    item.setIsOffline(true);
                     item.setLocalId(String.valueOf(videoId));
                     item.setModifiedOn(cursor.getString(4));
+
                     items.add(item);
                 }
             } while (cursor.moveToNext());
