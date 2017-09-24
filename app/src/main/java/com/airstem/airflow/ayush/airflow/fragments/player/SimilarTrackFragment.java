@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.search.TrackAdapter;
+import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchTrackListener;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
@@ -55,7 +56,7 @@ public class SimilarTrackFragment extends Fragment implements SearchTrackListene
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
-
+        listView.addItemDecoration(new LineDivider(getContext()));
 
         return rootView;
     }

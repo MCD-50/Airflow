@@ -3,6 +3,7 @@ package com.airstem.airflow.ayush.airflow.events.volly;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
+import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
@@ -20,6 +21,11 @@ public interface Callback {
     void onArtistImages(ArrayList<SearchImage> searchImages);
     void onAlbumImages(ArrayList<SearchImage> searchImages);
     void onLyrics(String text);
+
+
+    void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging);
+    void onVideos(ArrayList<SearchVideo> searchVideos, String nextPage);
     void onRadios(ArrayList<SearchRadio> searchRadios);
+
     void OnFailure(String message);
 }

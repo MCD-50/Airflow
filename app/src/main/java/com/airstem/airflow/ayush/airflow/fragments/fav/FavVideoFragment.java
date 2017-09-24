@@ -21,6 +21,7 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 11/7/17.
@@ -34,7 +35,7 @@ public class FavVideoFragment extends Fragment implements CollectionVideoListene
     ProgressDialog progressDialog;
 
 
-    ArrayList<CollectionVideo> mItems;
+    RealmResults<CollectionVideo> mItems;
     VideoAdapter mAdapter;
     RecyclerView listView;
     TextView empty;
@@ -66,7 +67,7 @@ public class FavVideoFragment extends Fragment implements CollectionVideoListene
 
 
     private void setAdapter() {
-        mItems = new ArrayList<CollectionVideo>(realm.where(CollectionVideo.class).findAll());
+        mItems = realm.where(CollectionVideo.class).equalTo("mIsFav", true).findAll();
         mAdapter = new VideoAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
     }

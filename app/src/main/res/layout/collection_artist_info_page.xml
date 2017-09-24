@@ -1,58 +1,82 @@
-<jp.satorufujiwara.scrolling.MaterialScrollingLayout
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/collection_artist_info_page_material_scrolling"
+    android:id="@+id/collection_artist_info_page_coordinate_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:ms_flexible_height="240dp">
+    android:fitsSystemWindows="true">
 
-    <ImageView
-        android:id="@+id/collection_artist_info_page_image"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:adjustViewBounds="true"
-        android:background="@color/angryPrimary"
-        android:scaleType="centerCrop"/>
-
-    <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
-        android:id="@+id/collection_artist_info_page_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:scrollbars="none" />
-
-    <View android:id="@+id/collection_artist_info_page_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="240dp" />
-
-    <TextView android:id="@+id/collection_artist_info_page_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:layout_marginTop="@dimen/title_scroll_height"
-        android:gravity="center_vertical"
-        android:paddingStart="62dp"
-        android:paddingEnd="16dp"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        />
-
-    <TextView android:id="@+id/collection_artist_info_page_empty"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="245dp"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:text="@string/search_empty_message"
-        style="@style/MessageTextView"
-        android:visibility="gone" />
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/collection_artist_info_page_toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collection_artist_info_page_collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:expandedTitleMarginBottom="60dp">
+
+
+            <ImageView
+                android:id="@+id/collection_artist_info_page_image"
+                app:layout_collapseParallaxMultiplier="0.75"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.3"
+                android:background="@android:color/black"
+                android:fitsSystemWindows="true"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/collection_artist_info_page_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_bar_height"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:layout_collapseMode="pin" />
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:background="@android:color/transparent"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</jp.satorufujiwara.scrolling.MaterialScrollingLayout>
+        <TextView
+            android:id="@+id/collection_artist_info_page_empty"
+            style="@style/MessageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/five_dp_margin"
+            android:text="@string/search_empty_message"
+            android:visibility="gone"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/collection_artist_info_page_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="none" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

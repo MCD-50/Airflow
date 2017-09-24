@@ -29,12 +29,11 @@ public class LocalArtistHelper {
             do {
                 long artistId = cursor.getLong(0);
                 String artistName = cursor.getString(1);
-                if (!TextUtils.isEmpty(artistName) && !artistName.toLowerCase().contains("Unknown")) {
+                if (!TextUtils.isEmpty(artistName) && !artistName.toLowerCase().contains("unknown")) {
                     ArrayList<CollectionTrack> tracks = getArtistTracks(context, artistId);
                     CollectionArtist item = new CollectionArtist();
 
                     item.init();
-
 
                     item.setTitle(artistName);
                     item.setArtworkUrl("");

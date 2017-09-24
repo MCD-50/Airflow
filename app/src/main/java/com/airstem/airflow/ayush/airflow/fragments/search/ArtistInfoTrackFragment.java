@@ -13,13 +13,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.SearchArtistInfoActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.TrackAdapter;
-import com.airstem.airflow.ayush.airflow.events.search.SearchArtistListener;
+import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchTrackListener;
+import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
+import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
+import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
@@ -53,12 +59,12 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
 
 
         empty = (TextView) rootView.findViewById(R.id.search_artist_info_page_track_fragment_empty);
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.search_track_fragment_refresh);
-        listView = (RecyclerView) rootView.findViewById(R.id.search_track_fragment_list);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.search_artist_info_page_track_fragment_refresh);
+        listView = (RecyclerView) rootView.findViewById(R.id.search_artist_info_page_track_fragment_list);
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
-
+        listView.addItemDecoration(new LineDivider(getContext()));
 
         return rootView;
     }
@@ -70,7 +76,6 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                nextPage = 1;
                 makeRequest(true);
             }
         });
@@ -84,7 +89,7 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
 
 
     public boolean hasLoaded = false;
-    @Override
+    /*@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(this.isVisible()){
@@ -93,11 +98,12 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
             }
             hasLoaded = true;
         }
-    }
+    }*/
 
     public void makeRequest(boolean showDialog){
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
+            hasLoaded = true;
         } else {
             empty.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setRefreshing(false);
@@ -113,8 +119,7 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
                 super.onScrolled(recyclerView, dx, dy);
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (nextPage != -1 && !isLoading && totalItemCount <= lastVisibleItem) {
-                    nextPage = nextPage + 1;
+                if (nextPage != -1 && !isLoading && totalItemCount <= (lastVisibleItem + 1)) {
                     loadData(showDialog);
                 }
             }
@@ -131,8 +136,64 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
                 progressDialog.show();
             }
 
+            internetHelper.searchArtistById(((SearchArtistInfoActivity)getActivity()).getSearchArtist().getId(), new Callback() {
+                @Override
+                public void OnSuccess(ArrayList<Object> items) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onSearch(ArrayList<SearchTrack> tracks, ArrayList<SearchAlbum> albums, ArrayList<SearchArtist> artists, ArrayList<SearchVideo> videos, ArrayList<SearchRadio> radios) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onArtistImages(ArrayList<SearchImage> searchImages) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onAlbumImages(ArrayList<SearchImage> searchImages) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onLyrics(String text) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging) {
+                    mItems.addAll(searchTracks);
+                    mAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                    nextPage = -1;
+                    swipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onVideos(ArrayList<SearchVideo> searchVideos, String next) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onRadios(ArrayList<SearchRadio> searchRadios) {
+                    int x = 1;
+                }
+
+                @Override
+                public void OnFailure(String message) {
+                    progressDialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+            });
+
         } catch (Exception e) {
             isLoading = false;
+            progressDialog.dismiss();
+            swipeRefreshLayout.setRefreshing(false);
             empty.setVisibility(View.VISIBLE);
 
             e.printStackTrace();

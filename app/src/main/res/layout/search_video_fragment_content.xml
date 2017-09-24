@@ -6,7 +6,6 @@
     android:layout_height="270dp"
     android:layout_marginBottom="@dimen/five_dp_margin"
     android:layout_marginTop="@dimen/five_dp_margin"
-    app:cardElevation="1dp"
     android:foreground="?attr/selectableItemBackground">
 
     <RelativeLayout

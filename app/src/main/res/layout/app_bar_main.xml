@@ -56,7 +56,6 @@
             app:floatingSearch_searchBarMarginRight="@dimen/activity_horizontal_margin"
             app:floatingSearch_searchBarMarginTop="@dimen/activity_horizontal_margin"
             app:floatingSearch_searchHint="Search web..."
-            app:floatingSearch_showSearchKey="false"
             app:floatingSearch_suggestionsListAnimDuration="250" />
 
     </RelativeLayout>

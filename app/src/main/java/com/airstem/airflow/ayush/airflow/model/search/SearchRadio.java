@@ -1,5 +1,8 @@
 package com.airstem.airflow.ayush.airflow.model.search;
 
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+
 import java.io.Serializable;
 
 /**
@@ -46,6 +49,11 @@ public class SearchRadio  implements Serializable  {
     }
 
     public String getColor() {
-        return mColor;
+        int titleLength = this.mTitle.length();
+        int colorArrayLength = CollectionConstant.COLOR_ARRAY.size();
+        if(titleLength > 0){
+            return CollectionConstant.COLOR_ARRAY.get(titleLength % colorArrayLength);
+        }
+        return CollectionConstant.COLOR_ARRAY.get(0);
     }
 }

@@ -40,8 +40,7 @@ public class FavActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        drawerLayout.addView(layoutInflater.inflate(R.layout.fav_page, null, false));
+        setContentView(R.layout.fav_page);
 
         //init realm
         realm = Realm.getDefaultInstance();

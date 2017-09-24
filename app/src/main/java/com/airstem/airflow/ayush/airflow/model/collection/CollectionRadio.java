@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by mcd-50 on 11/7/17.
@@ -16,7 +17,10 @@ public class CollectionRadio extends RealmObject implements Serializable {
 
 
     private String mDatabaseId;
+
+    @PrimaryKey
     private String mTitle;
+
     private int mMaxUser;
 
     private RealmList<RealmString> mStreamUrl;

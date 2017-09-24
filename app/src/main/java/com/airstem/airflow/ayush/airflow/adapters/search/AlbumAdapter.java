@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.events.search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,7 +45,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.RecyclerView
 
         holder.title.setText(searchAlbum.getTitle());
         holder.subTitle.setText(searchAlbum.getArtistName());
-        Picasso.with(mContext).load(searchAlbum.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        ArrayList<SearchImage> searchImages = searchAlbum.getArtworkUrl();
+        if(searchImages.size() > 0){
+            int lastIndex = searchImages.size() - 1;
+            Picasso.with(mContext).load(searchImages.get(lastIndex).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        }else{
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
     }
 
     @Override

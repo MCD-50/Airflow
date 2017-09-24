@@ -56,11 +56,16 @@
         <activity
             android:name=".SearchAlbumInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_name"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            />
+
         <activity
             android:name=".SearchArtistInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_name"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+
         <activity
             android:name=".CollectionArtistInfoActivity"
             android:screenOrientation="portrait"

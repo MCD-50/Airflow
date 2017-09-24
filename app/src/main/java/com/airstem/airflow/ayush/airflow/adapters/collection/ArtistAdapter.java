@@ -2,6 +2,7 @@ package com.airstem.airflow.ayush.airflow.adapters.collection;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.realm.RealmResults;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
@@ -22,10 +25,10 @@ import java.util.ArrayList;
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<CollectionArtist> mItems;
+    private RealmResults<CollectionArtist> mItems;
     private final CollectionArtistListener mListener;
 
-    public ArtistAdapter(Context context, ArrayList<CollectionArtist> searchArtists, CollectionArtistListener listener) {
+    public ArtistAdapter(Context context, RealmResults<CollectionArtist> searchArtists, CollectionArtistListener listener) {
         mContext = context;
         mItems = searchArtists;
         mListener = listener;
@@ -44,7 +47,11 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerVi
 
         holder.title.setText(collectionArtist.getTitle());
         holder.subTitle.setText(collectionArtist.getTracksLength());
-        Picasso.with(mContext).load(collectionArtist.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        if(!TextUtils.isEmpty(collectionArtist.getArtworkUrl())){
+            Picasso.with(mContext).load(collectionArtist.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        }else{
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
     }
 
     @Override

@@ -2,26 +2,25 @@ package com.airstem.airflow.ayush.airflow;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistInfoAdapter;
-import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
-import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
-import jp.satorufujiwara.scrolling.MaterialScrollingLayout;
-import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
+import io.realm.Realm;
+import io.realm.RealmList;
 
 /**
  * Created by mcd-50 on 10/7/17.
@@ -30,16 +29,17 @@ import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
 public class CollectionPlaylistInfoActivity extends AppCompatActivity implements CollectionPlaylistListener {
 
 
+    Realm realm;
+
     LinearLayoutManager linearLayoutManager;
-    TextView empty, title;
+    TextView empty;
     ImageView image;
-    View overlayView;
     RecyclerView listView;
-    MaterialScrollingLayout scrollingLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
 
 
-    ArrayList<CollectionTrack> mItems;
+    RealmList<CollectionTrack> mItems;
     PlaylistInfoAdapter mAdapter;
 
 
@@ -50,9 +50,15 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_playlist_info_page);
 
+        realm = Realm.getDefaultInstance();
+
         //get the intent
-        collectionPlaylist = (CollectionPlaylist) getIntent().getSerializableExtra(CollectionConstant.SHARED_PASSING_COLLECTION_PLAYLIST);
-        if (collectionPlaylist == null) {
+        String title  = getIntent().getStringExtra(CollectionConstant.SHARED_PASSING_COLLECTION_PLAYLIST_TITLE);
+
+        if (!TextUtils.isEmpty(title)) {
+            collectionPlaylist = realm.where(CollectionPlaylist.class).equalTo("mTitle", title).findFirst();
+            if(collectionPlaylist == null) finish();
+        }else{
             finish();
         }
 
@@ -69,34 +75,37 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
 
 
         empty = (TextView) findViewById(R.id.collection_playlist_info_page_empty);
-        title = (TextView) findViewById(R.id.collection_playlist_info_page_title);
         image = (ImageView) findViewById(R.id.collection_playlist_info_page_image);
-        overlayView = findViewById(R.id.collection_playlist_info_page_overlay);
-        scrollingLayout = (MaterialScrollingLayout) findViewById(R.id.collection_playlist_info_page_material_scrolling);
         listView = (RecyclerView) findViewById(R.id.collection_playlist_info_page_list);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collection_playlist_info_page_collapsing_toolbar);
 
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
         //set title
-        title.setText(String.valueOf(collectionPlaylist.getTitle()));
+        collapsingToolbarLayout.setTitle(String.valueOf(collectionPlaylist.getTitle()));
 
         //set scrolling activity
         setScrollingActivity();
+
 
         //set adapter
         setAdapter();
     }
 
     private void setScrollingActivity() {
-        scrollingLayout.addBehavior(image, new ParallaxBehavior());
-        scrollingLayout.addBehavior(overlayView, new OverlayViewBehavior(dp(56)));
-        scrollingLayout.addBehavior(title, new TitleBehavior(getResources()));
+        String artworkUrl = collectionPlaylist.getArtworkUrl();
+        if(!TextUtils.isEmpty(artworkUrl)){
+            Picasso.with(CollectionPlaylistInfoActivity.this).load(artworkUrl).placeholder(R.drawable.default_art).into(image);
+        }else{
+            Picasso.with(CollectionPlaylistInfoActivity.this).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(image);
+        }
     }
 
+
     private void setAdapter() {
-        mItems = new ArrayList<>();
+        mItems = collectionPlaylist.getTracks();
         mAdapter = new PlaylistInfoAdapter(CollectionPlaylistInfoActivity.this, mItems, this);
         listView.setAdapter(mAdapter);
     }
@@ -124,6 +133,17 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
     @Override
     public void onPlaylistTrackRemove(CollectionTrack collectionTrack) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

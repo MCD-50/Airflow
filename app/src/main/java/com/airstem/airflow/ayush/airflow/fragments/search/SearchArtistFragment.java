@@ -1,10 +1,13 @@
 package com.airstem.airflow.ayush.airflow.fragments.search;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,12 +16,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.SearchActivity;
+import com.airstem.airflow.ayush.airflow.SearchAlbumInfoActivity;
+import com.airstem.airflow.ayush.airflow.SearchArtistInfoActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.ArtistAdapter;
+import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchArtistListener;
+import com.airstem.airflow.ayush.airflow.events.volly.Callback;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
+import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
+import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
@@ -31,7 +44,7 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
 
 
     boolean isLoading;
-    int nextPage = 1;
+    int nextPage = 0;
     ProgressDialog progressDialog;
     InternetHelper internetHelper;
 
@@ -39,10 +52,12 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
     TextView empty;
     RecyclerView listView;
     SwipeRefreshLayout swipeRefreshLayout;
-    LinearLayoutManager linearLayoutManager;
+    GridLayoutManager gridLayoutManager;
 
     ArrayList<SearchArtist> mItems;
     ArtistAdapter mAdapter;
+
+    int numberOfColumns = 2;
 
     @Nullable
     @Override
@@ -57,8 +72,10 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.search_artist_fragment_refresh);
         listView = (RecyclerView) rootView.findViewById(R.id.search_artist_fragment_list);
         listView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        listView.setLayoutManager(linearLayoutManager);
+        gridLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns);
+        listView.setLayoutManager(gridLayoutManager);
+        listView.addItemDecoration(new OffsetDivider(getContext(), R.dimen.five_dp_margin));
+
 
 
         return rootView;
@@ -71,7 +88,8 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                nextPage = 1;
+                nextPage = 0;
+                mItems.clear();
                 makeRequest(true);
             }
         });
@@ -85,7 +103,7 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
 
 
     public boolean hasLoaded = false;
-    @Override
+   /* @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(this.isVisible()){
@@ -94,11 +112,12 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
             }
             hasLoaded = true;
         }
-    }
+    }*/
 
     public void makeRequest(boolean showDialog){
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
+            hasLoaded = true;
         } else {
             empty.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setRefreshing(false);
@@ -112,10 +131,9 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int totalItemCount = linearLayoutManager.getItemCount();
-                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (nextPage != -1 && !isLoading && totalItemCount <= lastVisibleItem) {
-                    nextPage = nextPage + 1;
+                int totalItemCount = gridLayoutManager.getItemCount();
+                int lastVisibleItem = gridLayoutManager.findLastVisibleItemPosition();
+                if (nextPage != -1 && !isLoading && totalItemCount <= (lastVisibleItem + 1)) {
                     loadData(showDialog);
                 }
             }
@@ -132,10 +150,65 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
                 progressDialog.show();
             }
 
+            internetHelper.searchDeezer(((SearchActivity) getActivity()).getSearchQuery(), nextPage, new Callback() {
+                @Override
+                public void OnSuccess(ArrayList<Object> items) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onSearch(ArrayList<SearchTrack> tracks, ArrayList<SearchAlbum> albums, ArrayList<SearchArtist> artists, ArrayList<SearchVideo> videos, ArrayList<SearchRadio> radios) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onArtistImages(ArrayList<SearchImage> searchImages) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onAlbumImages(ArrayList<SearchImage> searchImages) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onLyrics(String text) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging) {
+                    mItems.addAll(searchArtists);
+                    mAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                    nextPage = Integer.parseInt(searchPaging.getArtistNextPage());
+                    swipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onVideos(ArrayList<SearchVideo> searchVideos, String next) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onRadios(ArrayList<SearchRadio> searchRadios) {
+                    int x = 1;
+                }
+
+                @Override
+                public void OnFailure(String message) {
+                    progressDialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
+                    isLoading = false;
+                }
+            });
+
         } catch (Exception e) {
             isLoading = false;
+            progressDialog.dismiss();
             empty.setVisibility(View.VISIBLE);
-
+            swipeRefreshLayout.setRefreshing(false);
             e.printStackTrace();
         }
     }
@@ -144,7 +217,9 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
 
     @Override
     public void onArtistClick(SearchArtist searchArtist) {
-
+        Intent searchIntent = new Intent(getActivity(), SearchArtistInfoActivity.class);
+        searchIntent.putExtra(CollectionConstant.SHARED_PASSING_SEARCH_ARTIST, searchArtist);
+        startActivity(searchIntent);
     }
 
     @Override

@@ -28,10 +28,13 @@ public class DiscoverItemAdapter extends RecyclerView.Adapter<DiscoverItemAdapte
     private ArrayList<DiscoverItem> mItems;
     private DiscoverListener mListener;
 
-    public DiscoverItemAdapter(Context context, ArrayList<DiscoverItem> items, DiscoverListener listener) {
+    public DiscoverItemAdapter(Context context, DiscoverListener listener) {
         mContext = context;
-        mItems = items;
         mListener = listener;
+    }
+
+    public void setItems(ArrayList<DiscoverItem> items){
+        mItems = items;
     }
 
     @Override

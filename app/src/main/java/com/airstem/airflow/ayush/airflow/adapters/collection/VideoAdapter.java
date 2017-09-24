@@ -1,7 +1,11 @@
 package com.airstem.airflow.ayush.airflow.adapters.collection;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +17,12 @@ import com.airstem.airflow.ayush.airflow.events.collection.CollectionVideoListen
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.io.File;
 import java.util.ArrayList;
+
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -22,10 +31,10 @@ import java.util.ArrayList;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<CollectionVideo> mItems;
+    private RealmResults<CollectionVideo> mItems;
     private final CollectionVideoListener mListener;
 
-    public VideoAdapter(Context context, ArrayList<CollectionVideo> collectionTracks, CollectionVideoListener listener) {
+    public VideoAdapter(Context context, RealmResults<CollectionVideo> collectionTracks, CollectionVideoListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
@@ -45,7 +54,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
         holder.title.setText(collectionVideo.getTitle());
         holder.subTitle.setText(collectionVideo.getAuthor());
-        Picasso.with(mContext).load(collectionVideo.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        if(collectionVideo.getArtworkUrl() != null && !TextUtils.isEmpty(collectionVideo.getArtworkUrl())){
+            Picasso.with(mContext).load(collectionVideo.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        }else{
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
     }
 
     @Override

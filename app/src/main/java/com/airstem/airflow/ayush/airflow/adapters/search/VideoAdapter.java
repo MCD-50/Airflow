@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.events.search.SearchVideoListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +45,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
         holder.title.setText(searchVideo.getTitle());
         holder.subTitle.setText(searchVideo.getAuthor());
-        Picasso.with(mContext).load(searchVideo.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        ArrayList<SearchImage> searchImages = searchVideo.getArtworkUrl();
+        if(searchImages.size() > 0){
+            int lastIndex = searchImages.size() - 1;
+            Picasso.with(mContext).load(searchImages.get(lastIndex).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        }else{
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
     }
 
     @Override

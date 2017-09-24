@@ -12,12 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionPlaylistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionArtistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionVideoFragment;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 
 import io.realm.Realm;
 
@@ -42,8 +44,8 @@ public class CollectionActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LayoutInflater layoutInflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        drawerLayout.addView(layoutInflater.inflate(R.layout.collection_page, null, false));
+
+        setContentView(R.layout.collection_page);
 
         //init realm
         realm = Realm.getDefaultInstance();
@@ -56,7 +58,7 @@ public class CollectionActivity extends MainActivity {
         toolbar = (Toolbar) findViewById(R.id.collection_page_toolbar);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null){
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         tabLayout = (TabLayout) findViewById(R.id.collection_page_tab);
@@ -102,7 +104,25 @@ public class CollectionActivity extends MainActivity {
             public void onPageSelected(int position) {
                 //when page is changed
                 if(position == 0){
+                    floatingActionButton.setImageResource(R.drawable.ic_shuffle);
                     floatingActionButton.setVisibility(View.VISIBLE);
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //play music
+
+                        }
+                    });
+                }else if(position == 2){
+                    floatingActionButton.setImageResource(R.drawable.ic_add);
+                    floatingActionButton.setVisibility(View.VISIBLE);
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //add playlist
+
+                        }
+                    });
                 }else{
                     floatingActionButton.setVisibility(View.GONE);
                 }
@@ -111,15 +131,6 @@ public class CollectionActivity extends MainActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
-            }
-        });
-
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //play music
-                
             }
         });
     }

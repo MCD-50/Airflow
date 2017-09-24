@@ -14,6 +14,8 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 
 import java.util.ArrayList;
 
+import io.realm.RealmResults;
+
 /**
  * Created by mcd-50 on 11/7/17.
  */
@@ -21,10 +23,10 @@ import java.util.ArrayList;
 public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<CollectionRadio> mItems;
+    private RealmResults<CollectionRadio> mItems;
     private CollectionRadioListener mListener;
 
-    public RadioAdapter(Context context, ArrayList<CollectionRadio> searchRadios, CollectionRadioListener listener) {
+    public RadioAdapter(Context context, RealmResults<CollectionRadio> searchRadios, CollectionRadioListener listener) {
         mContext = context;
         mItems = searchRadios;
         mListener = listener;

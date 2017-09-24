@@ -28,11 +28,13 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Recycl
     private Context mContext;
     private ArrayList<Discover> mItems;
     private DiscoverListener mListener;
+    private DiscoverItemAdapter mDiscoverItemAdapter;
 
     public DiscoverAdapter(Context context, ArrayList<Discover> items, DiscoverListener listener) {
         mContext = context;
         mItems = items;
         mListener = listener;
+        mDiscoverItemAdapter = new DiscoverItemAdapter(mContext, mListener);
     }
 
     @Override
@@ -44,7 +46,9 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.Recycl
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
         Discover discover = mItems.get(position);
+        mDiscoverItemAdapter.setItems(discover.getItems());
         holder.title.setText(discover.getTitle());
+        holder.listView.setAdapter(mDiscoverItemAdapter);
         holder.bindData(mListener);
     }
 

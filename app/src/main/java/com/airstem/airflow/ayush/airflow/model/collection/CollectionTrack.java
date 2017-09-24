@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import java.io.Serializable;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -16,7 +17,10 @@ public class CollectionTrack extends RealmObject implements Serializable {
 
 
     private String mDatabaseId;
+
+    @PrimaryKey
     private String mLocalId;
+
     private String mTitle;
     private String mAlbumName;
     private String mArtistName;

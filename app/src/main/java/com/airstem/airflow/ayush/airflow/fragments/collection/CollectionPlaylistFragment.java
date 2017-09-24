@@ -1,6 +1,7 @@
 package com.airstem.airflow.ayush.airflow.fragments.collection;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,15 +13,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
+import com.airstem.airflow.ayush.airflow.CollectionArtistInfoActivity;
+import com.airstem.airflow.ayush.airflow.CollectionPlaylistInfoActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistAdapter;
+import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
-import java.util.ArrayList;
-
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 10/7/17.
@@ -34,12 +38,11 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
     ProgressDialog progressDialog;
 
 
-    ArrayList<CollectionPlaylist> mItems;
+    RealmResults<CollectionPlaylist> mItems;
     PlaylistAdapter mAdapter;
     RecyclerView listView;
     TextView empty;
     LinearLayoutManager linearLayoutManager;
-
 
 
     @Override
@@ -54,6 +57,7 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
+        listView.addItemDecoration(new LineDivider(getContext()));
 
         return rootView;
     }
@@ -68,14 +72,16 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
 
 
     private void setAdapter() {
-        mItems = new ArrayList<CollectionPlaylist>(realm.where(CollectionPlaylist.class).findAll());
+        mItems = realm.where(CollectionPlaylist.class).findAll();
         mAdapter = new PlaylistAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
     }
 
     @Override
     public void onPlaylistClick(CollectionPlaylist collectionPlaylist) {
-
+        Intent collectionIntent = new Intent(getActivity(), CollectionPlaylistInfoActivity.class);
+        collectionIntent.putExtra(CollectionConstant.SHARED_PASSING_COLLECTION_PLAYLIST_TITLE, collectionPlaylist.getTitle());
+        startActivity(collectionIntent);
     }
 
     @Override

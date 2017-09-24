@@ -3,26 +3,24 @@ package com.airstem.airflow.ayush.airflow;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
-import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
-import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
 import com.airstem.airflow.ayush.airflow.fragments.search.ArtistInfoAlbumFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.ArtistInfoTrackFragment;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
-import jp.satorufujiwara.scrolling.MaterialScrollingViewPager;
-import jp.satorufujiwara.scrolling.behavior.ExitUntilCollapsedBehavior;
-import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
-import jp.satorufujiwara.scrolling.behavior.ScrollUntilBehavior;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -35,12 +33,13 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
     InternetHelper internetHelper;
 
     Toolbar toolbar;
-    TextView title;
     ImageView image;
-    View overlayView;
     TabLayout tabLayout;
-    MaterialScrollingViewPager viewPager;
+    ViewPager viewPager;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
+
+    CustomPagerAdapter adapter;
 
     SearchArtist searchArtist = null;
 
@@ -70,22 +69,33 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
         internetHelper = new InternetHelper(SearchArtistInfoActivity.this);
         progressDialog = new ProgressDialog(SearchArtistInfoActivity.this);
 
-        title = (TextView) findViewById(R.id.search_artist_info_page_title);
+
         image = (ImageView) findViewById(R.id.search_artist_info_page_image);
-        overlayView = findViewById(R.id.search_artist_info_page_overlay);
         tabLayout = (TabLayout) findViewById(R.id.search_artist_info_page_tab);
-        viewPager = (MaterialScrollingViewPager) findViewById(R.id.search_artist_info_page_pager);
+        viewPager = (ViewPager) findViewById(R.id.search_artist_info_page_pager);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.search_artist_info_page_collapsing_toolbar);
 
 
         //set title
-        title.setText(String.valueOf(searchArtist.getTitle()));
+        collapsingToolbarLayout.setTitle(String.valueOf(searchArtist.getTitle()));
 
         //set fragments
         setFragments();
 
-
+        setScrollingActivity();
         //set click listeners
         setListeners();
+    }
+
+    private void setScrollingActivity() {
+
+        ArrayList<SearchImage> searchImages = searchArtist.getArtworkUrl();
+        if(searchImages.size() > 0){
+            int lastIndex = searchImages.size() - 1;
+            Picasso.with(SearchArtistInfoActivity.this).load(searchImages.get(lastIndex).getUri()).placeholder(R.drawable.default_art).into(image);
+        }else{
+            Picasso.with(SearchArtistInfoActivity.this).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(image);
+        }
     }
 
     private void setFragments(){
@@ -93,7 +103,7 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_album_white));
 
 
-        CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
+        adapter = new CustomPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ArtistInfoTrackFragment());
         adapter.addFragment(new ArtistInfoAlbumFragment());
 
@@ -104,14 +114,23 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if(position == 0 && positionOffsetPixels == 0 && positionOffset == 0.0){
+                    ArtistInfoTrackFragment artistInfoTrackFragment = ((ArtistInfoTrackFragment) adapter.getItem(0));
+                    if(!artistInfoTrackFragment.hasLoaded) artistInfoTrackFragment.makeRequest(true);
+                    viewPager.setOffscreenPageLimit(2);
+                }
             }
 
             @Override
             public void onPageSelected(int position) {
-
+                if(position == 0){
+                    ArtistInfoTrackFragment artistInfoTrackFragment = ((ArtistInfoTrackFragment) adapter.getItem(0));
+                    if(!artistInfoTrackFragment.hasLoaded) artistInfoTrackFragment.makeRequest(true);
+                }else if(position == 1){
+                    ArtistInfoAlbumFragment artistInfoAlbumFragment = ((ArtistInfoAlbumFragment) adapter.getItem(1));
+                    if(!artistInfoAlbumFragment.hasLoaded) artistInfoAlbumFragment.makeRequest(true);
+                }
             }
 
             @Override
@@ -119,18 +138,28 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
 
             }
         });
+    }
 
-        viewPager.addBehavior(image, new ParallaxBehavior());
-        viewPager.addBehavior(tabLayout, new ScrollUntilBehavior(0));
-        viewPager.addBehavior(overlayView, new OverlayViewBehavior(dp(56)));
-        viewPager.addBehavior(toolbar, new ExitUntilCollapsedBehavior(dp(56)));
-        viewPager.addBehavior(title, new TitleBehavior(getResources()));
+
+    public SearchArtist getSearchArtist(){
+        return searchArtist;
     }
 
 
 
     public int dp(final int dp) {
         return (int) (dp * getResources().getDisplayMetrics().density);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

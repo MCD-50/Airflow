@@ -2,10 +2,13 @@ package com.airstem.airflow.ayush.airflow;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,9 +20,13 @@ import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListe
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmList;
 import jp.satorufujiwara.scrolling.MaterialScrollingLayout;
 import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
 
@@ -30,15 +37,16 @@ import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
 public class CollectionArtistInfoActivity extends AppCompatActivity implements CollectionArtistListener {
 
 
+    Realm realm;
+
     LinearLayoutManager linearLayoutManager;
-    TextView empty, title;
+    TextView empty;
     ImageView image;
-    View overlayView;
     RecyclerView listView;
-    MaterialScrollingLayout scrollingLayout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
 
-    ArrayList<CollectionTrack> mItems;
+    RealmList<CollectionTrack> mItems;
     ArtistInfoAdapter mAdapter;
 
 
@@ -49,9 +57,15 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection_artist_info_page);
 
+        realm = Realm.getDefaultInstance();
+
         //get the intent
-        collectionArtist = (CollectionArtist) getIntent().getSerializableExtra(CollectionConstant.SHARED_PASSING_COLLECTION_ARTIST);
-        if (collectionArtist == null) {
+        String id  = getIntent().getStringExtra(CollectionConstant.SHARED_PASSING_COLLECTION_ARTIST_LOCAL_ID);
+
+        if (!TextUtils.isEmpty(id)) {
+            collectionArtist = realm.where(CollectionArtist.class).equalTo("mLocalId", id).findFirst();
+            if(collectionArtist == null) finish();
+        }else{
             finish();
         }
 
@@ -68,18 +82,16 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
 
 
         empty = (TextView) findViewById(R.id.collection_artist_info_page_empty);
-        title = (TextView) findViewById(R.id.collection_artist_info_page_title);
         image = (ImageView) findViewById(R.id.collection_artist_info_page_image);
-        overlayView = findViewById(R.id.collection_artist_info_page_overlay);
-        scrollingLayout = (MaterialScrollingLayout) findViewById(R.id.collection_artist_info_page_material_scrolling);
         listView = (RecyclerView) findViewById(R.id.collection_artist_info_page_list);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collection_artist_info_page_collapsing_toolbar);
 
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
         //set title
-        title.setText(String.valueOf(collectionArtist.getTitle()));
+        collapsingToolbarLayout.setTitle(String.valueOf(collectionArtist.getTitle()));
 
         //set scrolling activity
         setScrollingActivity();
@@ -89,13 +101,16 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     }
 
     private void setScrollingActivity() {
-        scrollingLayout.addBehavior(image, new ParallaxBehavior());
-        scrollingLayout.addBehavior(overlayView, new OverlayViewBehavior(dp(56)));
-        scrollingLayout.addBehavior(title, new TitleBehavior(getResources()));
+        String artworkUrl = collectionArtist.getArtworkUrl();
+        if(!TextUtils.isEmpty(artworkUrl)){
+            Picasso.with(CollectionArtistInfoActivity.this).load(artworkUrl).placeholder(R.drawable.default_art).into(image);
+        }else{
+            Picasso.with(CollectionArtistInfoActivity.this).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(image);
+        }
     }
 
     private void setAdapter() {
-        mItems = new ArrayList<>();
+        mItems = collectionArtist.getTracks();
         mAdapter = new ArtistInfoAdapter(CollectionArtistInfoActivity.this, mItems, this);
         listView.setAdapter(mAdapter);
     }
@@ -123,5 +138,16 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     @Override
     public void onArtistTrackRemove(CollectionTrack collectionTrack) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

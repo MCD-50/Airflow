@@ -15,6 +15,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.realm.RealmList;
+import io.realm.RealmResults;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
@@ -22,10 +25,10 @@ import java.util.ArrayList;
 public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private ArrayList<CollectionTrack> mItems;
+    private RealmList<CollectionTrack> mItems;
     private final CollectionArtistListener mListener;
 
-    public ArtistInfoAdapter(Context context, ArrayList<CollectionTrack> collectionTracks, CollectionArtistListener listener) {
+    public ArtistInfoAdapter(Context context, RealmList<CollectionTrack> collectionTracks, CollectionArtistListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;

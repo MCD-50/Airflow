@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,12 +15,15 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.VideoAdapter;
+import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
+import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionVideoListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 10/7/17.
@@ -29,11 +33,10 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
 
     Realm realm;
 
-    boolean isLoading;
     ProgressDialog progressDialog;
 
 
-    ArrayList<CollectionVideo> mItems;
+    RealmResults<CollectionVideo> mItems;
     VideoAdapter mAdapter;
     RecyclerView listView;
     TextView empty;
@@ -67,7 +70,7 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
 
 
     private void setAdapter() {
-        mItems = new ArrayList<CollectionVideo>(realm.where(CollectionVideo.class).findAll());
+        mItems = realm.where(CollectionVideo.class).findAll();
         mAdapter = new VideoAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
     }

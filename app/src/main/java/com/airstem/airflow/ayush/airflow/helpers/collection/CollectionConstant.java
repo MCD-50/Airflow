@@ -12,9 +12,8 @@ public class CollectionConstant {
     //activity constant
     public static final long FIND_SUGGESTION_SIMULATED_DELAY = 250;
 
-
     //internet constants
-    public static final String SERVER_BASE = "http://192.168.43.44:2000";
+    public static final String SERVER_BASE = "http://airstem.herokuapp.com";
     public static final String ENDPOINT_SEARCH = "/search";
     public static final String ENDPOINT_SEARCH_ALBUMS = "/searchAlbums";
     public static final String ENDPOINT_SEARCH_ARTISTS = "/searchArtists";
@@ -36,7 +35,7 @@ public class CollectionConstant {
 
     //database constants
     public static final String COLLECTION_LOCAL_TRACK_ARTWORK_BASE = "content://media/external/audio/albumart";
-    public static final String COLLECTION_LOCAL_VIDEO_ARTWORK_BASE = "content://media/external/video/media";
+    public static final String COLLECTION_LOCAL_VIDEO_ARTWORK_BASE = "content://media/external/images/media";
 
     //collection constants
     public static final ArrayList<String> COLLECTION_DEFAULT_PLAYLISTS = new ArrayList<String>() {{
@@ -47,12 +46,17 @@ public class CollectionConstant {
 
     //intent constants
     public static final String SHARED_PASSING_COLLECTION_TRACK = "sharedPassingCollectionTrack";
-    public static final String SHARED_PASSING_COLLECTION_ARTIST = "sharedPassingCollectionArtist";
+    public static final String SHARED_PASSING_COLLECTION_ARTIST_LOCAL_ID = "sharedPassingCollectionArtistLocalId";
     public static final String SHARED_PASSING_COLLECTION_VIDEO = "sharedPassingCollectionVideo";
-    public static final String SHARED_PASSING_COLLECTION_PLAYLIST = "sharedPassingCollectionPlaylist";
+    public static final String SHARED_PASSING_COLLECTION_PLAYLIST_TITLE = "sharedPassingCollectionPlaylistLocalId";
     public static final String SHARED_PASSING_SEARCH_ALBUM = "sharedPassingSearchAlbum";
     public static final String SHARED_PASSING_SEARCH_ARTIST = "sharedPassingSearchArtist";
+    public static final String SHARED_PASSING_SEARCH_TEXT = "sharedPassingSearchText";
 
+    //store constants
+    public static final String STORE_FIRST_RUN = "storeFirstRun";
+    public static final String STORE_EMAIL = "storeEmail";
+    public static final String STORE_IS_LOGGED = "storeIsLogged";
 
     //player constant
     public static final String PLAYER_PAUSE = "playerPause";
@@ -66,13 +70,21 @@ public class CollectionConstant {
     public static final String PLAYER_IS_PLAYER_ACTIVE = "playerActive";
     public static final String PLAYER_ACTION_INTENT_FILTER = "android.intent.action.PLAYER";
 
+    //speech text
+    public static final String SPEECH_TEXT = "You say we play" + "\n" + "Try saying like play taylor swift...";
+    public static final int SPEECH_CODE = 111;
+    public static final int NETWORK_CODE = 112;
 
 
-    public static String SPEECH_TEXT = "You say we play" + "\n" + "Try saying like play taylor swift...";
-    public static int SPEECH_CODE = 111;
-    public static int NETWORK_CODE = 112;
+    public static final ArrayList<String> COLOR_ARRAY = new ArrayList<String>(){{
+        add("#3f869b");
+        add("#9f2be3");
+        add("#52655b");
+        add("#ee9a00");
+        add("#ff4500");
+        add("#3f969b");
+        add("#00868b");
+    }};
 
-    //request permissions
-    public static int PERMISSION_REQUEST = 113;
 }
 

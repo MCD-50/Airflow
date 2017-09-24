@@ -1,6 +1,7 @@
 package com.airstem.airflow.ayush.airflow;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -27,10 +28,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.home.DiscoverAdapter;
@@ -44,11 +46,20 @@ import com.airstem.airflow.ayush.airflow.model.home.DiscoverItem;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.google.android.gms.ads.AdView;
+import com.karan.churi.PermissionManager.PermissionManager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, CollectionTrackListener, DiscoverListener {
+
+
+    Realm realm;
 
     boolean isLoading = false;
     InternetHelper internetHelper;
@@ -69,25 +80,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LinearLayoutManager linearLayoutManager;
 
 
-
     //when internet
     ArrayList<Discover> mItems;
     DiscoverAdapter mDiscoverAdapter;
     //when no internet
-    ArrayList<CollectionTrack> mTracks;
+    RealmResults<CollectionTrack> mTracks;
     TrackAdapter mTrackAdapter;
 
 
+
     private AdView mAdView;
+    private PermissionManager permissionManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        realm = Realm.getDefaultInstance();
 
         //init components
         initComponent();
+
+        //permission manager
+        permissionManager = new PermissionManager() {};
+        permissionManager.checkAndRequestPermissions(this);
     }
 
     private void initComponent() {
@@ -148,12 +167,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_discover);
         mSearchView.attachNavigationDrawerToMenuButton(drawerLayout);
 
         setAdapter();
         makeRequest(false);
-
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -162,16 +179,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+
+        mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
+            @Override
+            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
+                if(!TextUtils.isEmpty(searchSuggestion.getBody())){
+                    Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                    searchIntent.putExtra(CollectionConstant.SHARED_PASSING_SEARCH_TEXT, searchSuggestion.getBody().trim());
+                    startActivity(searchIntent);
+                }
+            }
+
+            @Override
+            public void onSearchAction(String currentQuery) {
+                if(!TextUtils.isEmpty(currentQuery)){
+                    Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                    searchIntent.putExtra(CollectionConstant.SHARED_PASSING_SEARCH_TEXT, currentQuery.trim());
+                    startActivity(searchIntent);
+                }
+            }
+        });
+
         mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override
             public void onSearchTextChanged(String oldQuery, final String newQuery) {
-                int y = 1;
-                //get suggestions based on newQuery
-
                 //pass them on to the search view
                 mSearchView.swapSuggestions(new ArrayList<SearchSuggestion>());
             }
+
         });
+
 
         mSearchView.setOnLeftMenuClickListener(new FloatingSearchView.OnLeftMenuClickListener() {
             @Override
@@ -187,22 +224,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mSearchView.setOnHomeActionClickListener(new FloatingSearchView.OnHomeActionClickListener() {
             @Override
             public void onHomeClicked() {
-                int y = 1;
+
             }
         });
+
         mSearchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.action_speech) {
                     getTextFromSpeech();
-                } else if (id == R.id.action_settings) {
+                } /*else if (id == R.id.action_settings) {
                     startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 } else if (id == R.id.action_share) {
 
                 }else if (id == R.id.action_rate) {
 
-                }
+                }*/
             }
         });
 
@@ -217,7 +255,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setAdapter() {
         mItems = new ArrayList<>();
-        mTracks = new ArrayList<>();
+        RealmResults<CollectionTrack> results = realm.where(CollectionTrack.class).findAllSorted("mModifiedOn", Sort.DESCENDING);
+        mTracks = realm.where(CollectionTrack.class).findAllSorted("mModifiedOn", Sort.DESCENDING);
         mTrackAdapter = new TrackAdapter(MainActivity.this, mTracks, this);
         mDiscoverAdapter = new DiscoverAdapter(MainActivity.this, mItems, this);
     }
@@ -258,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 progressDialog.setCancelable(false);
                 progressDialog.show();
             }
-
+            isLoading = false;
         } catch (Exception e) {
             isLoading = false;
             empty.setVisibility(View.VISIBLE);
@@ -267,37 +306,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-    private void askPermission() {
-        int storagePermissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission_group.STORAGE);
-        int internetPermissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET);
-        int lockPermissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WAKE_LOCK);
-        if (storagePermissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission_group.STORAGE}, CollectionConstant.PERMISSION_REQUEST);
-        } else if (internetPermissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.INTERNET}, CollectionConstant.PERMISSION_REQUEST);
-        } else if (lockPermissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WAKE_LOCK}, CollectionConstant.PERMISSION_REQUEST);
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationView.setCheckedItem(R.id.nav_discover);
     }
 
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CollectionConstant.PERMISSION_REQUEST) {
-            for (int i = 0; i < permissions.length; i++) {
-                String permission = permissions[i];
-                int grantResult = grantResults[i];
-                if(permission.equals(Manifest.permission_group.STORAGE) && grantResult != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission_group.STORAGE}, CollectionConstant.PERMISSION_REQUEST);
-                } else if (permission.equals(Manifest.permission.INTERNET) && grantResult != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.INTERNET}, CollectionConstant.PERMISSION_REQUEST);
-                } else if (permission.equals(Manifest.permission.WAKE_LOCK) && grantResult != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WAKE_LOCK}, CollectionConstant.PERMISSION_REQUEST);
-                }
-            }
-        }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        permissionManager.checkResult(requestCode,permissions, grantResults);
+        ArrayList<String> grantedPermissions = permissionManager.getStatus().get(0).granted;
+        ArrayList<String> deniedPermissions = permissionManager.getStatus().get(0).denied;
+        int x = 1;
     }
 
     @Override
@@ -311,7 +331,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (requestCode == CollectionConstant.SPEECH_CODE) {
             ArrayList<String> stringArrayList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String textSpoke = String.valueOf(stringArrayList.get(0));
+            if(stringArrayList.size() < 1) return;
+
+            String currentQuery = String.valueOf(stringArrayList.get(0));
+            if(!TextUtils.isEmpty(currentQuery)){
+                mSearchView.setSearchText(currentQuery.trim());
+                Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
+                searchIntent.putExtra(CollectionConstant.SHARED_PASSING_SEARCH_TEXT, currentQuery.trim());
+                startActivity(searchIntent);
+            }
+
         } else {
             showSnackBar("Something went wrong. Try again.");
         }
@@ -364,10 +393,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(MainActivity.this, MainActivity.class));
         } else if (id == R.id.nav_favorites) {
             startActivity(new Intent(MainActivity.this, FavActivity.class));
-        }else if (id == R.id.nav_music_library) {
+        } else if (id == R.id.nav_music_library) {
             startActivity(new Intent(MainActivity.this, CollectionActivity.class));
         } else if (id == R.id.nav_releases) {
             startActivity(new Intent(MainActivity.this, FavActivity.class));
+        } else if (id == R.id.nav_setting) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        } else if (id == R.id.nav_rate) {
+
+        } else if (id == R.id.nav_share) {
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -385,6 +420,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             showSnackBar("Speech to text not supported.");
         }
     }
+
 
     @Override
     public void onTrackClick(CollectionTrack collectionTrack) {

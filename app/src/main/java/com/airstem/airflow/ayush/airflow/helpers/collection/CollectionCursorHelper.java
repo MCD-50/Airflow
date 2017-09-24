@@ -136,4 +136,28 @@ public class CollectionCursorHelper {
         };
     }
 
+
+    public static String getVideoThumbnail(Context context, long videoId) {
+        try {
+            String[] projection = {
+                    MediaStore.Video.Thumbnails.DATA,
+            };
+            ContentResolver cr = context.getContentResolver();
+            Cursor cursor = cr.query(
+                    MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+                    projection,
+                    MediaStore.Video.Thumbnails.VIDEO_ID + "=?",
+                    new String[] { String.valueOf(videoId) },
+                    null);
+            if(cursor != null && cursor.moveToFirst()){
+                String url = cursor.getString(0);
+                cursor.close();
+                return url;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

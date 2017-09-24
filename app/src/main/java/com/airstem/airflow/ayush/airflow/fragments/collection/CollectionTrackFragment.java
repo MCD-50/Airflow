@@ -14,12 +14,15 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
+import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -33,7 +36,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
     ProgressDialog progressDialog;
 
 
-    ArrayList<CollectionTrack> mItems;
+    RealmResults<CollectionTrack> mItems;
     TrackAdapter mAdapter;
     RecyclerView listView;
     TextView empty;
@@ -53,6 +56,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
+        listView.addItemDecoration(new LineDivider(getContext()));
 
         return rootView;
     }
@@ -67,7 +71,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
 
 
     private void setAdapter() {
-        mItems = new ArrayList<CollectionTrack>(realm.where(CollectionTrack.class).findAll());
+        mItems = realm.where(CollectionTrack.class).findAll();
         mAdapter = new TrackAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
     }

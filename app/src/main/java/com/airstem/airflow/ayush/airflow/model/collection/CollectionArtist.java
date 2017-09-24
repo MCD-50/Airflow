@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import io.realm.RealmObject;
 import io.realm.RealmList;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -17,6 +18,7 @@ public class CollectionArtist extends RealmObject implements Serializable {
 
 
 
+    @PrimaryKey
     private String mLocalId;
     private String mDatabaseId;
     private String mTitle;
@@ -46,8 +48,8 @@ public class CollectionArtist extends RealmObject implements Serializable {
         return mTracks;
     }
 
-    public int getTracksLength(){
-        return mTitle.length();
+    public String getTracksLength(){
+        return mTracks.size() > 1 ? mTracks.size() + " Tracks" :  mTracks.size() + " Track" ;
     }
 
     public void setTracks(RealmList<CollectionTrack> mTracks) {

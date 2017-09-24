@@ -21,6 +21,7 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 11/7/17.
@@ -34,7 +35,7 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
     ProgressDialog progressDialog;
 
 
-    ArrayList<CollectionRadio> mItems;
+    RealmResults<CollectionRadio> mItems;
     RadioAdapter mAdapter;
     RecyclerView listView;
     TextView empty;
@@ -66,7 +67,7 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
 
 
     private void setAdapter() {
-        mItems = new ArrayList<CollectionRadio>(realm.where(CollectionRadio.class).findAll());
+        mItems = realm.where(CollectionRadio.class).equalTo("mIsFav", true).findAll();
         mAdapter = new RadioAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
     }

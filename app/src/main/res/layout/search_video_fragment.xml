@@ -18,8 +18,8 @@
         android:id="@+id/search_video_fragment_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin">
+        android:layout_marginStart="@dimen/card_inside_padding"
+        android:layout_marginEnd="@dimen/card_inside_padding">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/search_video_fragment_list"

@@ -3,6 +3,7 @@ package com.airstem.airflow.ayush.airflow.fragments.search;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +14,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.SearchActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.VideoAdapter;
 import com.airstem.airflow.ayush.airflow.events.search.SearchVideoListener;
+import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
+import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
+import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
+import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
+import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
+import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
@@ -28,7 +37,7 @@ import java.util.ArrayList;
 public class SearchVideoFragment extends Fragment implements SearchVideoListener {
 
     boolean isLoading;
-    int nextPage = 1;
+    String nextPage = null;
     ProgressDialog progressDialog;
     InternetHelper internetHelper;
 
@@ -68,7 +77,8 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                nextPage = 1;
+                nextPage = null;
+                mItems.clear();
                 makeRequest(true);
             }
         });
@@ -82,7 +92,7 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
 
 
     public boolean hasLoaded = false;
-    @Override
+    /*@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(this.isVisible()){
@@ -91,11 +101,12 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
             }
             hasLoaded = true;
         }
-    }
+    }*/
 
     public void makeRequest(boolean showDialog){
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
+            hasLoaded = true;
         } else {
             empty.setVisibility(View.VISIBLE);
             swipeRefreshLayout.setRefreshing(false);
@@ -111,8 +122,7 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
                 super.onScrolled(recyclerView, dx, dy);
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (nextPage != -1 && !isLoading && totalItemCount <= lastVisibleItem) {
-                    nextPage = nextPage + 1;
+                if (nextPage != null && !isLoading && totalItemCount <= (lastVisibleItem + 1)) {
                     loadData(showDialog);
                 }
             }
@@ -129,8 +139,65 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
                 progressDialog.show();
             }
 
+            internetHelper.searchVideo(((SearchActivity) getActivity()).getSearchQuery(), nextPage, new Callback() {
+                @Override
+                public void OnSuccess(ArrayList<Object> items) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onSearch(ArrayList<SearchTrack> tracks, ArrayList<SearchAlbum> albums, ArrayList<SearchArtist> artists, ArrayList<SearchVideo> videos, ArrayList<SearchRadio> radios) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onArtistImages(ArrayList<SearchImage> searchImages) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onAlbumImages(ArrayList<SearchImage> searchImages) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onLyrics(String text) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging) {
+                    int x = 1;
+                }
+
+                @Override
+                public void onVideos(ArrayList<SearchVideo> searchVideos, String next) {
+                    mItems.addAll(searchVideos); mAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                    isLoading = false;
+                    nextPage = next != null ? next : null;
+                    swipeRefreshLayout.setRefreshing(false);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onRadios(ArrayList<SearchRadio> searchRadios) {
+                    int x = 1;
+                }
+
+                @Override
+                public void OnFailure(String message) {
+                    progressDialog.dismiss();
+                    isLoading = false;
+                    swipeRefreshLayout.setRefreshing(false);
+                    nextPage = null;
+                }
+            });
+
         } catch (Exception e) {
             isLoading = false;
+            progressDialog.dismiss();
+            swipeRefreshLayout.setRefreshing(false);
             empty.setVisibility(View.VISIBLE);
 
             e.printStackTrace();

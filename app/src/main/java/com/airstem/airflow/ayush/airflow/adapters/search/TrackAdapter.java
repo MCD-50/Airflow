@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.events.search.SearchTrackListener;
+import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.squareup.picasso.Picasso;
 
@@ -45,7 +46,12 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
 
         holder.title.setText(searchTrack.getTitle());
         holder.subTitle.setText(searchTrack.getArtistName());
-        Picasso.with(mContext).load(searchTrack.getArtworkUrl().get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        ArrayList<SearchImage> searchImages = searchTrack.getArtworkUrl();
+        if(searchImages.size() > 0){
+            Picasso.with(mContext).load(searchImages.get(0).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+        }else{
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
     }
 
     @Override

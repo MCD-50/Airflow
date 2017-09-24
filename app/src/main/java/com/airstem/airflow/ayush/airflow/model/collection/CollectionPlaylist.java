@@ -6,13 +6,18 @@ import java.io.Serializable;
 
 import io.realm.RealmObject;
 import io.realm.RealmList;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
 public class CollectionPlaylist extends RealmObject implements Serializable {
 
+
+    @PrimaryKey
     private String mTitle;
+
     private String mDatabaseId;
     private RealmList<CollectionTrack> mTracks;
     private String mOwner;
@@ -41,12 +46,16 @@ public class CollectionPlaylist extends RealmObject implements Serializable {
         return mTracks;
     }
 
-    public int getTrackLength(){
-        return mTitle.length();
+    public String getTracksLength(){
+        return mTracks.size() > 1 ? mTracks.size() + " Tracks" :  mTracks.size() + " Track" ;
     }
 
     public String getArtworkUrl() {
-        return mTracks.get(0).getArtworkUrl();
+        if(mTracks.size() > 0){
+            return mTracks.get(0).getArtworkUrl();
+        }else{
+            return "";
+        }
     }
 
 

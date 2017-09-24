@@ -26,6 +26,10 @@ public class SearchTrack extends DiscoverItem implements Serializable {
         this.mProvider = mProvider;
         this.mId = mId;
     }
+    
+    public SearchTrack(){
+        
+    }
 
 
     public String getTitle() {
@@ -50,5 +54,29 @@ public class SearchTrack extends DiscoverItem implements Serializable {
 
     public String getId() {
         return mId;
+    }
+
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
+
+    public void setArtistName(String mArtistName) {
+        this.mArtistName = mArtistName;
+    }
+
+    public void setAlbumName(String mAlbumName) {
+        this.mAlbumName = mAlbumName;
+    }
+
+    public void setArtworkUrl(ArrayList<SearchImage> mArtworkUrl) {
+        this.mArtworkUrl = mArtworkUrl;
+    }
+
+    public void setProvider(String mProvider) {
+        this.mProvider = mProvider;
+    }
+
+    public void setId(String mId) {
+        this.mId = mId;
     }
 }
