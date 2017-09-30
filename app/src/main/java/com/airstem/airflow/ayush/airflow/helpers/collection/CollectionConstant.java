@@ -1,5 +1,8 @@
 package com.airstem.airflow.ayush.airflow.helpers.collection;
 
+import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.model.helper.Option;
+
 import java.util.ArrayList;
 
 /**
@@ -84,6 +87,51 @@ public class CollectionConstant {
         add("#ff4500");
         add("#3f969b");
         add("#00868b");
+    }};
+
+    public static final ArrayList<Option> COLLECTION_TRACK_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Play track", R.drawable.ic_play_option));
+        add(new Option("Add to playlist", R.drawable.ic_add_option));
+        add(new Option("Add to fav", R.drawable.ic_fav_option));
+        add(new Option("Delete", R.drawable.ic_delete_option));
+    }};
+
+    public static final ArrayList<Option> PLAYLIST_TRACK_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Play track", R.drawable.ic_play_option));
+        add(new Option("Remove from playlist", R.drawable.ic_remove_option));
+    }};
+
+    public static final ArrayList<Option> COLLECTION_ARTIST_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Shuffle artist", R.drawable.ic_play_option));
+        add(new Option("Add to playlist", R.drawable.ic_add_option));
+        add(new Option("Delete", R.drawable.ic_delete_option));
+    }};
+
+    public static final ArrayList<Option> COLLECTION_VIDEO_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Play video", R.drawable.ic_play_option));
+        add(new Option("Delete", R.drawable.ic_delete_option));
+    }};
+
+    public static final ArrayList<Option> COLLECTION_PLAYLIST_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Shuffle playlist", R.drawable.ic_play_option));
+        add(new Option("Delete", R.drawable.ic_delete_option));
+    }};
+
+    public static final ArrayList<Option> COLLECTION_FAV_TRACK_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Play track", R.drawable.ic_play_option));
+        add(new Option("Remove from fav", R.drawable.ic_no_fav_option));
+        add(new Option("Delete", R.drawable.ic_delete_option));
+    }};
+
+    public static final ArrayList<Option> COLLECTION_FAV_VIDEO_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Play video", R.drawable.ic_play_option));
+        add(new Option("Remove from fav", R.drawable.ic_no_fav_option));
+        add(new Option("Delete", R.drawable.ic_delete_option));
+    }};
+
+    public static final ArrayList<Option> COLLECTION_FAV_RADIO_OPTIONS = new ArrayList<Option>(){{
+        add(new Option("Play radio", R.drawable.ic_play_option));
+        add(new Option("Remove from fav", R.drawable.ic_no_fav_option));
     }};
 
 }

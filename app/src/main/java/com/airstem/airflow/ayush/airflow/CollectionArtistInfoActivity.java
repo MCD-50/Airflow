@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
@@ -25,8 +26,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 import jp.satorufujiwara.scrolling.MaterialScrollingLayout;
 import jp.satorufujiwara.scrolling.behavior.ParallaxBehavior;
 
@@ -46,7 +50,7 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     CollapsingToolbarLayout collapsingToolbarLayout;
 
 
-    RealmList<CollectionTrack> mItems;
+    RealmResults<CollectionTrack> mItems;
     ArtistInfoAdapter mAdapter;
 
 
@@ -110,9 +114,18 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     }
 
     private void setAdapter() {
-        mItems = collectionArtist.getTracks();
+        mItems = realm.where(CollectionTrack.class).equalTo("mArtistId", collectionArtist.getLocalId()).findAllSorted("mTitle");
         mAdapter = new ArtistInfoAdapter(CollectionArtistInfoActivity.this, mItems, this);
         listView.setAdapter(mAdapter);
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionTrack>>() {
+            @Override
+            public void onChange(RealmResults<CollectionTrack> collectionTracks, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionTracks.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
     }
 
     public int dp(final int dp) {
@@ -131,12 +144,12 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     }
 
     @Override
-    public void onArtistRemove(CollectionArtist collectionArtist) {
+    public void onArtistTrackOptions(CollectionTrack collectionTrack, Action action) {
 
     }
 
     @Override
-    public void onArtistTrackRemove(CollectionTrack collectionTrack) {
+    public void onArtistOptions(CollectionArtist collectionArtist, Action action) {
 
     }
 

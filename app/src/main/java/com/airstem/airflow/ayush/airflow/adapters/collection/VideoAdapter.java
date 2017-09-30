@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionVideoListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.squareup.picasso.Picasso;
@@ -83,6 +84,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
                 @Override
                 public void onClick(View v) {
                     listener.onVideoClick(collectionVideo);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onVideoOptions(collectionVideo, Action.LONG_CLICK);
+                    return true;
                 }
             });
         }

@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.squareup.picasso.Picasso;
 
@@ -46,7 +48,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerVi
         holder.bindData(collectionArtist, mListener);
 
         holder.title.setText(collectionArtist.getTitle());
-        holder.subTitle.setText(collectionArtist.getTracksLength());
+        holder.subTitle.setText(CollectionHelper.getSweetString(collectionArtist.getModifiedOn()));
         if(!TextUtils.isEmpty(collectionArtist.getArtworkUrl())){
             Picasso.with(mContext).load(collectionArtist.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
         }else{
@@ -76,6 +78,14 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.RecyclerVi
                 @Override
                 public void onClick(View v) {
                     listener.onArtistClick(collectionArtist);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onArtistOptions(collectionArtist, Action.LONG_CLICK);
+                    return true;
                 }
             });
         }

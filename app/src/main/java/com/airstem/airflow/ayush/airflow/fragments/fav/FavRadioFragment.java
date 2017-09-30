@@ -15,11 +15,16 @@ import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.FavActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.RadioAdapter;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionRadioListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -30,8 +35,7 @@ import io.realm.RealmResults;
 public class FavRadioFragment  extends Fragment implements CollectionRadioListener {
 
     Realm realm;
-
-    boolean isLoading;
+    
     ProgressDialog progressDialog;
 
 
@@ -67,9 +71,18 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
 
 
     private void setAdapter() {
-        mItems = realm.where(CollectionRadio.class).equalTo("mIsFav", true).findAll();
+        mItems = realm.where(CollectionRadio.class).equalTo("mIsFav", true).findAllSorted("mTitle");
         mAdapter = new RadioAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionRadio>>() {
+            @Override
+            public void onChange(RealmResults<CollectionRadio> collectionRadios, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionRadios.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
     }
 
 
@@ -79,7 +92,7 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
     }
 
     @Override
-    public void onRadioFav(CollectionRadio collectionRadio, boolean addToFav) {
+    public void onRadioOptions(CollectionRadio collectionRadio, Action action) {
 
     }
 }

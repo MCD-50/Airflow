@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.squareup.picasso.Picasso;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import io.realm.RealmList;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -24,10 +26,10 @@ import io.realm.RealmList;
 public class PlaylistInfoAdapter extends RecyclerView.Adapter<PlaylistInfoAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private RealmList<CollectionTrack> mItems;
+    private RealmResults<CollectionTrack> mItems;
     private final CollectionPlaylistListener mListener;
 
-    public PlaylistInfoAdapter(Context context, RealmList<CollectionTrack> collectionTracks, CollectionPlaylistListener listener) {
+    public PlaylistInfoAdapter(Context context, RealmResults<CollectionTrack> collectionTracks, CollectionPlaylistListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
@@ -72,6 +74,14 @@ public class PlaylistInfoAdapter extends RecyclerView.Adapter<PlaylistInfoAdapte
                 @Override
                 public void onClick(View v) {
                     listener.onPlaylistTrackClick(collectionTrack);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onPlaylistTrackOptions(collectionTrack, Action.LONG_CLICK);
+                    return true;
                 }
             });
         }

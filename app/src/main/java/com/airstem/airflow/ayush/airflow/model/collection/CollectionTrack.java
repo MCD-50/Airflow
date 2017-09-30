@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.UUID;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -39,7 +41,7 @@ public class CollectionTrack extends RealmObject implements Serializable {
 
 
     public void init(){
-        mDatabaseId = "";
+        mDatabaseId = UUID.randomUUID().toString();
         mLocalId = "";
         mTitle = "";
         mAlbumName = "";
@@ -53,9 +55,11 @@ public class CollectionTrack extends RealmObject implements Serializable {
         mPlayCount = 0;
 
         mLastPlayed = "";
-        mModifiedOn = "";
+        mModifiedOn = new Date().toString();
 
+        //playlist name is playlist id
         mPlaylistId = "";
+        //artist local id is artist id
         mArtistId = "";
     }
 

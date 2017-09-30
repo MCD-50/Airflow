@@ -16,11 +16,15 @@ import com.airstem.airflow.ayush.airflow.FavActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -32,8 +36,7 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
 
 
     Realm realm;
-
-    boolean isLoading;
+    
     ProgressDialog progressDialog;
 
 
@@ -69,25 +72,29 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
 
 
     private void setAdapter() {
-        mItems = realm.where(CollectionTrack.class).equalTo("mIsFav", true).findAll();
+        mItems = realm.where(CollectionTrack.class).equalTo("mIsFav", true).findAllSorted("mTitle");
         mAdapter = new TrackAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionTrack>>() {
+            @Override
+            public void onChange(RealmResults<CollectionTrack> collectionTracks, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionTracks.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
     }
     
     
 
     @Override
-    public void onTrackClick(CollectionTrack collectionTrack) {
+    public void onTrackClick(final CollectionTrack collectionTrack) {
 
     }
 
     @Override
-    public void onTrackRemove(CollectionTrack collectionTrack) {
-        
-    }
-
-    @Override
-    public void onTrackFav(CollectionTrack collectionTrack, boolean addToFav) {
+    public void onTrackOptions(CollectionTrack collectionTrack, Action action) {
 
     }
 }

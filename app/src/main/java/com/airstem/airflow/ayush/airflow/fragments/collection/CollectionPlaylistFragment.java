@@ -18,12 +18,16 @@ import com.airstem.airflow.ayush.airflow.CollectionPlaylistInfoActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
@@ -34,7 +38,6 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
 
     Realm realm;
 
-    boolean isLoading;
     ProgressDialog progressDialog;
 
 
@@ -72,10 +75,21 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
 
 
     private void setAdapter() {
-        mItems = realm.where(CollectionPlaylist.class).findAll();
+        mItems = realm.where(CollectionPlaylist.class).findAllSorted("mTitle");
         mAdapter = new PlaylistAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionPlaylist>>() {
+            @Override
+            public void onChange(RealmResults<CollectionPlaylist> collectionPlaylists, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionPlaylists.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
     }
+
+
 
     @Override
     public void onPlaylistClick(CollectionPlaylist collectionPlaylist) {
@@ -90,12 +104,12 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
     }
 
     @Override
-    public void onPlaylistRemove(CollectionPlaylist collectionPlaylist) {
-        
+    public void onPlaylistTrackOptions(CollectionTrack collectionTrack, Action action) {
+
     }
 
     @Override
-    public void onPlaylistTrackRemove(CollectionTrack collectionTrack) {
+    public void onPlaylistOptions(CollectionPlaylist collectionPlaylist, Action action) {
 
     }
 }

@@ -1,5 +1,6 @@
 package com.airstem.airflow.ayush.airflow.events.collection;
 
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 /**
@@ -8,6 +9,5 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 public interface CollectionVideoListener {
     void onVideoClick(CollectionVideo collectionVideo);
-    void onVideoRemove(CollectionVideo collectionVideo);
-    void onVideoFav(CollectionVideo collectionVideo, boolean addToFav);
+    void onVideoOptions(CollectionVideo collectionVideo, Action action);
 }

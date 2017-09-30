@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.squareup.picasso.Picasso;
@@ -25,15 +26,14 @@ import io.realm.RealmResults;
 public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.RecyclerViewHolder> {
 
     private Context mContext;
-    private RealmList<CollectionTrack> mItems;
+    private RealmResults<CollectionTrack> mItems;
     private final CollectionArtistListener mListener;
 
-    public ArtistInfoAdapter(Context context, RealmList<CollectionTrack> collectionTracks, CollectionArtistListener listener) {
+    public ArtistInfoAdapter(Context context, RealmResults<CollectionTrack> collectionTracks, CollectionArtistListener listener) {
         mContext = context;
         mItems = collectionTracks;
         mListener = listener;
     }
-
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -73,6 +73,14 @@ public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.Re
                 @Override
                 public void onClick(View v) {
                     listener.onArtistTrackClick(collectionTrack);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onArtistTrackOptions(collectionTrack, Action.LONG_CLICK);
+                    return true;
                 }
             });
         }

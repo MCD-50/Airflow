@@ -9,19 +9,27 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
+import com.airstem.airflow.ayush.airflow.events.realms.PlaylistCallback;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionPlaylistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionArtistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionVideoFragment;
+import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by ayush AS on 7/1/17.
@@ -37,7 +45,7 @@ public class CollectionActivity extends MainActivity {
     CoordinatorLayout coordinatorLayout;
     FloatingActionButton floatingActionButton;
 
-    
+    CustomPagerAdapter adapter;
     
     @Nullable
     @Override
@@ -69,7 +77,6 @@ public class CollectionActivity extends MainActivity {
         //set fragments
         setFragments();
 
-
         //set click listeners
         setListeners();
 
@@ -82,7 +89,7 @@ public class CollectionActivity extends MainActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_video_white));
 
 
-        CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
+        adapter = new CustomPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new CollectionTrackFragment());
         adapter.addFragment(new CollectionArtistFragment());
         adapter.addFragment(new CollectionPlaylistFragment());
@@ -120,7 +127,25 @@ public class CollectionActivity extends MainActivity {
                         @Override
                         public void onClick(View v) {
                             //add playlist
+                            new MaterialDialog.Builder(CollectionActivity.this)
+                                    .title("New playlist")
+                                    .content("Make sure you enter unique title for your playlist")
+                                    .inputRangeRes(5, 20, R.color.colorAccent)
+                                    .inputType(InputType.TYPE_CLASS_TEXT)
+                                    .input(null, null, new MaterialDialog.InputCallback() {
+                                        @Override
+                                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                                            // Do something
+                                            ArrayList<CollectionPlaylist> collectionPlaylists = new ArrayList<CollectionPlaylist>();
 
+                                            final CollectionPlaylist collectionPlaylist = new CollectionPlaylist();
+                                            collectionPlaylist.init();
+                                            collectionPlaylist.setTitle(String.valueOf(input));
+
+                                            collectionPlaylists.add(collectionPlaylist);
+                                            DatabaseHelper.createOrUpdatePlaylists(realm, collectionPlaylists);
+                                        }
+                                    }).show();
                         }
                     });
                 }else{

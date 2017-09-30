@@ -4,6 +4,8 @@ import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -28,10 +30,11 @@ public class CollectionRadio extends RealmObject implements Serializable {
     private String mCountry;
     private String mColor;
     private boolean mIsFav;
+    private String mModifiedOn;
 
 
     public void init(){
-        mDatabaseId = "";
+        mDatabaseId = UUID.randomUUID().toString();
         mTitle = "";
         mMaxUser = 0;
 
@@ -40,6 +43,7 @@ public class CollectionRadio extends RealmObject implements Serializable {
         mCountry = "";
         mColor = "";
         mIsFav = false;
+        mModifiedOn = new Date().toString();
     }
 
 
@@ -65,6 +69,14 @@ public class CollectionRadio extends RealmObject implements Serializable {
 
     public void setColor(String mColor) {
         this.mColor = mColor;
+    }
+
+    public String getModifiedOn() {
+        return mModifiedOn;
+    }
+
+    public void setModifiedOn(String mModifiedOn) {
+        this.mModifiedOn = mModifiedOn;
     }
 
     public String getTitle() {

@@ -29,9 +29,7 @@ public class LocalTrackHelper {
                 if (!TextUtils.isEmpty(trackName) && !trackName.toLowerCase().contains("unknown") && !artistName.toLowerCase().contains("unknown")) {
                     CollectionTrack item = new CollectionTrack();
 
-
                     item.init();
-
 
                     item.setTitle(trackName);
                     item.setAlbumName(cursor.getString(2));
@@ -49,6 +47,7 @@ public class LocalTrackHelper {
         if (cursor != null) {
             cursor.close();
         }
+
         return items;
     }
 }

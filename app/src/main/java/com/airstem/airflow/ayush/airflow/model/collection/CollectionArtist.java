@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 import io.realm.RealmObject;
 import io.realm.RealmList;
@@ -22,16 +24,16 @@ public class CollectionArtist extends RealmObject implements Serializable {
     private String mLocalId;
     private String mDatabaseId;
     private String mTitle;
-    private RealmList<CollectionTrack> mTracks;
     private String mArtworkUrl;
+    private String mModifiedOn;
 
 
     public void init(){
         mLocalId = "";
-        mDatabaseId = "";
+        mDatabaseId = UUID.randomUUID().toString();
         mTitle = "";
-        mTracks = new RealmList<CollectionTrack>();
         mArtworkUrl = "";
+        mModifiedOn = new Date().toString();
     }
 
 
@@ -42,19 +44,6 @@ public class CollectionArtist extends RealmObject implements Serializable {
     public String getTitle() {
         return mTitle;
     }
-    
-
-    public RealmList<CollectionTrack> getTracks() {
-        return mTracks;
-    }
-
-    public String getTracksLength(){
-        return mTracks.size() > 1 ? mTracks.size() + " Tracks" :  mTracks.size() + " Track" ;
-    }
-
-    public void setTracks(RealmList<CollectionTrack> mTracks) {
-        this.mTracks = mTracks;
-    }
 
     public String getArtworkUrl() {
         return mArtworkUrl;
@@ -62,6 +51,14 @@ public class CollectionArtist extends RealmObject implements Serializable {
 
     public void setArtworkUrl(String mArtworkUrl) {
         this.mArtworkUrl = mArtworkUrl;
+    }
+
+    public String getModifiedOn() {
+        return mModifiedOn;
+    }
+
+    public void setModifiedOn(String mModifiedOn) {
+        this.mModifiedOn = mModifiedOn;
     }
 
 

@@ -17,11 +17,15 @@ import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.VideoAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionVideoListener;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
 import java.util.ArrayList;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -70,9 +74,18 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
 
 
     private void setAdapter() {
-        mItems = realm.where(CollectionVideo.class).findAll();
+        mItems = realm.where(CollectionVideo.class).findAllSorted("mTitle");
         mAdapter = new VideoAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionVideo>>() {
+            @Override
+            public void onChange(RealmResults<CollectionVideo> collectionVideos, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionVideos.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
     }
 
 
@@ -82,12 +95,7 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
     }
 
     @Override
-    public void onVideoRemove(CollectionVideo collectionVideo) {
-        
-    }
-
-    @Override
-    public void onVideoFav(CollectionVideo collectionVideo, boolean addToFav) {
+    public void onVideoOptions(CollectionVideo collectionVideo, Action action) {
 
     }
 }

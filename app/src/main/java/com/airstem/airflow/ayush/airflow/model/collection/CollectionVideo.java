@@ -3,6 +3,8 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 import android.graphics.Bitmap;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.UUID;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -32,7 +34,7 @@ public class CollectionVideo extends RealmObject implements Serializable {
 
 
     public void init(){
-        mDatabaseId = "";
+        mDatabaseId = UUID.randomUUID().toString();
         mLocalId = "";
         mTitle = "";
         mAuthor = "";
@@ -41,7 +43,7 @@ public class CollectionVideo extends RealmObject implements Serializable {
         mArtworkUrl = "";
         mIsOffline = true;
         mIsFav = false;
-        mModifiedOn = "";
+        mModifiedOn = new Date().toString();
     }
 
     public String getTitle() {

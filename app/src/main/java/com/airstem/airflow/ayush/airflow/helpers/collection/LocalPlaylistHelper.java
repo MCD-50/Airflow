@@ -19,12 +19,9 @@ public class LocalPlaylistHelper {
         ArrayList<CollectionPlaylist> items = new ArrayList<>();
         for(String name : CollectionConstant.COLLECTION_DEFAULT_PLAYLISTS){
             CollectionPlaylist item = new CollectionPlaylist();
-
             item.init();
 
-
             item.setTitle(name);
-            item.setTracks(new RealmList<CollectionTrack>());
             items.add(item);
         }
         return items;

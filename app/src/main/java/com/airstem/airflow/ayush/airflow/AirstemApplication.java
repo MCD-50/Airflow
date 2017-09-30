@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.airstem.airflow.ayush.airflow.events.collection.CursorListener;
 import com.airstem.airflow.ayush.airflow.events.service.PlayerListener;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.helpers.collection.LocalArtistHelper;
@@ -24,6 +25,8 @@ import com.airstem.airflow.ayush.airflow.service.MusicService;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 /**
  * Created by mcd-50 on 15/8/17.
@@ -46,6 +49,13 @@ public class AirstemApplication extends Application implements PlayerListener {
 
         // Initialize realm.
         Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration
+                .Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(config);
+
         airstemApplication = this;
         storeHelper = new StoreHelper(this);
 
@@ -53,7 +63,7 @@ public class AirstemApplication extends Application implements PlayerListener {
 
         //initService(airstemApplication);
 
-        initDatabase(airstemApplication);
+        //initDatabase(airstemApplication);
     }
 
    /* private ServiceConnection musicConnection = new ServiceConnection() {
@@ -106,19 +116,25 @@ public class AirstemApplication extends Application implements PlayerListener {
     */
 
 
-    private void initDatabase(AirstemApplication airstemApplication){
+    private void initDatabase(final AirstemApplication airstemApplication){
         //now get all cursors and save to realm
-        DatabaseHelper.createOrUpdateTracks(realm, LocalTrackHelper.getAllTracks(airstemApplication));
-        DatabaseHelper.createOrUpdateArtists(realm, LocalArtistHelper.getAllArtists(airstemApplication));
-        DatabaseHelper.createOrUpdateVideos(realm, LocalVideoHelper.getAllVideos(airstemApplication));
-        //DatabaseHelper.createOrUpdatePlaylists(realm, LocalPlaylistHelper.getAllPlaylists(airstemApplication));
+        LocalArtistHelper.getAllArtists(airstemApplication, new CursorListener() {
+            @Override
+            public void onSuccess(ArrayList<CollectionTrack> collectionTracks, ArrayList<CollectionVideo> collectionVideos, ArrayList<CollectionPlaylist> collectionPlaylists, ArrayList<CollectionArtist> collectionArtists) {
 
-        //ArrayList<CollectionVideo> collectionVideos = LocalVideoHelper.getAllVideos(airstemApplication);
-        //ArrayList<CollectionPlaylist> collectionPlaylists = LocalPlaylistHelper.getAllPlaylists(airstemApplication);
-        //ArrayList<CollectionArtist> collectionArtists = LocalArtistHelper.getAllArtists(airstemApplication);
+            }
 
+            @Override
+            public void onArtistAndTracksFill(ArrayList<CollectionArtist> collectionArtists, ArrayList<CollectionTrack> collectionTracks) {
+                ArrayList<CollectionPlaylist> collectionPlaylists = LocalPlaylistHelper.getAllPlaylists(airstemApplication);
+                ArrayList<CollectionVideo> collectionVideos = LocalVideoHelper.getAllVideos(airstemApplication);
 
-
+                DatabaseHelper.createOrUpdateTracks(realm, collectionTracks);
+                DatabaseHelper.createOrUpdateArtists(realm, collectionArtists);
+                DatabaseHelper.createOrUpdateVideos(realm, collectionVideos);
+                DatabaseHelper.createOrUpdatePlaylists(realm, collectionPlaylists);
+            }
+        });
     }
 
     @Override

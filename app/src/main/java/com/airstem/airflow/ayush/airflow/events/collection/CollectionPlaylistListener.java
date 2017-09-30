@@ -1,5 +1,6 @@
 package com.airstem.airflow.ayush.airflow.events.collection;
 
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
@@ -10,6 +11,6 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 public interface CollectionPlaylistListener {
     void onPlaylistClick(CollectionPlaylist collectionPlaylist);
     void onPlaylistTrackClick(CollectionTrack collectionTrack);
-    void onPlaylistRemove(CollectionPlaylist collectionPlaylist);
-    void onPlaylistTrackRemove(CollectionTrack collectionTrack);
+    void onPlaylistTrackOptions(CollectionTrack collectionTrack, Action action);
+    void onPlaylistOptions(CollectionPlaylist collectionPlaylist, Action action);
 }

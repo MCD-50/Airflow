@@ -3,15 +3,22 @@ package com.airstem.airflow.ayush.airflow.adapters.collection;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.orhanobut.dialogplus.DialogPlus;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,6 +34,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
     private Context mContext;
     private RealmResults<CollectionTrack> mItems;
     private final CollectionTrackListener mListener;
+
 
     public TrackAdapter(Context context, RealmResults<CollectionTrack> collectionTracks, CollectionTrackListener listener) {
         mContext = context;
@@ -72,11 +80,21 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             image = (ImageView) view.findViewById(R.id.collection_track_fragment_content_image);
         }
 
+
+
         public void bindData(final CollectionTrack collectionTrack, final CollectionTrackListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onTrackClick(collectionTrack);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onTrackOptions(collectionTrack, Action.LONG_CLICK);
+                    return true;
                 }
             });
         }

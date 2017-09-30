@@ -9,17 +9,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -31,8 +39,7 @@ import io.realm.RealmResults;
 public class CollectionTrackFragment  extends Fragment implements CollectionTrackListener {
 
     Realm realm;
-
-    boolean isLoading;
+    
     ProgressDialog progressDialog;
 
 
@@ -71,24 +78,28 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
 
 
     private void setAdapter() {
-        mItems = realm.where(CollectionTrack.class).findAll();
+        mItems = realm.where(CollectionTrack.class).findAllSorted("mTitle");
         mAdapter = new TrackAdapter(getContext(), mItems, this);
         listView.setAdapter(mAdapter);
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionTrack>>() {
+            @Override
+            public void onChange(RealmResults<CollectionTrack> collectionTracks, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionTracks.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
     }
     
     
     @Override
-    public void onTrackClick(CollectionTrack collectionTrack) {
+    public void onTrackClick(final CollectionTrack collectionTrack) {
 
     }
 
     @Override
-    public void onTrackRemove(CollectionTrack collectionTrack) {
-        
-    }
-
-    @Override
-    public void onTrackFav(CollectionTrack collectionTrack, boolean addToFav) {
+    public void onTrackOptions(CollectionTrack collectionTrack, Action action) {
 
     }
 }

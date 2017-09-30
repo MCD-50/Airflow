@@ -13,14 +13,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistInfoAdapter;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.squareup.picasso.Picasso;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by mcd-50 on 10/7/17.
@@ -39,7 +44,7 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
 
 
 
-    RealmList<CollectionTrack> mItems;
+    RealmResults<CollectionTrack> mItems;
     PlaylistInfoAdapter mAdapter;
 
 
@@ -86,28 +91,50 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
         //set title
         collapsingToolbarLayout.setTitle(String.valueOf(collectionPlaylist.getTitle()));
 
-        //set scrolling activity
-        setScrollingActivity();
-
-
         //set adapter
         setAdapter();
     }
 
+
+    private void setAdapter() {
+
+        if(collectionPlaylist.getTitle().equalsIgnoreCase("Last Added")){
+            mItems =  realm.where(CollectionTrack.class).findAllSorted("mModifiedOn", Sort.DESCENDING);
+        }else if(collectionPlaylist.getTitle().equalsIgnoreCase("Recent")){
+            mItems =  realm.where(CollectionTrack.class).notEqualTo("mLastPlayed", "").findAllSorted("mLastPlayed", Sort.DESCENDING);
+        }else if(collectionPlaylist.getTitle().equalsIgnoreCase("Most Played")){
+            mItems =  realm.where(CollectionTrack.class).greaterThan("mPlayCount", 0).findAllSorted("mPlayCount", Sort.DESCENDING);
+        }else{
+            mItems =  realm.where(CollectionTrack.class).equalTo("mPlaylistId", collectionPlaylist.getTitle()).findAllSorted("mTitle");
+        }
+
+        mAdapter = new PlaylistInfoAdapter(CollectionPlaylistInfoActivity.this, mItems, this);
+        listView.setAdapter(mAdapter);
+
+        mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionTrack>>() {
+            @Override
+            public void onChange(RealmResults<CollectionTrack> collectionTracks, OrderedCollectionChangeSet changeSet) {
+                // Query results are updated in real time with fine grained notifications.
+                mItems = collectionTracks.sort("mTitle");
+                mAdapter.notifyDataSetChanged();
+                changeSet.getInsertions(); // => [0] is added.
+            }
+        });
+
+        //set scrolling activity
+        setScrollingActivity();
+    }
+
     private void setScrollingActivity() {
-        String artworkUrl = collectionPlaylist.getArtworkUrl();
+        String artworkUrl = "";
+        if(mItems.size() > 0){
+            artworkUrl = mItems.get(0).getArtworkUrl();
+        }
         if(!TextUtils.isEmpty(artworkUrl)){
             Picasso.with(CollectionPlaylistInfoActivity.this).load(artworkUrl).placeholder(R.drawable.default_art).into(image);
         }else{
             Picasso.with(CollectionPlaylistInfoActivity.this).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(image);
         }
-    }
-
-
-    private void setAdapter() {
-        mItems = collectionPlaylist.getTracks();
-        mAdapter = new PlaylistInfoAdapter(CollectionPlaylistInfoActivity.this, mItems, this);
-        listView.setAdapter(mAdapter);
     }
 
     public int dp(final int dp) {
@@ -126,12 +153,12 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onPlaylistRemove(CollectionPlaylist collectionPlaylist) {
+    public void onPlaylistTrackOptions(CollectionTrack collectionTrack, Action action) {
 
     }
 
     @Override
-    public void onPlaylistTrackRemove(CollectionTrack collectionTrack) {
+    public void onPlaylistOptions(CollectionPlaylist collectionPlaylist, Action action) {
 
     }
 

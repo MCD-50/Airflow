@@ -7,10 +7,13 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.airstem.airflow.ayush.airflow.events.collection.CursorListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import io.realm.RealmList;
 
@@ -21,8 +24,9 @@ import io.realm.RealmList;
 public class LocalArtistHelper {
 
 
-    public static ArrayList<CollectionArtist> getAllArtists(Context context) {
-        ArrayList<CollectionArtist> items = new ArrayList<>();
+    public static void getAllArtists(Context context, final CursorListener cursorListener) {
+        ArrayList<CollectionArtist> collectionArtists = new ArrayList<>();
+        HashSet<CollectionTrack> collectionTracks = new HashSet<>();
 
         Cursor cursor = CollectionCursorHelper.getAllArtists(context);
         if (cursor != null && cursor.moveToFirst()) {
@@ -30,27 +34,23 @@ public class LocalArtistHelper {
                 long artistId = cursor.getLong(0);
                 String artistName = cursor.getString(1);
                 if (!TextUtils.isEmpty(artistName) && !artistName.toLowerCase().contains("unknown")) {
-                    ArrayList<CollectionTrack> tracks = getArtistTracks(context, artistId);
+
+                    collectionTracks.addAll(getArtistTracks(context, artistId));
+
                     CollectionArtist item = new CollectionArtist();
-
                     item.init();
-
                     item.setTitle(artistName);
                     item.setArtworkUrl("");
                     item.setLocalId(String.valueOf(artistId));
-
-                    RealmList<CollectionTrack> collectionTracks = new RealmList<CollectionTrack>();
-                    collectionTracks.addAll(tracks);
-
-                    item.setTracks(collectionTracks);
-                    items.add(item);
+                    collectionArtists.add(item);
                 }
             } while (cursor.moveToNext());
         }
         if (cursor != null) {
             cursor.close();
         }
-        return items;
+
+        cursorListener.onArtistAndTracksFill(collectionArtists, new ArrayList<CollectionTrack>(collectionTracks));
     }
 
     private static ArrayList<CollectionTrack> getArtistTracks(Context context, long artistId) {
@@ -67,7 +67,6 @@ public class LocalArtistHelper {
 
                     item.init();
 
-
                     item.setTitle(trackName);
                     item.setAlbumName(cursor.getString(2));
                     item.setArtistName(cursor.getString(3));
@@ -76,7 +75,8 @@ public class LocalArtistHelper {
                     item.setArtworkUrl(String.valueOf(artworkUrl));
                     item.setIsOffline(true);
                     item.setLocalId(String.valueOf(songId));
-                    item.setModifiedOn(cursor.getString(5));
+                    item.setArtistId(String.valueOf(artistId));
+
                     items.add(item);
                 }
             } while (cursor.moveToNext());

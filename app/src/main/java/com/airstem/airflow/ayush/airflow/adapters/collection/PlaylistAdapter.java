@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.squareup.picasso.Picasso;
 
@@ -47,12 +49,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Recycl
         holder.bindData(collectionPlaylist, mListener);
 
         holder.title.setText(collectionPlaylist.getTitle());
-        holder.subTitle.setText(collectionPlaylist.getTracksLength());
-        if(!TextUtils.isEmpty(collectionPlaylist.getArtworkUrl())){
+        holder.subTitle.setText(CollectionHelper.getSweetString(collectionPlaylist.getModifiedOn()));
+        Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        /*if(!TextUtils.isEmpty(collectionPlaylist.getArtworkUrl())){
             Picasso.with(mContext).load(collectionPlaylist.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
         }else{
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
-        }
+        }*/
     }
 
     @Override
@@ -77,6 +80,14 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Recycl
                 @Override
                 public void onClick(View v) {
                     listener.onPlaylistClick(collectionPlaylist);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onPlaylistOptions(collectionPlaylist, Action.LONG_CLICK);
+                    return true;
                 }
             });
         }

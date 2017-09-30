@@ -1,5 +1,8 @@
 package com.airstem.airflow.ayush.airflow.helpers.collection;
 
+import android.content.Context;
+
+import com.airstem.airflow.ayush.airflow.events.collection.CursorListener;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
@@ -13,9 +16,8 @@ import java.util.ArrayList;
  */
 
 public class CollectionProvider {
-    public static ArrayList<CollectionTrack> mTracks = new ArrayList<>();
-    public static ArrayList<CollectionArtist> mArtists = new ArrayList<>();
-    public static ArrayList<CollectionPlaylist> mPlaylists = new ArrayList<>();
-    public static ArrayList<CollectionVideo> mVideos = new ArrayList<>();
-    public static ArrayList<CollectionRadio> mRadios = new ArrayList<>();
+    public static void getAllData(final Context context, final CursorListener cursorListener){
+        //get all tracks
+
+    }
 }

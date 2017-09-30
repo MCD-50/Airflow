@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.adapters.home.DiscoverAdapter;
+import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
 import com.airstem.airflow.ayush.airflow.events.home.DiscoverListener;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
@@ -428,14 +429,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onTrackRemove(CollectionTrack collectionTrack) {
+    public void onTrackOptions(CollectionTrack collectionTrack, Action action) {
 
     }
 
-    @Override
-    public void onTrackFav(CollectionTrack collectionTrack, boolean addToFav) {
-
-    }
 
     @Override
     public void onMoreClick() {
