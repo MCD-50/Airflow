@@ -210,7 +210,8 @@ public class CollectionHelper {
         collectionVideo.setIsOffline(false);
         collectionVideo.setIsMatched(false);
         if(searchVideo.getArtworkUrl().size() > 0){
-            collectionVideo.setArtworkUrl(searchVideo.getArtworkUrl().get(0).getUri());
+            int lastIndex = searchVideo.getArtworkUrl().size() - 1;
+            collectionVideo.setArtworkUrl(searchVideo.getArtworkUrl().get(lastIndex).getUri());
         }
         return collectionVideo;
     }

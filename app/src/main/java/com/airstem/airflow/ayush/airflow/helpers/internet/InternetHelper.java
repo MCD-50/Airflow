@@ -1225,8 +1225,8 @@ public class InternetHelper {
             final JSONObject jsonBody = new JSONObject();
 
             final ArrayList<SearchTrack> searchTracks = new ArrayList<>();
-            RequestQueue queue = Volley.newRequestQueue(mContext);
 
+            RequestQueue queue = Volley.newRequestQueue(mContext);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -1238,6 +1238,7 @@ public class InternetHelper {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     JSONObject meta = jsonObject.getJSONObject("meta");
                                     JSONObject result = jsonObject.getJSONObject("result");
+
 
                                     //leave meta for now
                                     String type = result.getString("type");
@@ -1258,12 +1259,11 @@ public class InternetHelper {
                                             SearchImage image = new SearchImage(size, url, "YOUTUBE");
                                             searchImages.add(image);
                                         }
-
                                         SearchTrack searchTrack = new SearchTrack(title, author, null, searchImages, "YOUTUBE", id);
                                         searchTracks.add(searchTrack);
                                     }
                                 }
-                                callback.onSearch(searchTracks, null, null, null, null);
+                                callback.onTracks(searchTracks, null);
                             } else {
                                 callback.OnFailure("Array is null or empty");
                             }

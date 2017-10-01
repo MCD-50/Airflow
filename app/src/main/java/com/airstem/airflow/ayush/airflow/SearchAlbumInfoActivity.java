@@ -160,7 +160,7 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
                 super.onScrolled(recyclerView, dx, dy);
                 int totalItemCount = linearLayoutManager.getItemCount();
                 int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (nextPage != -1 && !isLoading && totalItemCount <= lastVisibleItem) {
+                if (nextPage != -1 && !isLoading && totalItemCount <= (lastVisibleItem + 1)) {
                     loadData(true);
                 }
             }
@@ -211,6 +211,11 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
                     nextPage = -1;
                     swipeRefreshLayout.setRefreshing(false);
                     isLoading = false;
+                }
+
+                @Override
+                public void onTracks(ArrayList<SearchTrack> searchTracks, String next) {
+                    int x = 1;
                 }
 
                 @Override

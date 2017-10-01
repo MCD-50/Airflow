@@ -184,6 +184,11 @@ public class ArtistInfoTrackFragment extends Fragment implements SearchTrackList
                 }
 
                 @Override
+                public void onTracks(ArrayList<SearchTrack> searchTracks, String next) {
+                    int x = 1;
+                }
+
+                @Override
                 public void onVideos(ArrayList<SearchVideo> searchVideos, String next) {
                     int x = 1;
                 }

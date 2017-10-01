@@ -38,7 +38,14 @@
             style="@style/SubTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="2" />
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/collection_track_fragment_content_status"
+            style="@style/StatusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
     </LinearLayout>
 

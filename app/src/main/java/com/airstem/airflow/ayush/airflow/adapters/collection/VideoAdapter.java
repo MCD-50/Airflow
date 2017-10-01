@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
@@ -57,8 +58,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
         holder.subTitle.setText(collectionVideo.getAuthor());
         if(collectionVideo.getArtworkUrl() != null && !TextUtils.isEmpty(collectionVideo.getArtworkUrl())){
             Picasso.with(mContext).load(collectionVideo.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+            Picasso.with(mContext).load(collectionVideo.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.smallImage);
         }else{
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.smallImage);
+        }
+
+        if(!collectionVideo.getIsOffline() && !collectionVideo.getIsMatched()){
+            holder.status.setText(String.valueOf("Matching video..."));
+            holder.relativeLayout.setAlpha(.5f);
+        }else if(!collectionVideo.getIsOffline() && collectionVideo.getIsMatched()){
+            holder.status.setText(String.valueOf("Online"));
+            holder.relativeLayout.setAlpha(1);
+        }else{
+            holder.status.setText(String.valueOf(""));
+            holder.relativeLayout.setAlpha(1);
         }
     }
 
@@ -69,14 +83,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, subTitle;
-        ImageView image;
+        TextView title, subTitle, status;
+        ImageView image, smallImage;
+        RelativeLayout relativeLayout;
 
         RecyclerViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.collection_video_fragment_content_title);
             subTitle = (TextView) view.findViewById(R.id.collection_video_fragment_content_sub_title);
+            status = (TextView) view.findViewById(R.id.collection_video_fragment_content_status);
             image = (ImageView) view.findViewById(R.id.collection_video_fragment_content_image);
+            smallImage = (ImageView) view.findViewById(R.id.collection_video_fragment_content_small_image);
+
+            relativeLayout = (RelativeLayout) view.findViewById(R.id.collection_video_fragment_content_holder);
         }
 
         public void bindData(final CollectionVideo collectionVideo, final CollectionVideoListener listener) {

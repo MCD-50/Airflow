@@ -60,12 +60,12 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
 
         progressDialog = new ProgressDialog(getContext());
 
-
         empty = (TextView) rootView.findViewById(R.id.collection_video_fragment_empty);
         listView = (RecyclerView) rootView.findViewById(R.id.collection_video_fragment_list);
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
+        listView.addItemDecoration(new LineDivider(getContext()));
 
         return rootView;
     }

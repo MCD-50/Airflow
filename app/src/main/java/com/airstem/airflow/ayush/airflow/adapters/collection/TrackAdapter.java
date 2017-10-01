@@ -50,7 +50,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        CollectionTrack collectionTrack = mItems.get(position);
+        final CollectionTrack collectionTrack = mItems.get(position);
         holder.bindData(collectionTrack, mListener);
 
         holder.title.setText(collectionTrack.getTitle());
@@ -61,10 +61,15 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
         }
 
-        if(collectionTrack.getIsOffline() && !collectionTrack.getIsMatched()){
-
-        }else if(collectionTrack.getIsOffline() && collectionTrack.getIsMatched()){
-
+        if(!collectionTrack.getIsOffline() && !collectionTrack.getIsMatched()){
+            holder.status.setText(String.valueOf("Matching track..."));
+            holder.relativeLayout.setAlpha(.5f);
+        }else if(!collectionTrack.getIsOffline() && collectionTrack.getIsMatched()){
+            holder.status.setText(String.valueOf("Online"));
+            holder.relativeLayout.setAlpha(1);
+        }else{
+            holder.status.setText(String.valueOf(""));
+            holder.relativeLayout.setAlpha(1);
         }
     }
 
@@ -75,14 +80,17 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, subTitle;
+        TextView title, subTitle, status;
         ImageView image;
+        RelativeLayout relativeLayout;
 
         RecyclerViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.collection_track_fragment_content_title);
             subTitle = (TextView) view.findViewById(R.id.collection_track_fragment_content_sub_title);
+            status = (TextView) view.findViewById(R.id.collection_track_fragment_content_status);
             image = (ImageView) view.findViewById(R.id.collection_track_fragment_content_image);
+            relativeLayout = (RelativeLayout) view.findViewById(R.id.collection_track_fragment_content_holder);
         }
 
         public void bindData(final CollectionTrack collectionTrack, final CollectionTrackListener listener) {

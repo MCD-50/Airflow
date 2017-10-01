@@ -37,6 +37,8 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.9.4.5'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.tonyodev.fetch:fetch:1.1.2'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
 
     compile 'jp.satorufujiwara:material-scrolling:1.2.1'
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'

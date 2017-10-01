@@ -49,8 +49,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
         if(searchImages.size() > 0){
             int lastIndex = searchImages.size() - 1;
             Picasso.with(mContext).load(searchImages.get(lastIndex).getUri()).placeholder(R.drawable.default_art).into(holder.image);
+            Picasso.with(mContext).load(searchImages.get(0).getUri()).placeholder(R.drawable.default_art).into(holder.smallImage);
         }else{
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.smallImage);
         }
     }
 
@@ -62,13 +64,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, subTitle;
-        ImageView image;
+        ImageView image, smallImage;
 
         RecyclerViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.search_video_fragment_content_title);
             subTitle = (TextView) view.findViewById(R.id.search_video_fragment_content_sub_title);
             image = (ImageView) view.findViewById(R.id.search_video_fragment_content_image);
+            smallImage = (ImageView) view.findViewById(R.id.search_video_fragment_content_small_image);
         }
 
         void bindData(final SearchVideo searchVideo, final SearchVideoListener listener) {

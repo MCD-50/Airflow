@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.SearchActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.VideoAdapter;
+import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchVideoListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
@@ -76,7 +77,7 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
         listView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
-
+        listView.addItemDecoration(new LineDivider(getContext()));
 
         return rootView;
     }
@@ -181,6 +182,11 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
                 @Override
                 public void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging) {
                     int x = 1;
+                }
+
+                @Override
+                public void onTracks(ArrayList<SearchTrack> searchTracks, String next) {
+
                 }
 
                 @Override

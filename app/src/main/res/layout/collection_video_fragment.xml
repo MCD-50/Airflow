@@ -20,8 +20,6 @@
         android:id="@+id/collection_video_fragment_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/card_inside_padding"
-        android:layout_marginEnd="@dimen/card_inside_padding"
         android:scrollbars="none"
         android:clipToPadding="false" />
 

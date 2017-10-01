@@ -21,9 +21,8 @@ public interface Callback {
     void onArtistImages(ArrayList<SearchImage> searchImages);
     void onAlbumImages(ArrayList<SearchImage> searchImages);
     void onLyrics(String text);
-
-
     void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging);
+    void onTracks(ArrayList<SearchTrack> searchTracks, String nextPage);
     void onVideos(ArrayList<SearchVideo> searchVideos, String nextPage);
     void onRadios(ArrayList<SearchRadio> searchRadios);
 

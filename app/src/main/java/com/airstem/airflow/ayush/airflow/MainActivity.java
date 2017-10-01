@@ -397,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_music_library) {
             startActivity(new Intent(MainActivity.this, CollectionActivity.class));
         } else if (id == R.id.nav_releases) {
-            startActivity(new Intent(MainActivity.this, FavActivity.class));
+            startActivity(new Intent(MainActivity.this, NewReleaseActivity.class));
         } else if (id == R.id.nav_setting) {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_rate) {
