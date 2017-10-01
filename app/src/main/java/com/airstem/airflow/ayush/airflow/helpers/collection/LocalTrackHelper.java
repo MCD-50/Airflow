@@ -40,6 +40,7 @@ public class LocalTrackHelper {
                     item.setIsOffline(true);
                     item.setLocalId(String.valueOf(songId));
                     item.setModifiedOn(cursor.getString(5));
+                    item.setBookmark(cursor.getString(6));
                     items.add(item);
                 }
             } while (cursor.moveToNext());

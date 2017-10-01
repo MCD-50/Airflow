@@ -3,10 +3,13 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -16,9 +19,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class CollectionTrack extends RealmObject implements Serializable {
 
-
-
-    private String mDatabaseId;
+    private String mId = UUID.randomUUID().toString();
 
     @PrimaryKey
     private String mLocalId;
@@ -31,17 +32,18 @@ public class CollectionTrack extends RealmObject implements Serializable {
     private String mArtworkUrl;
     private boolean mIsFav;
     private boolean mIsOffline;
+    private boolean mIsMatched;
 
     private int mPlayCount;
 
     private String mLastPlayed;
     private String mModifiedOn;
-    private String mPlaylistId;
-    private String mArtistId;
 
+    private String mArtistId;
+    private String mBookmark;
+    private CollectionDownload mDownload;
 
     public void init(){
-        mDatabaseId = UUID.randomUUID().toString();
         mLocalId = "";
         mTitle = "";
         mAlbumName = "";
@@ -51,15 +53,15 @@ public class CollectionTrack extends RealmObject implements Serializable {
         mArtworkUrl = "";
         mIsOffline = true;
         mIsFav = false;
+        mIsMatched = true;
 
         mPlayCount = 0;
 
         mLastPlayed = "";
         mModifiedOn = new Date().toString();
+        mDownload = new CollectionDownload();
 
-        //playlist name is playlist id
-        mPlaylistId = "";
-        //artist local id is artist id
+        mBookmark = "";
         mArtistId = "";
     }
 
@@ -142,13 +144,7 @@ public class CollectionTrack extends RealmObject implements Serializable {
         this.mLocalId = mLocalId;
     }
 
-    public String getPlaylistId() {
-        return mPlaylistId;
-    }
 
-    public void setPlaylistId(String mPlaylistId) {
-        this.mPlaylistId = mPlaylistId;
-    }
 
     public String getArtistId() {
         return mArtistId;
@@ -159,12 +155,8 @@ public class CollectionTrack extends RealmObject implements Serializable {
     }
 
 
-    public String getDatabaseId() {
-        return mDatabaseId;
-    }
-
-    public void setDatabaseId(String mDatabaseId) {
-        this.mDatabaseId = mDatabaseId;
+    public String getId() {
+        return mId;
     }
 
     public void setAlbumName(String mAlbumName) {
@@ -183,7 +175,29 @@ public class CollectionTrack extends RealmObject implements Serializable {
         this.mTrackOfflineUrl = mTrackOfflineUrl;
     }
 
+
+
     public void setArtworkUrl(String mArtworkUrl) {
         this.mArtworkUrl = mArtworkUrl;
+    }
+
+    public CollectionDownload getDownload() {
+        return mDownload;
+    }
+
+    public boolean getIsMatched() {
+        return mIsMatched;
+    }
+
+    public void setIsMatched(boolean mIsMatched) {
+        this.mIsMatched = mIsMatched;
+    }
+
+    public String getBookmark() {
+        return mBookmark;
+    }
+
+    public void setBookmark(String mBookmark) {
+        this.mBookmark = mBookmark;
     }
 }

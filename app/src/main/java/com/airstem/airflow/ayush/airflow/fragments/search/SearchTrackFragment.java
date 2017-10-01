@@ -14,13 +14,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.airstem.airflow.ayush.airflow.MainActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.SearchActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchTrackListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -31,6 +36,8 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 /**
@@ -39,6 +46,8 @@ import java.util.ArrayList;
 
 public class SearchTrackFragment extends Fragment implements SearchTrackListener {
 
+
+    Realm realm;
 
     boolean isLoading;
     int nextPage = 0;
@@ -110,6 +119,8 @@ public class SearchTrackFragment extends Fragment implements SearchTrackListener
 
 
     public void makeRequest(boolean showDialog){
+        realm = ((SearchActivity) getActivity()).getRealm();
+
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;
@@ -213,6 +224,21 @@ public class SearchTrackFragment extends Fragment implements SearchTrackListener
 
     @Override
     public void onTrackClick(SearchTrack searchTrack) {
+        final CollectionArtist collectionArtist = CollectionHelper.getCollectionArtistFromTrack(searchTrack);
+        final CollectionTrack collectionTrack = CollectionHelper.getCollectionTrack(searchTrack, collectionArtist);
 
+        RealmResults<CollectionArtist> collectionArtistRealmResults = realm.where(CollectionArtist.class).equalTo("mTitle", collectionArtist.getTitle()).findAll();
+        boolean updateOrCreate = true;
+        if(collectionArtistRealmResults.size() > 0 && collectionArtistRealmResults.get(0).getIsOffline()){
+            updateOrCreate = false;
+        }
+
+        if(updateOrCreate){
+            DatabaseHelper.createOrUpdateArtists(realm, new ArrayList<CollectionArtist>(){{add(collectionArtist);}});
+            DatabaseHelper.createOrUpdateTracks(realm, new ArrayList<CollectionTrack>(){{add(collectionTrack);}});
+        }else{
+            collectionTrack.setArtistId(collectionArtistRealmResults.get(0).getId());
+            DatabaseHelper.createOrUpdateTracks(realm, new ArrayList<CollectionTrack>(){{add(collectionTrack);}});
+        }
     }
 }

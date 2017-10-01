@@ -122,16 +122,19 @@ public class CollectionCursorHelper {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.DATE_MODIFIED
+                MediaStore.Audio.Media.DATE_MODIFIED,
+                MediaStore.Audio.Media.BOOKMARK
         };
     }
 
     public static String[] getVideoProjection() {
-        return new String[]{MediaStore.Video.Media._ID,
+        return new String[]{
+                MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.TITLE,
-                MediaStore.Audio.Media.ALBUM,
-                MediaStore.Audio.Media.DATA,
+                MediaStore.Video.Media.ALBUM,
+                MediaStore.Video.Media.DATA,
                 MediaStore.Video.Media.DATE_MODIFIED,
+                MediaStore.Video.Media.BOOKMARK
 
         };
     }

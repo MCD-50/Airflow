@@ -7,11 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.CollectionArtistInfoActivity;
 import com.airstem.airflow.ayush.airflow.CollectionPlaylistInfoActivity;
@@ -20,9 +22,14 @@ import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import io.realm.OrderedCollectionChangeSet;
 import io.realm.OrderedRealmCollectionChangeListener;
@@ -37,6 +44,7 @@ import io.realm.RealmResults;
 public class CollectionPlaylistFragment  extends Fragment implements CollectionPlaylistListener {
 
     Realm realm;
+    ActionHelper actionHelper;
 
     ProgressDialog progressDialog;
 
@@ -70,6 +78,7 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         realm = ((CollectionActivity)getActivity()).getRealm();
+        actionHelper = ((CollectionActivity)getActivity()).getActionHelper();
         setAdapter();
     }
 
@@ -90,7 +99,6 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
     }
 
 
-
     @Override
     public void onPlaylistClick(CollectionPlaylist collectionPlaylist) {
         Intent collectionIntent = new Intent(getActivity(), CollectionPlaylistInfoActivity.class);
@@ -109,7 +117,17 @@ public class CollectionPlaylistFragment  extends Fragment implements CollectionP
     }
 
     @Override
-    public void onPlaylistOptions(CollectionPlaylist collectionPlaylist, Action action) {
-
+    public void onPlaylistOptions(final CollectionPlaylist collectionPlaylist, Action action) {
+        final ArrayList<String> options =   CollectionHelper.prepareOptionFromPlaylist(collectionPlaylist);
+        new MaterialDialog.Builder(getContext())
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionPlaylist);
+                    }
+                })
+                .show();
     }
 }

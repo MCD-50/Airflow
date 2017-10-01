@@ -13,12 +13,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistInfoAdapter;
 import com.airstem.airflow.ayush.airflow.behaviors.OverlayViewBehavior;
 import com.airstem.airflow.ayush.airflow.behaviors.TitleBehavior;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -42,6 +45,7 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
 
 
     Realm realm;
+    ActionHelper actionHelper;
 
     LinearLayoutManager linearLayoutManager;
     TextView empty;
@@ -62,6 +66,7 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
         setContentView(R.layout.collection_artist_info_page);
 
         realm = Realm.getDefaultInstance();
+        actionHelper = new ActionHelper(CollectionArtistInfoActivity.this, realm);
 
         //get the intent
         String id  = getIntent().getStringExtra(CollectionConstant.SHARED_PASSING_COLLECTION_ARTIST_LOCAL_ID);
@@ -114,7 +119,7 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     }
 
     private void setAdapter() {
-        mItems = realm.where(CollectionTrack.class).equalTo("mArtistId", collectionArtist.getLocalId()).findAllSorted("mTitle");
+        mItems = realm.where(CollectionTrack.class).equalTo("mArtistId", collectionArtist.getId()).findAllSorted("mTitle");
         mAdapter = new ArtistInfoAdapter(CollectionArtistInfoActivity.this, mItems, this);
         listView.setAdapter(mAdapter);
         mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionTrack>>() {
@@ -144,13 +149,33 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
     }
 
     @Override
-    public void onArtistTrackOptions(CollectionTrack collectionTrack, Action action) {
-
+    public void onArtistTrackOptions(final CollectionTrack collectionTrack, Action action) {
+        final ArrayList<String> options =   CollectionHelper.prepareOptionFromTrack(collectionTrack);
+        new MaterialDialog.Builder(CollectionArtistInfoActivity.this)
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionTrack);
+                    }
+                })
+                .show();
     }
 
     @Override
-    public void onArtistOptions(CollectionArtist collectionArtist, Action action) {
-
+    public void onArtistOptions(final CollectionArtist collectionArtist, Action action) {
+        final ArrayList<String> options =  CollectionHelper.prepareOptionFromArtist(collectionArtist);
+        new MaterialDialog.Builder(CollectionArtistInfoActivity.this)
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionArtist);
+                    }
+                })
+                .show();
     }
 
     @Override

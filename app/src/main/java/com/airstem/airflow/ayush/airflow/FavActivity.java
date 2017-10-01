@@ -17,6 +17,7 @@ import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.fragments.fav.FavRadioFragment;
 import com.airstem.airflow.ayush.airflow.fragments.fav.FavTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.fav.FavVideoFragment;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 
 import io.realm.Realm;
 
@@ -27,6 +28,7 @@ import io.realm.Realm;
 public class FavActivity extends MainActivity {
 
     Realm realm;
+    ActionHelper actionHelper;
 
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -44,6 +46,9 @@ public class FavActivity extends MainActivity {
 
         //init realm
         realm = Realm.getDefaultInstance();
+
+        //init helper
+        actionHelper = new ActionHelper(FavActivity.this, realm);
 
 
         //init components
@@ -123,6 +128,10 @@ public class FavActivity extends MainActivity {
 
     public Realm getRealm(){
         return realm;
+    }
+
+    public ActionHelper getActionHelper(){
+        return actionHelper;
     }
 
     @Override

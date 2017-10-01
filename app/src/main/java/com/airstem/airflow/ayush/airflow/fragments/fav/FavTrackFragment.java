@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.FavActivity;
 import com.airstem.airflow.ayush.airflow.R;
@@ -18,6 +19,9 @@ import com.airstem.airflow.ayush.airflow.adapters.collection.TrackAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 
@@ -36,6 +40,7 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
 
 
     Realm realm;
+    ActionHelper actionHelper;
     
     ProgressDialog progressDialog;
 
@@ -67,6 +72,7 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         realm = ((FavActivity)getActivity()).getRealm();
+        actionHelper = ((FavActivity)getActivity()).getActionHelper();
         setAdapter();
     }
 
@@ -94,7 +100,17 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
     }
 
     @Override
-    public void onTrackOptions(CollectionTrack collectionTrack, Action action) {
-
+    public void onTrackOptions(final CollectionTrack collectionTrack, final Action action) {
+        final ArrayList<String> options =   CollectionHelper.prepareOptionFromTrack(collectionTrack);
+        new MaterialDialog.Builder(getContext())
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionTrack);
+                    }
+                })
+                .show();
     }
 }

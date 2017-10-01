@@ -20,6 +20,8 @@ import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
+import io.realm.Realm;
+
 /**
  * Created by mcd-50 on 8/7/17.
  */
@@ -35,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
 
     CustomPagerAdapter adapter;
 
+    Realm realm;
     private String searchQuery = "";
 
     @Nullable
@@ -42,6 +45,9 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_page);
+
+
+        realm = Realm.getDefaultInstance();
 
         searchQuery = getIntent().getStringExtra(CollectionConstant.SHARED_PASSING_SEARCH_TEXT);
         setTitle(searchQuery);
@@ -130,6 +136,9 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    public Realm getRealm(){
+        return realm;
+    }
 
     public String getSearchQuery(){
         return searchQuery;

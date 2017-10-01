@@ -22,6 +22,7 @@ import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionPlaylist
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionArtistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionVideoFragment;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
@@ -38,6 +39,7 @@ import io.realm.RealmResults;
 public class CollectionActivity extends MainActivity {
 
     Realm realm;
+    ActionHelper actionHelper;
 
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -57,6 +59,9 @@ public class CollectionActivity extends MainActivity {
 
         //init realm
         realm = Realm.getDefaultInstance();
+
+        //init helper
+        actionHelper = new ActionHelper(CollectionActivity.this, realm);
 
         //init components
         initComponent();
@@ -129,7 +134,7 @@ public class CollectionActivity extends MainActivity {
                             //add playlist
                             new MaterialDialog.Builder(CollectionActivity.this)
                                     .title("New playlist")
-                                    .content("Make sure you enter unique title for your playlist")
+                                    .content("Go there, and create a new playlist")
                                     .inputRangeRes(5, 20, R.color.colorAccent)
                                     .inputType(InputType.TYPE_CLASS_TEXT)
                                     .input(null, null, new MaterialDialog.InputCallback() {
@@ -141,7 +146,6 @@ public class CollectionActivity extends MainActivity {
                                             final CollectionPlaylist collectionPlaylist = new CollectionPlaylist();
                                             collectionPlaylist.init();
                                             collectionPlaylist.setTitle(String.valueOf(input));
-
                                             collectionPlaylists.add(collectionPlaylist);
                                             DatabaseHelper.createOrUpdatePlaylists(realm, collectionPlaylists);
                                         }
@@ -162,6 +166,10 @@ public class CollectionActivity extends MainActivity {
 
     public Realm getRealm(){
         return realm;
+    }
+
+    public ActionHelper getActionHelper(){
+        return actionHelper;
     }
 
 

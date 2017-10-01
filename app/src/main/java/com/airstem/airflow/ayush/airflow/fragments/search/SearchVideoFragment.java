@@ -18,7 +18,12 @@ import com.airstem.airflow.ayush.airflow.SearchActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.VideoAdapter;
 import com.airstem.airflow.ayush.airflow.events.search.SearchVideoListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -29,12 +34,18 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 
 /**
  * Created by mcd-50 on 8/7/17.
  */
 
 public class SearchVideoFragment extends Fragment implements SearchVideoListener {
+
+
+    Realm realm;
 
     boolean isLoading;
     String nextPage = null;
@@ -104,6 +115,8 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
     }*/
 
     public void makeRequest(boolean showDialog){
+        realm = ((SearchActivity) getActivity()).getRealm();
+
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;
@@ -207,7 +220,7 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
 
 
     @Override
-    public void onVideoClick(SearchVideo searchVideo) {
-
+    public void onVideoClick(final SearchVideo searchVideo) {
+        DatabaseHelper.createOrUpdateVideos(realm, new ArrayList<CollectionVideo>(){{add(CollectionHelper.getCollectionVideo(searchVideo));}});
     }
 }

@@ -40,6 +40,7 @@ public class LocalVideoHelper {
                     item.setIsOffline(true);
                     item.setLocalId(String.valueOf(videoId));
                     item.setModifiedOn(cursor.getString(4));
+                    item.setBookmark(cursor.getString(5));
 
                     items.add(item);
                 }

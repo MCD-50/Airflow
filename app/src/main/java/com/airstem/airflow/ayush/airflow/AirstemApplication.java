@@ -63,7 +63,7 @@ public class AirstemApplication extends Application implements PlayerListener {
 
         //initService(airstemApplication);
 
-        //initDatabase(airstemApplication);
+        initDatabase(airstemApplication);
     }
 
    /* private ServiceConnection musicConnection = new ServiceConnection() {
@@ -118,7 +118,7 @@ public class AirstemApplication extends Application implements PlayerListener {
 
     private void initDatabase(final AirstemApplication airstemApplication){
         //now get all cursors and save to realm
-        LocalArtistHelper.getAllArtists(airstemApplication, new CursorListener() {
+        LocalArtistHelper.getAllArtists(airstemApplication, realm, new CursorListener() {
             @Override
             public void onSuccess(ArrayList<CollectionTrack> collectionTracks, ArrayList<CollectionVideo> collectionVideos, ArrayList<CollectionPlaylist> collectionPlaylists, ArrayList<CollectionArtist> collectionArtists) {
 
@@ -126,13 +126,13 @@ public class AirstemApplication extends Application implements PlayerListener {
 
             @Override
             public void onArtistAndTracksFill(ArrayList<CollectionArtist> collectionArtists, ArrayList<CollectionTrack> collectionTracks) {
-                ArrayList<CollectionPlaylist> collectionPlaylists = LocalPlaylistHelper.getAllPlaylists(airstemApplication);
+                //ArrayList<CollectionPlaylist> collectionPlaylists = LocalPlaylistHelper.getAllPlaylists(airstemApplication);
                 ArrayList<CollectionVideo> collectionVideos = LocalVideoHelper.getAllVideos(airstemApplication);
 
                 DatabaseHelper.createOrUpdateTracks(realm, collectionTracks);
                 DatabaseHelper.createOrUpdateArtists(realm, collectionArtists);
                 DatabaseHelper.createOrUpdateVideos(realm, collectionVideos);
-                DatabaseHelper.createOrUpdatePlaylists(realm, collectionPlaylists);
+                //DatabaseHelper.createOrUpdatePlaylists(realm, collectionPlaylists);
             }
         });
     }

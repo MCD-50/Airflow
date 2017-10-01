@@ -1,8 +1,5 @@
+
 package com.airstem.airflow.ayush.airflow.helpers.collection;
-
-import com.airstem.airflow.ayush.airflow.R;
-import com.airstem.airflow.ayush.airflow.model.helper.Option;
-
 import java.util.ArrayList;
 
 /**
@@ -73,6 +70,25 @@ public class CollectionConstant {
     public static final String PLAYER_IS_PLAYER_ACTIVE = "playerActive";
     public static final String PLAYER_ACTION_INTENT_FILTER = "android.intent.action.PLAYER";
 
+
+
+
+    //option contant
+    public static final String PLAY_TRACK_OPTION = "Play track";
+    public static final String PLAY_VIDEO_OPTION = "Play video";
+    public static final String START_RADIO_OPTION = "Start radio";
+    public static final String STREAM_TRACK_OPTION = "Stream track";
+    public static final String STREAM_VIDEO_OPTION = "Stream video";
+    public static final String SHUFFLE_TRACKS_OPTION = "Shuffle tracks";
+    public static final String ADD_TO_PLAYLIST_OPTION = "Add to playlist";
+    public static final String ADD_TO_FAV_OPTION = "Add to fav";
+    public static final String REMOVE_FROM_FAV_OPTION = "Remove from fav";
+    public static final String REMOVE_FROM_PLAYLIST_OPTION = "Remove from playlist";
+    public static final String REMOVE_FROM_COLLECTION_OPTION = "Remove from collection";
+    public static final String DELETE_OPTION = "Delete";
+    public static final String RE_MATCH_OPTION = "Re match track";
+    public static final String MANUAL_MATCH_OPTION = "Manual match";
+
     //speech text
     public static final String SPEECH_TEXT = "You say we play" + "\n" + "Try saying like play taylor swift...";
     public static final int SPEECH_CODE = 111;
@@ -89,50 +105,14 @@ public class CollectionConstant {
         add("#00868b");
     }};
 
-    public static final ArrayList<Option> COLLECTION_TRACK_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Play track", R.drawable.ic_play_option));
-        add(new Option("Add to playlist", R.drawable.ic_add_option));
-        add(new Option("Add to fav", R.drawable.ic_fav_option));
-        add(new Option("Delete", R.drawable.ic_delete_option));
-    }};
+    public static final String[] COLLECTION_TRACK_OPTIONS = {"Play track", "Delete"};
 
-    public static final ArrayList<Option> PLAYLIST_TRACK_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Play track", R.drawable.ic_play_option));
-        add(new Option("Remove from playlist", R.drawable.ic_remove_option));
-    }};
-
-    public static final ArrayList<Option> COLLECTION_ARTIST_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Shuffle artist", R.drawable.ic_play_option));
-        add(new Option("Add to playlist", R.drawable.ic_add_option));
-        add(new Option("Delete", R.drawable.ic_delete_option));
-    }};
-
-    public static final ArrayList<Option> COLLECTION_VIDEO_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Play video", R.drawable.ic_play_option));
-        add(new Option("Delete", R.drawable.ic_delete_option));
-    }};
-
-    public static final ArrayList<Option> COLLECTION_PLAYLIST_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Shuffle playlist", R.drawable.ic_play_option));
-        add(new Option("Delete", R.drawable.ic_delete_option));
-    }};
-
-    public static final ArrayList<Option> COLLECTION_FAV_TRACK_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Play track", R.drawable.ic_play_option));
-        add(new Option("Remove from fav", R.drawable.ic_no_fav_option));
-        add(new Option("Delete", R.drawable.ic_delete_option));
-    }};
-
-    public static final ArrayList<Option> COLLECTION_FAV_VIDEO_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Play video", R.drawable.ic_play_option));
-        add(new Option("Remove from fav", R.drawable.ic_no_fav_option));
-        add(new Option("Delete", R.drawable.ic_delete_option));
-    }};
-
-    public static final ArrayList<Option> COLLECTION_FAV_RADIO_OPTIONS = new ArrayList<Option>(){{
-        add(new Option("Play radio", R.drawable.ic_play_option));
-        add(new Option("Remove from fav", R.drawable.ic_no_fav_option));
-    }};
-
+    public static final String[] PLAYLIST_TRACK_OPTIONS = {"Play track", "Remove from playlist"};
+    public static final String[] COLLECTION_ARTIST_OPTIONS = {"Shuffle artist", "Add to playlist", "Delete"};
+    public static final String[] COLLECTION_VIDEO_OPTIONS = {"Play video", "Delete"};
+    public static final String[] COLLECTION_PLAYLIST_OPTIONS = {"Shuffle playlist", "Delete"};
+    public static final String[] COLLECTION_FAV_TRACK_OPTIONS = {"Play track", "Remove from fav", "Delete"};
+    public static final String[] COLLECTION_FAV_VIDEO_OPTIONS =  {"Play video", "Remove from fav", "Delete"};
+    public static final String[] COLLECTION_FAV_RADIO_OPTIONS = {"Play radio", "Remove from fav"};
 }
 

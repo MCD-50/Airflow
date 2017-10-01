@@ -19,7 +19,13 @@ import com.airstem.airflow.ayush.airflow.adapters.search.RadioAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchRadioListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -30,6 +36,9 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 
 /**
  * Created by mcd-50 on 8/7/17.
@@ -37,6 +46,7 @@ import java.util.ArrayList;
 
 public class SearchRadioFragment extends Fragment implements SearchRadioListener {
 
+    Realm realm;
 
     boolean isLoading;
     int nextPage = 0;
@@ -109,6 +119,8 @@ public class SearchRadioFragment extends Fragment implements SearchRadioListener
     }*/
 
     public void makeRequest(boolean showDialog){
+        realm = ((SearchActivity) getActivity()).getRealm();
+
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;
@@ -209,11 +221,9 @@ public class SearchRadioFragment extends Fragment implements SearchRadioListener
     }
 
 
-
-
     @Override
-    public void onRadioClick(SearchRadio searchRadio) {
-
+    public void onRadioClick(final SearchRadio searchRadio) {
+        DatabaseHelper.createOrUpdateRadios(realm, new ArrayList<CollectionRadio>(){{add(CollectionHelper.getCollectionRadio(searchRadio));}});
     }
 }
 

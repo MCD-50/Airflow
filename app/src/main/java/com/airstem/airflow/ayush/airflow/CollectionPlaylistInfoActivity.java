@@ -9,21 +9,29 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.adapters.collection.PlaylistInfoAdapter;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionPlaylistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
+import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import io.realm.OrderedCollectionChangeSet;
 import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -35,6 +43,7 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
 
 
     Realm realm;
+    ActionHelper actionHelper;
 
     LinearLayoutManager linearLayoutManager;
     TextView empty;
@@ -56,6 +65,7 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
         setContentView(R.layout.collection_playlist_info_page);
 
         realm = Realm.getDefaultInstance();
+        actionHelper = new ActionHelper(CollectionPlaylistInfoActivity.this, realm);
 
         //get the intent
         String title  = getIntent().getStringExtra(CollectionConstant.SHARED_PASSING_COLLECTION_PLAYLIST_TITLE);
@@ -98,14 +108,24 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
 
     private void setAdapter() {
 
-        if(collectionPlaylist.getTitle().equalsIgnoreCase("Last Added")){
+        /*if(collectionPlaylist.getTitle().equalsIgnoreCase("Last Added")){
             mItems =  realm.where(CollectionTrack.class).findAllSorted("mModifiedOn", Sort.DESCENDING);
         }else if(collectionPlaylist.getTitle().equalsIgnoreCase("Recent")){
             mItems =  realm.where(CollectionTrack.class).notEqualTo("mLastPlayed", "").findAllSorted("mLastPlayed", Sort.DESCENDING);
         }else if(collectionPlaylist.getTitle().equalsIgnoreCase("Most Played")){
             mItems =  realm.where(CollectionTrack.class).greaterThan("mPlayCount", 0).findAllSorted("mPlayCount", Sort.DESCENDING);
         }else{
-            mItems =  realm.where(CollectionTrack.class).equalTo("mPlaylistId", collectionPlaylist.getTitle()).findAllSorted("mTitle");
+            mItems =  realm.where(CollectionTrack.class).equalTo("mPlaylistId", collectionPlaylist.getId()).findAllSorted("mTitle");
+        }*/
+
+        if(collectionPlaylist.getPlaylists().size() < 1){
+            mItems = realm.where(CollectionTrack.class).equalTo("mId", "AIRSTEMAPP").findAll();
+        }else{
+            String[] ids = new String[collectionPlaylist.getPlaylists().size()];
+            for (int i = 0; i < collectionPlaylist.getPlaylists().size(); i++){
+               ids[i] = String.valueOf(collectionPlaylist.getPlaylists().get(i).getString());
+            }
+            mItems =  realm.where(CollectionTrack.class).in("mId", ids).findAllSorted("mTitle");
         }
 
         mAdapter = new PlaylistInfoAdapter(CollectionPlaylistInfoActivity.this, mItems, this);
@@ -153,13 +173,33 @@ public class CollectionPlaylistInfoActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onPlaylistTrackOptions(CollectionTrack collectionTrack, Action action) {
-
+    public void onPlaylistTrackOptions(final CollectionTrack collectionTrack, Action action) {
+        final ArrayList<String> options =  CollectionHelper.prepareOptionFromPlaylistTrack(collectionTrack);
+        new MaterialDialog.Builder(CollectionPlaylistInfoActivity.this)
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performActionPlaylistTrack(options.get(which), collectionTrack, collectionPlaylist);
+                    }
+                })
+                .show();
     }
 
     @Override
-    public void onPlaylistOptions(CollectionPlaylist collectionPlaylist, Action action) {
-
+    public void onPlaylistOptions(final CollectionPlaylist collectionPlaylist, Action action) {
+        final ArrayList<String> options =  CollectionHelper.prepareOptionFromPlaylist(collectionPlaylist);
+        new MaterialDialog.Builder(CollectionPlaylistInfoActivity.this)
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionPlaylist);
+                    }
+                })
+                .show();
     }
 
     @Override

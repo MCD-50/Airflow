@@ -2,6 +2,8 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 
 import android.graphics.Bitmap;
 
+import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
@@ -16,20 +18,21 @@ import io.realm.annotations.PrimaryKey;
 
 public class CollectionPlaylist extends RealmObject implements Serializable {
 
+    private String mId = UUID.randomUUID().toString();
 
     @PrimaryKey
     private String mTitle;
-
-    private String mDatabaseId;
     private String mOwner;
     private String mModifiedOn;
 
+    RealmList<RealmString> mPlaylists;
 
     public void init(){
-        mDatabaseId = UUID.randomUUID().toString();
         mTitle = "";
         mOwner = "";
         mModifiedOn = new Date().toString();
+
+        mPlaylists = new RealmList<RealmString>();
     }
 
     public void setTitle(String mTitle) {
@@ -57,11 +60,15 @@ public class CollectionPlaylist extends RealmObject implements Serializable {
         return mOwner;
     }
 
-    public String getDatabaseId() {
-        return mDatabaseId;
+    public String getId() {
+        return mId;
     }
 
-    public void setDatabaseId(String mDatabaseId) {
-        this.mDatabaseId = mDatabaseId;
+    public RealmList<RealmString> getPlaylists() {
+        return mPlaylists;
+    }
+
+    public void setPlaylists(RealmList<RealmString> mPlaylists) {
+        this.mPlaylists = mPlaylists;
     }
 }

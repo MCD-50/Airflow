@@ -35,6 +35,8 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 /**
  * Created by mcd-50 on 8/7/17.
  */
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 public class SearchArtistFragment extends Fragment implements SearchArtistListener {
 
 
+    Realm realm;
 
     boolean isLoading;
     int nextPage = 0;
@@ -115,6 +118,7 @@ public class SearchArtistFragment extends Fragment implements SearchArtistListen
     }*/
 
     public void makeRequest(boolean showDialog){
+        realm = ((SearchActivity) getActivity()).getRealm();
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;

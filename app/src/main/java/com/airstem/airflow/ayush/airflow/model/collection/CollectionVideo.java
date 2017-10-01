@@ -15,26 +15,26 @@ import io.realm.annotations.PrimaryKey;
 
 public class CollectionVideo extends RealmObject implements Serializable {
 
-
-    private String mDatabaseId;
+    private String mId = UUID.randomUUID().toString();
 
     @PrimaryKey
     private String mLocalId;
-
     private String mTitle;
     private String mAuthor;
     private String mVideoOnlineUrl;
     private String mVideoOfflineUrl;
     private String mArtworkUrl;
-
     private boolean mIsOffline;
     private boolean mIsFav;
+    private boolean mIsMatched;
 
     private String mModifiedOn;
+    private String mBookmark;
+
+    private CollectionDownload mDownload;
 
 
     public void init(){
-        mDatabaseId = UUID.randomUUID().toString();
         mLocalId = "";
         mTitle = "";
         mAuthor = "";
@@ -42,8 +42,12 @@ public class CollectionVideo extends RealmObject implements Serializable {
         mVideoOfflineUrl = "";
         mArtworkUrl = "";
         mIsOffline = true;
+        mIsMatched = true;
+
         mIsFav = false;
+        mDownload = new CollectionDownload();
         mModifiedOn = new Date().toString();
+        mBookmark = "";
     }
 
     public String getTitle() {
@@ -98,14 +102,9 @@ public class CollectionVideo extends RealmObject implements Serializable {
         this.mModifiedOn = mModifiedOn;
     }
 
-    public String getDatabaseId() {
-        return mDatabaseId;
+    public String getId() {
+        return mId;
     }
-
-    public void setDatabaseId(String mDatabaseId) {
-        this.mDatabaseId = mDatabaseId;
-    }
-
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
@@ -125,5 +124,25 @@ public class CollectionVideo extends RealmObject implements Serializable {
 
     public void setArtworkUrl(String mArtworkUrl) {
         this.mArtworkUrl = mArtworkUrl;
+    }
+
+    public CollectionDownload getDownload() {
+        return mDownload;
+    }
+
+    public boolean getIsMatched() {
+        return mIsMatched;
+    }
+
+    public void setIsMatched(boolean mIsMatched) {
+        this.mIsMatched = mIsMatched;
+    }
+
+    public String getBookmark() {
+        return mBookmark;
+    }
+
+    public void setBookmark(String mBookmark) {
+        this.mBookmark = mBookmark;
     }
 }

@@ -18,13 +18,12 @@ import io.realm.annotations.PrimaryKey;
 public class CollectionRadio extends RealmObject implements Serializable {
 
 
-    private String mDatabaseId;
+    private String mId = UUID.randomUUID().toString();
 
     @PrimaryKey
     private String mTitle;
 
-    private int mMaxUser;
-
+    private long mMaxUser;
     private RealmList<RealmString> mStreamUrl;
     private RealmList<RealmString> mTags;
     private String mCountry;
@@ -34,7 +33,6 @@ public class CollectionRadio extends RealmObject implements Serializable {
 
 
     public void init(){
-        mDatabaseId = UUID.randomUUID().toString();
         mTitle = "";
         mMaxUser = 0;
 
@@ -51,7 +49,7 @@ public class CollectionRadio extends RealmObject implements Serializable {
         this.mTitle = mTitle;
     }
 
-    public void setMaxUser(int mMaxUser) {
+    public void setMaxUser(long mMaxUser) {
         this.mMaxUser = mMaxUser;
     }
 
@@ -83,7 +81,7 @@ public class CollectionRadio extends RealmObject implements Serializable {
         return mTitle;
     }
 
-    public int getUser() {
+    public long getUser() {
         return mMaxUser;
     }
 
@@ -111,12 +109,8 @@ public class CollectionRadio extends RealmObject implements Serializable {
         this.mIsFav = mIsFav;
     }
 
-    public String getDatabaseId() {
-        return mDatabaseId;
-    }
-
-    public void setDatabaseId(String mDatabaseId) {
-        this.mDatabaseId = mDatabaseId;
+    public String getId() {
+        return mId;
     }
 }
 

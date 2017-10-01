@@ -42,7 +42,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
         mListener = listener;
     }
 
-
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.collection_track_fragment_content, parent, false);
@@ -60,6 +59,12 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             Picasso.with(mContext).load(collectionTrack.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
         }else{
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
+
+        if(collectionTrack.getIsOffline() && !collectionTrack.getIsMatched()){
+
+        }else if(collectionTrack.getIsOffline() && collectionTrack.getIsMatched()){
+
         }
     }
 
@@ -79,8 +84,6 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             subTitle = (TextView) view.findViewById(R.id.collection_track_fragment_content_sub_title);
             image = (ImageView) view.findViewById(R.id.collection_track_fragment_content_image);
         }
-
-
 
         public void bindData(final CollectionTrack collectionTrack, final CollectionTrackListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {

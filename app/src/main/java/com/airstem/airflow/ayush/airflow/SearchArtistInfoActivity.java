@@ -22,12 +22,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
 public class SearchArtistInfoActivity extends AppCompatActivity{
 
+
+    Realm realm;
 
     ProgressDialog progressDialog;
     InternetHelper internetHelper;
@@ -47,6 +51,8 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_artist_info_page);
+
+        realm = Realm.getDefaultInstance();
 
         //get the intent
         searchArtist = (SearchArtist) getIntent().getSerializableExtra(CollectionConstant.SHARED_PASSING_SEARCH_ARTIST);
@@ -140,6 +146,10 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
         });
     }
 
+
+    public Realm getRealm(){
+        return realm;
+    }
 
     public SearchArtist getSearchArtist(){
         return searchArtist;

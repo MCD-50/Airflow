@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.VideoAdapter;
@@ -19,6 +20,9 @@ import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionVideoListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 
@@ -36,6 +40,8 @@ import io.realm.RealmResults;
 public class CollectionVideoFragment  extends Fragment implements CollectionVideoListener {
 
     Realm realm;
+    ActionHelper actionHelper;
+
 
     ProgressDialog progressDialog;
 
@@ -69,6 +75,7 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         realm = ((CollectionActivity)getActivity()).getRealm();
+        actionHelper = ((CollectionActivity)getActivity()).getActionHelper();
         setAdapter();
     }
 
@@ -95,7 +102,17 @@ public class CollectionVideoFragment  extends Fragment implements CollectionVide
     }
 
     @Override
-    public void onVideoOptions(CollectionVideo collectionVideo, Action action) {
-
+    public void onVideoOptions(final CollectionVideo collectionVideo, final Action action) {
+        final ArrayList<String> options =   CollectionHelper.prepareOptionFromVideo(collectionVideo);
+        new MaterialDialog.Builder(getContext())
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionVideo);
+                    }
+                })
+                .show();
     }
 }

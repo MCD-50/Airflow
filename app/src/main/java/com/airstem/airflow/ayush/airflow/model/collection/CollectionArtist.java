@@ -18,21 +18,21 @@ import io.realm.annotations.PrimaryKey;
 
 public class CollectionArtist extends RealmObject implements Serializable {
 
-
+    private String mId = UUID.randomUUID().toString();
 
     @PrimaryKey
     private String mLocalId;
-    private String mDatabaseId;
+
     private String mTitle;
     private String mArtworkUrl;
     private String mModifiedOn;
-
+    private boolean mIsOffline;
 
     public void init(){
         mLocalId = "";
-        mDatabaseId = UUID.randomUUID().toString();
         mTitle = "";
         mArtworkUrl = "";
+        mIsOffline = true;
         mModifiedOn = new Date().toString();
     }
 
@@ -70,11 +70,15 @@ public class CollectionArtist extends RealmObject implements Serializable {
         this.mLocalId = mLocalId;
     }
 
-    public String getDatabaseId() {
-        return mDatabaseId;
+    public String getId() {
+        return mId;
     }
 
-    public void setDatabaseId(String mDatabaseId) {
-        this.mDatabaseId = mDatabaseId;
+    public boolean getIsOffline() {
+        return mIsOffline;
+    }
+
+    public void setIsOffline(boolean mIsOffline) {
+        this.mIsOffline = mIsOffline;
     }
 }

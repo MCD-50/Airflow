@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
 import com.airstem.airflow.ayush.airflow.CollectionArtistInfoActivity;
 import com.airstem.airflow.ayush.airflow.R;
@@ -24,7 +25,9 @@ import com.airstem.airflow.ayush.airflow.adapters.option.OptionAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
@@ -47,6 +50,7 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
 
 
     Realm realm;
+    ActionHelper actionHelper;
 
     ProgressDialog progressDialog;
 
@@ -57,7 +61,6 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
     TextView empty;
     GridLayoutManager gridLayoutManager;
 
-    OptionAdapter mOptionAdapter;
 
     int numberOfColumns = 2;
 
@@ -81,6 +84,7 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         realm = ((CollectionActivity)getActivity()).getRealm();
+        actionHelper = ((CollectionActivity)getActivity()).getActionHelper();
         setAdapter();
     }
 
@@ -88,7 +92,6 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
     private void setAdapter() {
         mItems = realm.where(CollectionArtist.class).findAllSorted("mTitle");
         mAdapter = new ArtistAdapter(getContext(), mItems, this);
-        mOptionAdapter = new OptionAdapter(getContext(), CollectionConstant.COLLECTION_ARTIST_OPTIONS);
         listView.setAdapter(mAdapter);
         mItems.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<CollectionArtist>>() {
             @Override
@@ -121,19 +124,17 @@ public class CollectionArtistFragment extends Fragment implements CollectionArti
     }
 
     @Override
-    public void onArtistOptions(CollectionArtist collectionArtist, Action action) {
-
-        DialogPlus dialog = DialogPlus.newDialog(getActivity())
-                .setAdapter(mOptionAdapter)
-                .setOnItemClickListener(new OnItemClickListener() {
+    public void onArtistOptions(final CollectionArtist collectionArtist, final Action action) {
+        final ArrayList<String> options =   CollectionHelper.prepareOptionFromArtist(collectionArtist);
+        new MaterialDialog.Builder(getContext())
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
-                        Toast.makeText(getContext(), mOptionAdapter.getItem(position).getText(), Toast.LENGTH_SHORT).show();
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionArtist);
                     }
                 })
-                .setGravity(Gravity.BOTTOM)
-                .setExpanded(true)  // This will enable the expand feature, (similar to android L share dialog)
-                .create();
-        dialog.show();
+                .show();
     }
 }

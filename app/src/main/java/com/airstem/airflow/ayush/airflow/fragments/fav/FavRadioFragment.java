@@ -11,12 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.airstem.airflow.ayush.airflow.CollectionActivity;
+import com.airstem.airflow.ayush.airflow.CollectionPlaylistInfoActivity;
 import com.airstem.airflow.ayush.airflow.FavActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.adapters.collection.RadioAdapter;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionRadioListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
@@ -35,6 +40,7 @@ import io.realm.RealmResults;
 public class FavRadioFragment  extends Fragment implements CollectionRadioListener {
 
     Realm realm;
+    ActionHelper actionHelper;
     
     ProgressDialog progressDialog;
 
@@ -66,6 +72,7 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         realm = ((FavActivity)getActivity()).getRealm();
+        actionHelper = ((FavActivity)getActivity()).getActionHelper();
         setAdapter();
     }
 
@@ -92,7 +99,17 @@ public class FavRadioFragment  extends Fragment implements CollectionRadioListen
     }
 
     @Override
-    public void onRadioOptions(CollectionRadio collectionRadio, Action action) {
-
+    public void onRadioOptions(final CollectionRadio collectionRadio, Action action) {
+        final ArrayList<String> options =   CollectionHelper.prepareOptionFromRadio(collectionRadio);
+        new MaterialDialog.Builder(getContext())
+                .title("Options")
+                .items(options)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        actionHelper.performAction(options.get(which), collectionRadio);
+                    }
+                })
+                .show();
     }
 }

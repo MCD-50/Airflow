@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
+import com.airstem.airflow.ayush.airflow.SearchActivity;
 import com.airstem.airflow.ayush.airflow.SearchAlbumInfoActivity;
 import com.airstem.airflow.ayush.airflow.SearchArtistInfoActivity;
 import com.airstem.airflow.ayush.airflow.adapters.search.AlbumAdapter;
@@ -22,6 +23,8 @@ import com.airstem.airflow.ayush.airflow.events.search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionDownload;
+import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -32,11 +35,16 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 /**
  * Created by mcd-50 on 9/7/17.
  */
 
 public class ArtistInfoAlbumFragment extends Fragment implements SearchAlbumListener {
+
+    Realm realm;
+
 
     boolean isLoading;
     int nextPage = 1;
@@ -107,6 +115,8 @@ public class ArtistInfoAlbumFragment extends Fragment implements SearchAlbumList
     }*/
 
     public void makeRequest(boolean showDialog){
+        realm = ((SearchArtistInfoActivity) getActivity()).getRealm();
+
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;
