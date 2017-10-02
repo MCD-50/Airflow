@@ -17,6 +17,7 @@ import com.airstem.airflow.ayush.airflow.fragments.search.SearchRadioFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchTrackFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchVideoFragment;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
@@ -34,11 +35,13 @@ public class SearchActivity extends AppCompatActivity {
     ViewPager viewPager;
     CoordinatorLayout coordinatorLayout;
 
-
     CustomPagerAdapter adapter;
 
     Realm realm;
     private String searchQuery = "";
+
+
+    MatchHelper matchHelper;
 
     @Nullable
     @Override
@@ -51,6 +54,8 @@ public class SearchActivity extends AppCompatActivity {
 
         searchQuery = getIntent().getStringExtra(CollectionConstant.SHARED_PASSING_SEARCH_TEXT);
         setTitle(searchQuery);
+
+        matchHelper = new MatchHelper(SearchActivity.this, realm);
 
         //init components
         initComponent();
@@ -144,6 +149,9 @@ public class SearchActivity extends AppCompatActivity {
         return searchQuery;
     }
 
+    public MatchHelper getMatchHelper(){
+        return matchHelper;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

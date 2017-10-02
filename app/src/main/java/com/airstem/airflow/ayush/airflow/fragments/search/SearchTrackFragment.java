@@ -22,6 +22,7 @@ import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchTrackListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
@@ -33,6 +34,9 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,8 +50,8 @@ import io.realm.RealmResults;
 
 public class SearchTrackFragment extends Fragment implements SearchTrackListener {
 
-
     Realm realm;
+    MatchHelper matchHelper;
 
     boolean isLoading;
     int nextPage = 0;
@@ -88,6 +92,8 @@ public class SearchTrackFragment extends Fragment implements SearchTrackListener
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setAdapter();
+        realm = ((SearchActivity) getActivity()).getRealm();
+        matchHelper = ((SearchActivity) getActivity()).getMatchHelper();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -119,8 +125,6 @@ public class SearchTrackFragment extends Fragment implements SearchTrackListener
 
 
     public void makeRequest(boolean showDialog){
-        realm = ((SearchActivity) getActivity()).getRealm();
-
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;
@@ -180,6 +184,16 @@ public class SearchTrackFragment extends Fragment implements SearchTrackListener
                 @Override
                 public void onLyrics(String text) {
                     int x = 1;
+                }
+
+                @Override
+                public void onMatch(String downloadUrl) {
+
+                }
+
+                @Override
+                public void onVideoMatch(ArrayList<JSONObject> videoMatchUrl) {
+
                 }
 
                 @Override
@@ -244,6 +258,13 @@ public class SearchTrackFragment extends Fragment implements SearchTrackListener
         }else{
             collectionTrack.setArtistId(collectionArtistRealmResults.get(0).getId());
             DatabaseHelper.createOrUpdateTracks(realm, new ArrayList<CollectionTrack>(){{add(collectionTrack);}});
+        }
+
+        //match track
+        try {
+            matchHelper.matchTrack(collectionTrack);
+        }catch (JSONException e){
+            e.printStackTrace();
         }
     }
 }

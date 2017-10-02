@@ -21,7 +21,6 @@ import com.airstem.airflow.ayush.airflow.CollectionArtistInfoActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.SearchAlbumInfoActivity;
 import com.airstem.airflow.ayush.airflow.adapters.collection.ArtistAdapter;
-import com.airstem.airflow.ayush.airflow.adapters.option.OptionAdapter;
 import com.airstem.airflow.ayush.airflow.decorators.OffsetDivider;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionArtistListener;

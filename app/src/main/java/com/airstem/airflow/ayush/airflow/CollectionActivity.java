@@ -23,6 +23,7 @@ import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionTrackFra
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionArtistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.collection.CollectionVideoFragment;
 import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
@@ -40,6 +41,7 @@ public class CollectionActivity extends MainActivity {
 
     Realm realm;
     ActionHelper actionHelper;
+    MatchHelper matchHelper;
 
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -62,6 +64,7 @@ public class CollectionActivity extends MainActivity {
 
         //init helper
         actionHelper = new ActionHelper(CollectionActivity.this, realm);
+        matchHelper = new MatchHelper(CollectionActivity.this, realm);
 
         //init components
         initComponent();
@@ -170,6 +173,10 @@ public class CollectionActivity extends MainActivity {
 
     public ActionHelper getActionHelper(){
         return actionHelper;
+    }
+
+    public MatchHelper getMatchHelper(){
+        return matchHelper;
     }
 
 

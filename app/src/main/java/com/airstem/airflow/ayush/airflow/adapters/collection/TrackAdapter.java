@@ -61,7 +61,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.RecyclerView
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
         }
 
-        if(!collectionTrack.getIsOffline() && !collectionTrack.getIsMatched()){
+        if(!collectionTrack.getIsOffline() && !collectionTrack.getIsMatched() && collectionTrack.getIsMatchError()){
+            holder.status.setText(String.valueOf("Match failed. Try manual match"));
+            holder.relativeLayout.setAlpha(.5f);
+        }else if(!collectionTrack.getIsOffline() && !collectionTrack.getIsMatched()){
             holder.status.setText(String.valueOf("Matching track..."));
             holder.relativeLayout.setAlpha(.5f);
         }else if(!collectionTrack.getIsOffline() && collectionTrack.getIsMatched()){

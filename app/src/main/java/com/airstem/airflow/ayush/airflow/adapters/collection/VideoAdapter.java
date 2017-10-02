@@ -64,7 +64,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.RecyclerView
             Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.smallImage);
         }
 
-        if(!collectionVideo.getIsOffline() && !collectionVideo.getIsMatched()){
+        if(!collectionVideo.getIsOffline() && !collectionVideo.getIsMatched() && collectionVideo.getIsMatchError()){
+            holder.status.setText(String.valueOf("Match failed."));
+            holder.relativeLayout.setAlpha(.5f);
+        }else if(!collectionVideo.getIsOffline() && !collectionVideo.getIsMatched()){
             holder.status.setText(String.valueOf("Matching video..."));
             holder.relativeLayout.setAlpha(.5f);
         }else if(!collectionVideo.getIsOffline() && collectionVideo.getIsMatched()){

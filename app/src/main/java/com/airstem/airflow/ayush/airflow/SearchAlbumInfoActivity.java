@@ -20,6 +20,7 @@ import com.airstem.airflow.ayush.airflow.events.search.SearchAlbumListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
@@ -32,6 +33,9 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -47,6 +51,7 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
 
 
     Realm realm;
+    MatchHelper matchHelper;
 
     boolean isLoading;
     int nextPage = 1;
@@ -72,6 +77,7 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
         setContentView(R.layout.search_album_info_page);
 
         realm = Realm.getDefaultInstance();
+        matchHelper = new MatchHelper(SearchAlbumInfoActivity.this, realm);
         //get the intent
         searchAlbum = (SearchAlbum) getIntent().getSerializableExtra(CollectionConstant.SHARED_PASSING_SEARCH_ALBUM);
         if (searchAlbum == null) {
@@ -204,6 +210,16 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
                 }
 
                 @Override
+                public void onMatch(String downloadUrl) {
+
+                }
+
+                @Override
+                public void onVideoMatch(ArrayList<JSONObject> videoMatchUrl) {
+
+                }
+
+                @Override
                 public void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging) {
                     mItems.addAll(searchTracks);
                     mAdapter.notifyDataSetChanged();
@@ -272,6 +288,13 @@ public class SearchAlbumInfoActivity extends AppCompatActivity implements Search
             DatabaseHelper.createOrUpdateTracks(realm, new ArrayList<CollectionTrack>(){{add(collectionTrack);}});
         }else{
             DatabaseHelper.createOrUpdateTracks(realm, new ArrayList<CollectionTrack>(){{add(collectionTrack);}});
+        }
+
+        //match track
+        try {
+            matchHelper.matchTrack(collectionTrack);
+        }catch (JSONException e){
+            e.printStackTrace();
         }
     }
 

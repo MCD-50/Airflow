@@ -1,12 +1,18 @@
 package com.airstem.airflow.ayush.airflow.helpers.internet;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v13.app.ActivityCompat;
+import android.telecom.Call;
+import android.text.TextUtils;
 
+import com.airstem.airflow.ayush.airflow.Manifest;
 import com.airstem.airflow.ayush.airflow.enums.search.Type;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionKey;
 import com.airstem.airflow.ayush.airflow.model.search.SearchAlbum;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -14,6 +20,7 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -120,6 +127,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
 
         }
@@ -208,6 +219,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
 
         }
@@ -226,6 +241,7 @@ public class InternetHelper {
             final ArrayList<SearchTrack> searchTracks = new ArrayList<>();
             final ArrayList<SearchAlbum> searchAlbums = new ArrayList<>();
             final ArrayList<SearchArtist> searchArtists = new ArrayList<>();
+            final ArrayList<SearchTrack> youtubeSearchTracks = new ArrayList<>();
 
             final SearchPaging searchPaging = new SearchPaging();
 
@@ -246,15 +262,38 @@ public class InternetHelper {
                                     //leave meta for now
                                     String type = result.getString("type");
 
-                                    if (type.equals(Type.DEEZER_SEARCH.toString())) {
+                                    if (type.equals(Type.YOUTUBE_SEARCH.toString())) {
+                                        JSONObject tracks = result.getJSONObject("tracks");
+                                        JSONObject tracks_meta = tracks.getJSONObject("meta");
+                                        JSONArray tracks_result = tracks.getJSONArray("result");
+
+
+                                        for (int j = 0; j < tracks_result.length(); j++) {
+                                            JSONObject _item = tracks_result.getJSONObject(j);
+                                            String title = _item.getString("name");
+                                            String description = _item.getString("description");
+                                            String author = _item.getString("channel_title");
+                                            String id = _item.getString("id");
+                                            JSONArray images = _item.getJSONArray("images");
+                                            ArrayList<SearchImage> searchImages = new ArrayList<>();
+
+                                            for (int k = 0; k < images.length(); k++) {
+                                                JSONObject __item = images.getJSONObject(k);
+                                                String size = __item.getString("size");
+                                                String url = __item.getString("url");
+                                                SearchImage image = new SearchImage(size, url, "YOUTUBE");
+                                                searchImages.add(image);
+                                            }
+
+                                            SearchTrack searchTrack = new SearchTrack(title, author, "", searchImages, "YOUTUBE", id);
+                                            youtubeSearchTracks.add(searchTrack);
+                                        }
+
+                                    } else if (type.equals(Type.DEEZER_SEARCH.toString())) {
 
                                         JSONObject tracks = result.getJSONObject("tracks");
                                         JSONObject artists = result.getJSONObject("artists");
                                         JSONObject albums = result.getJSONObject("albums");
-
-                                        JSONObject tracks_meta = tracks.getJSONObject("meta");
-                                        JSONObject artist_meta = artists.getJSONObject("meta");
-                                        JSONObject albums_meta = albums.getJSONObject("meta");
 
                                         JSONArray tracks_result = tracks.getJSONArray("result");
                                         JSONArray artists_result = artists.getJSONArray("result");
@@ -328,6 +367,10 @@ public class InternetHelper {
                                         }
                                     }
                                 }
+                                if(searchTracks.size() < 1){
+                                    searchTracks.clear();
+                                    searchTracks.addAll(youtubeSearchTracks);
+                                }
                                 callback.onSuccess(searchTracks, searchArtists, searchAlbums, searchPaging);
                             } else {
                                 callback.OnFailure("Array is null or empty");
@@ -346,6 +389,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
 
         }
@@ -536,6 +583,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -601,6 +652,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -670,6 +725,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -747,6 +806,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -816,6 +879,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -892,6 +959,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -958,6 +1029,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1025,6 +1100,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1140,6 +1219,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1212,6 +1295,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1260,6 +1347,7 @@ public class InternetHelper {
                                             searchImages.add(image);
                                         }
                                         SearchTrack searchTrack = new SearchTrack(title, author, null, searchImages, "YOUTUBE", id);
+                                        searchTrack.setUrl(String.valueOf(CollectionKey.SECRET_URL_BASE + id));
                                         searchTracks.add(searchTrack);
                                     }
                                 }
@@ -1281,6 +1369,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1341,6 +1433,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1402,6 +1498,10 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
@@ -1453,8 +1553,211 @@ public class InternetHelper {
                     callback.OnFailure(error.getMessage());
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(jsonObjectRequest);
         }
     }
 
+
+    public void matchTrack(String name, String artistName, String albumName, final Callback callback) throws JSONException {
+        if (!isNetworkAvailable()) {
+            callback.OnFailure("Network Error.");
+        } else {
+            String url = CollectionConstant.MATCH_BASE + CollectionConstant.ENDPOINT_MATCH;
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.put("name", name);
+            jsonBody.put("artist_name", artistName);
+            jsonBody.put("album_name", albumName);
+            final String[] downloadUrl = {""};
+
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    if (response != null) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("messages");
+                            if (jsonArray != null && jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    JSONObject result = jsonObject.getJSONObject("result");
+                                    JSONArray match_array = result.getJSONArray("match");
+
+                                    for(int j = 0; j < match_array.length(); j++){
+                                        JSONObject item = match_array.getJSONObject(j);
+                                        if(item.has("type") && item.getString("type").equals(String.valueOf(Type.YOUTUBE_TRACK)) && item.getString("extension").equals("m4a")){
+                                            downloadUrl[0] = item.getString("download_url");
+                                            break;
+                                        }else if(item.has("type") && item.getString("type").equals(String.valueOf(Type.MP3PM_TRACK))){
+                                            downloadUrl[0] = item.getString("download_url");
+                                            break;
+                                        }else if(item.has("type")){
+                                            downloadUrl[0] = item.getString("download_url");
+                                        }
+
+                                    }
+                                    if(!TextUtils.isEmpty(downloadUrl[0])){
+                                        break;
+                                    }
+                                }
+                                callback.onMatch(downloadUrl[0]);
+                            } else {
+                                callback.OnFailure("Array is null or empty");
+                            }
+                        } catch (JSONException error) {
+                            callback.OnFailure(error.getMessage());
+                        }
+                    } else {
+                        callback.OnFailure("Response is null or empty");
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //VolleyError e = error;
+                    callback.OnFailure(error.getMessage());
+                }
+            });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsonObjectRequest);
+        }
+    }
+
+
+    public void manualMatchTrack(String name, String artistName, String albumName, final Callback callback) throws JSONException {
+        if (!isNetworkAvailable()) {
+            callback.OnFailure("Network Error.");
+        } else {
+            String url = CollectionConstant.MATCH_BASE + CollectionConstant.ENDPOINT_MATCH;
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.put("name", name);
+            jsonBody.put("manual_match", true);
+            jsonBody.put("artist_name", artistName);
+            jsonBody.put("album_name", albumName);
+            final ArrayList<JSONObject> downloadUrls = new ArrayList<JSONObject>();
+
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    if (response != null) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("messages");
+                            if (jsonArray != null && jsonArray.length() > 0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    JSONObject result = jsonObject.getJSONObject("result");
+                                    JSONArray match_array = result.getJSONArray("match");
+
+                                    for(int j = 0; j < match_array.length(); j++){
+                                        JSONObject item = match_array.getJSONObject(j);
+                                        JSONObject _jsonObject = new JSONObject();
+                                        if(item.has("type") && item.getString("type").equals(String.valueOf(Type.YOUTUBE_TRACK)) && item.getString("extension").equals("m4a")){
+                                            _jsonObject.put("download_url", item.getString("download_url"));
+                                            _jsonObject.put("provider", item.getString("type"));
+                                            downloadUrls.add(_jsonObject);
+                                        }else if(item.has("type") && item.getString("type").equals(String.valueOf(Type.MP3PM_TRACK))){
+                                            _jsonObject.put("download_url", item.getString("download_url"));
+                                            _jsonObject.put("provider", item.getString("type"));
+                                            downloadUrls.add(_jsonObject);
+                                        }else if(item.has("type")){
+                                            _jsonObject.put("download_url", item.getString("download_url"));
+                                            _jsonObject.put("provider", item.getString("type"));
+                                            downloadUrls.add(_jsonObject);
+                                        }
+                                    }
+                                }
+                                callback.onVideoMatch(downloadUrls);
+                            } else {
+                                callback.OnFailure("Array is null or empty");
+                            }
+                        } catch (JSONException error) {
+                            callback.OnFailure(error.getMessage());
+                        }
+                    } else {
+                        callback.OnFailure("Response is null or empty");
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //VolleyError e = error;
+                    callback.OnFailure(error.getMessage());
+                }
+            });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsonObjectRequest);
+        }
+    }
+
+    public void matchVideo(String name, String[] videoIds, final Callback callback) throws JSONException {
+        if (!isNetworkAvailable()) {
+            callback.OnFailure("Network Error.");
+        } else {
+            String url = CollectionConstant.MATCH_BASE + CollectionConstant.ENDPOINT_MATCH;
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.put("name", name);
+            jsonBody.put("video_ids", videoIds);
+            final ArrayList<JSONObject> downloadUrls = new ArrayList<JSONObject>();
+
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    if (response != null) {
+                        try {
+
+                            JSONArray jsonArray = response.getJSONArray("messages");
+                            if (jsonArray != null && jsonArray.length() > 0) {
+                                String text = null;
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    JSONObject result = jsonObject.getJSONObject("result");
+                                    JSONArray match_array = result.getJSONArray("match");
+
+                                    for(int j = 0; j < match_array.length(); j++){
+                                        JSONObject item = match_array.getJSONObject(j);
+                                        if(item.has("type") && item.getString("type").equals(String.valueOf(Type.YOUTUBE_TRACK)) && item.getString("extension").equals("mp4")){
+                                            JSONObject _jsonObject = new JSONObject();
+                                            _jsonObject.put("download_url", item.getString("download_url"));
+                                            _jsonObject.put("width", item.getString("width"));
+                                            _jsonObject.put("width", item.getString("height"));
+                                            downloadUrls.add(_jsonObject);
+                                        }
+                                    }
+                                }
+                                callback.onVideoMatch(downloadUrls);
+                            } else {
+                                callback.OnFailure("Array is null or empty");
+                            }
+                        } catch (JSONException error) {
+                            callback.OnFailure(error.getMessage());
+                        }
+                    } else {
+                        callback.OnFailure("Response is null or empty");
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //VolleyError e = error;
+                    callback.OnFailure(error.getMessage());
+                }
+            });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    120000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsonObjectRequest);
+        }
+    }
 }

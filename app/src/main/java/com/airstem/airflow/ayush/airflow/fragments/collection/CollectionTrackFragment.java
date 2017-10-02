@@ -22,6 +22,7 @@ import com.airstem.airflow.ayush.airflow.events.collection.CollectionTrackListen
 import com.airstem.airflow.ayush.airflow.helpers.collection.ActionHelper;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -35,6 +36,7 @@ import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by mcd-50 on 9/7/17.
@@ -44,6 +46,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
 
     Realm realm;
     ActionHelper actionHelper;
+    MatchHelper matchHelper;
     
     ProgressDialog progressDialog;
 
@@ -62,7 +65,6 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
 
         progressDialog = new ProgressDialog(getContext());
 
-
         empty = (TextView) rootView.findViewById(R.id.collection_track_fragment_empty);
         listView = (RecyclerView) rootView.findViewById(R.id.collection_track_fragment_list);
         listView.setHasFixedSize(true);
@@ -79,6 +81,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
         super.onActivityCreated(savedInstanceState);
         realm = ((CollectionActivity)getActivity()).getRealm();
         actionHelper = ((CollectionActivity)getActivity()).getActionHelper();
+        matchHelper = ((CollectionActivity)getActivity()).getMatchHelper();
         setAdapter();
     }
 
@@ -112,7 +115,7 @@ public class CollectionTrackFragment  extends Fragment implements CollectionTrac
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        actionHelper.performAction(options.get(which), collectionTrack);
+                        actionHelper.performAction(options.get(which), collectionTrack, getContext());
                     }
                 })
                 .show();

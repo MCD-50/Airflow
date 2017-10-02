@@ -17,23 +17,7 @@
         android:orientation="vertical"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:id="@+id/collection_playlist_fragment_linear_layout">
-
-        <View
-            android:id="@+id/collection_playlist_fragment_content_upper1"
-            android:layout_width="48dp"
-            android:layout_height="3dp"
-            android:background="#232323"
-            android:alpha=".7"
-            android:layout_gravity="center_horizontal"/>
-
-        <View
-            android:id="@+id/collection_playlist_fragment_content_upper2"
-            android:layout_width="54dp"
-            android:layout_height="3dp"
-            android:background="#333333"
-            android:alpha=".7"
-            android:layout_gravity="center_horizontal"/>
+        android:id="@+id/manual_match_fragment_linear_layout">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -45,37 +29,37 @@
                 android:layout_height="60dp"
                 android:background="#444444"
                 android:alpha=".7"
-                android:id="@+id/collection_playlist_fragment_content_hero_view"/>
+                android:id="@+id/manual_match_fragment_content_hero_view"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 style="@style/PlaylistHeroStyle"
-                android:id="@+id/collection_playlist_fragment_content_hero_text"/>
+                android:id="@+id/manual_match_fragment_content_hero_text"/>
 
         </RelativeLayout>
 
 
     </LinearLayout>
 
-    
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/collection_playlist_fragment_linear_layout"
+        android:layout_toEndOf="@id/manual_match_fragment_linear_layout"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/collection_playlist_fragment_content_title"
+            android:id="@+id/manual_match_fragment_content_title"
             style="@style/TitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1" />
 
         <TextView
-            android:id="@+id/collection_playlist_fragment_content_sub_title"
+            android:id="@+id/manual_match_fragment_content_sub_title"
             style="@style/SubTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

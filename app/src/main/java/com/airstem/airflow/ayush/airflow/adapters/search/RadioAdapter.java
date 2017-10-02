@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.events.search.SearchRadioListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
 
         holder.title.setText(searchRadio.getTitle());
         holder.subTitle.setText(searchRadio.getCountry());
-        holder._view.setBackgroundColor(Color.parseColor(searchRadio.getColor()));
+        holder._view.setBackgroundColor(Color.parseColor(CollectionHelper.getColor(searchRadio.getTitle())));
     }
 
     @Override

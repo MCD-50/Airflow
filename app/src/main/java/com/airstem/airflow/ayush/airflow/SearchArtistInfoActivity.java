@@ -15,6 +15,7 @@ import com.airstem.airflow.ayush.airflow.adapters.tab.CustomPagerAdapter;
 import com.airstem.airflow.ayush.airflow.fragments.search.ArtistInfoAlbumFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.ArtistInfoTrackFragment;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionConstant;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.search.SearchArtist;
 import com.airstem.airflow.ayush.airflow.model.search.SearchImage;
@@ -32,6 +33,7 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
 
 
     Realm realm;
+    MatchHelper matchHelper;
 
     ProgressDialog progressDialog;
     InternetHelper internetHelper;
@@ -53,7 +55,7 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
         setContentView(R.layout.search_artist_info_page);
 
         realm = Realm.getDefaultInstance();
-
+        matchHelper = new MatchHelper(SearchArtistInfoActivity.this, realm);
         //get the intent
         searchArtist = (SearchArtist) getIntent().getSerializableExtra(CollectionConstant.SHARED_PASSING_SEARCH_ARTIST);
         if (searchArtist == null) {
@@ -153,6 +155,10 @@ public class SearchArtistInfoActivity extends AppCompatActivity{
 
     public SearchArtist getSearchArtist(){
         return searchArtist;
+    }
+
+    public MatchHelper getMatchHelper(){
+        return matchHelper;
     }
 
 

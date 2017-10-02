@@ -3,6 +3,7 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.airstem.airflow.ayush.airflow.enums.search.Type;
 import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
 
 import java.io.Serializable;
@@ -41,7 +42,11 @@ public class CollectionTrack extends RealmObject implements Serializable {
 
     private String mArtistId;
     private String mBookmark;
+    private boolean mMatchError;
     private CollectionDownload mDownload;
+
+    private String mInternetId;
+    private String mProvider;
 
     public void init(){
         mLocalId = "";
@@ -54,6 +59,7 @@ public class CollectionTrack extends RealmObject implements Serializable {
         mIsOffline = true;
         mIsFav = false;
         mIsMatched = true;
+        mMatchError = false;
 
         mPlayCount = 0;
 
@@ -61,6 +67,8 @@ public class CollectionTrack extends RealmObject implements Serializable {
         mModifiedOn = new Date().toString();
         mDownload = new CollectionDownload();
 
+        mInternetId = "";
+        mProvider = String.valueOf(Type.COLLECTION);
         mBookmark = "";
         mArtistId = "";
     }
@@ -176,7 +184,6 @@ public class CollectionTrack extends RealmObject implements Serializable {
     }
 
 
-
     public void setArtworkUrl(String mArtworkUrl) {
         this.mArtworkUrl = mArtworkUrl;
     }
@@ -199,5 +206,30 @@ public class CollectionTrack extends RealmObject implements Serializable {
 
     public void setBookmark(String mBookmark) {
         this.mBookmark = mBookmark;
+    }
+
+    public boolean getIsMatchError() {
+        return mMatchError;
+    }
+
+    public void setIsMatchError(boolean mMatchError) {
+        this.mMatchError = mMatchError;
+    }
+
+    public String getInternetId() {
+        return mInternetId;
+    }
+
+    public void setInternetId(String mInternetId) {
+        this.mInternetId = mInternetId;
+    }
+
+
+    public String getProvider() {
+        return mProvider;
+    }
+
+    public void setProvider(String mProvider) {
+        this.mProvider = mProvider;
     }
 }

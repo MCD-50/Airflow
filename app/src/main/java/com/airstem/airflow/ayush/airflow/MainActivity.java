@@ -47,8 +47,6 @@ import com.airstem.airflow.ayush.airflow.model.home.DiscoverItem;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.google.android.gms.ads.AdView;
-import com.karan.churi.PermissionManager.PermissionManager;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -91,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private AdView mAdView;
-    private PermissionManager permissionManager;
-
+    int x = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,10 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //init components
         initComponent();
-
-        //permission manager
-        permissionManager = new PermissionManager() {};
-        permissionManager.checkAndRequestPermissions(this);
     }
 
     private void initComponent() {
@@ -299,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 progressDialog.show();
             }
             isLoading = false;
+
         } catch (Exception e) {
             isLoading = false;
             empty.setVisibility(View.VISIBLE);
@@ -313,13 +307,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setCheckedItem(R.id.nav_discover);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        permissionManager.checkResult(requestCode,permissions, grantResults);
-        ArrayList<String> grantedPermissions = permissionManager.getStatus().get(0).granted;
-        ArrayList<String> deniedPermissions = permissionManager.getStatus().get(0).denied;
-        int x = 1;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

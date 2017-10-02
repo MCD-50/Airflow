@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.enums.collection.Action;
 import com.airstem.airflow.ayush.airflow.events.collection.CollectionRadioListener;
+import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class RadioAdapter extends RecyclerView.Adapter<RadioAdapter.RecyclerView
 
         holder.title.setText(collectionRadio.getTitle());
         holder.subTitle.setText(collectionRadio.getCountry());
-        holder._view.setBackgroundColor(Color.parseColor(collectionRadio.getColor()));
+        holder._view.setBackgroundColor(Color.parseColor(CollectionHelper.getColor(collectionRadio.getTitle())));
     }
 
     @Override

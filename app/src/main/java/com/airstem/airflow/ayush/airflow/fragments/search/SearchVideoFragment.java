@@ -20,6 +20,7 @@ import com.airstem.airflow.ayush.airflow.decorators.LineDivider;
 import com.airstem.airflow.ayush.airflow.events.search.SearchVideoListener;
 import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.helpers.collection.CollectionHelper;
+import com.airstem.airflow.ayush.airflow.helpers.collection.MatchHelper;
 import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.helpers.internet.InternetHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
@@ -32,6 +33,9 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchPaging;
 import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -47,6 +51,7 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
 
 
     Realm realm;
+    MatchHelper matchHelper;
 
     boolean isLoading;
     String nextPage = null;
@@ -86,6 +91,8 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setAdapter();
+        realm = ((SearchActivity) getActivity()).getRealm();
+        matchHelper = ((SearchActivity) getActivity()).getMatchHelper();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -116,8 +123,6 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
     }*/
 
     public void makeRequest(boolean showDialog){
-        realm = ((SearchActivity) getActivity()).getRealm();
-
         if (internetHelper.isNetworkAvailable()) {
             onNetworkAvailable(showDialog);
             hasLoaded = true;
@@ -180,6 +185,16 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
                 }
 
                 @Override
+                public void onMatch(String downloadUrl) {
+
+                }
+
+                @Override
+                public void onVideoMatch(ArrayList<JSONObject> videoMatchUrl) {
+
+                }
+
+                @Override
                 public void onSuccess(ArrayList<SearchTrack> searchTracks, ArrayList<SearchArtist> searchArtists, ArrayList<SearchAlbum> searchAlbums, SearchPaging searchPaging) {
                     int x = 1;
                 }
@@ -224,9 +239,16 @@ public class SearchVideoFragment extends Fragment implements SearchVideoListener
     }
 
 
-
     @Override
     public void onVideoClick(final SearchVideo searchVideo) {
-        DatabaseHelper.createOrUpdateVideos(realm, new ArrayList<CollectionVideo>(){{add(CollectionHelper.getCollectionVideo(searchVideo));}});
+
+        final CollectionVideo collectionVideo = CollectionHelper.getCollectionVideo(searchVideo);
+        DatabaseHelper.createOrUpdateVideos(realm, new ArrayList<CollectionVideo>(){{add(collectionVideo);}});
+        //match track
+        try {
+            matchHelper.matchVideo(collectionVideo);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 }

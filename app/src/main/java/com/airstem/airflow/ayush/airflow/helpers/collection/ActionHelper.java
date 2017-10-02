@@ -1,9 +1,13 @@
 package com.airstem.airflow.ayush.airflow.helpers.collection;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.airstem.airflow.ayush.airflow.CollectionArtistInfoActivity;
+import com.airstem.airflow.ayush.airflow.CollectionPlaylistInfoActivity;
+import com.airstem.airflow.ayush.airflow.ManualMatchActivity;
 import com.airstem.airflow.ayush.airflow.R;
 import com.airstem.airflow.ayush.airflow.helpers.database.DatabaseHelper;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionArtist;
@@ -12,6 +16,7 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionRadio;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.airstem.airflow.ayush.airflow.model.realms.RealmString;
+import com.airstem.airflow.ayush.airflow.model.search.ManualMatch;
 
 import java.util.ArrayList;
 
@@ -33,7 +38,7 @@ public class ActionHelper {
         this.mRealm = realm;
     }
 
-    public void performAction(String action, final CollectionTrack collectionTrack) {
+    public void performAction(String action, final CollectionTrack collectionTrack, Context context) {
         switch (action){
             case CollectionConstant.ADD_TO_FAV_OPTION :
             case CollectionConstant.REMOVE_FROM_FAV_OPTION:
@@ -57,6 +62,9 @@ public class ActionHelper {
                 break;
             case CollectionConstant.RE_MATCH_OPTION:
             case CollectionConstant.MANUAL_MATCH_OPTION:
+                Intent manualIntent = new Intent(context, ManualMatchActivity.class);
+                manualIntent.putExtra(CollectionConstant.SHARED_PASSING_COLLECTION_TRACK_LOCAL_ID, collectionTrack.getLocalId());
+                context.startActivity(manualIntent);
                 break;
             case CollectionConstant.ADD_TO_PLAYLIST_OPTION:
                 final RealmResults<CollectionPlaylist> collectionPlaylists = mRealm.where(CollectionPlaylist.class).findAllSorted("mTitle");
@@ -112,9 +120,6 @@ public class ActionHelper {
                         collectionTrack.deleteFromRealm();
                     }
                 });
-                break;
-            case CollectionConstant.RE_MATCH_OPTION:
-            case CollectionConstant.MANUAL_MATCH_OPTION:
                 break;
             case CollectionConstant.REMOVE_FROM_PLAYLIST_OPTION:
                 mRealm.executeTransaction(new Realm.Transaction() {
@@ -235,6 +240,24 @@ public class ActionHelper {
                     @Override
                     public void execute(Realm realm) {
                         collectionPlaylist.deleteFromRealm();
+                    }
+                });
+                break;
+        }
+    }
+
+    public void performAction(String action, final CollectionTrack collectionTrack, final ManualMatch manualMatch) {
+        switch (action){
+            case CollectionConstant.PLAY_TRACK_OPTION:
+                break;
+
+            case CollectionConstant.SAVE_TRACK_OPTION:
+                mRealm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        collectionTrack.setIsMatchError(false);
+                        collectionTrack.setIsMatched(true);
+                        collectionTrack.setTrackOnlineUrl(manualMatch.getUrl());
                     }
                 });
                 break;

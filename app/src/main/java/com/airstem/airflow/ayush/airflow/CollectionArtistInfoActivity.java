@@ -157,7 +157,7 @@ public class CollectionArtistInfoActivity extends AppCompatActivity implements C
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        actionHelper.performAction(options.get(which), collectionTrack);
+                        actionHelper.performAction(options.get(which), collectionTrack, CollectionArtistInfoActivity.this);
                     }
                 })
                 .show();

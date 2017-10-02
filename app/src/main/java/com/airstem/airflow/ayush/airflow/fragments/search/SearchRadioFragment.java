@@ -34,6 +34,8 @@ import com.airstem.airflow.ayush.airflow.model.search.SearchRadio;
 import com.airstem.airflow.ayush.airflow.model.search.SearchTrack;
 import com.airstem.airflow.ayush.airflow.model.search.SearchVideo;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -180,6 +182,16 @@ public class SearchRadioFragment extends Fragment implements SearchRadioListener
                 @Override
                 public void onLyrics(String text) {
                     int x = 1;
+                }
+
+                @Override
+                public void onMatch(String downloadUrl) {
+
+                }
+
+                @Override
+                public void onVideoMatch(ArrayList<JSONObject> videoMatchUrl) {
+
                 }
 
                 @Override

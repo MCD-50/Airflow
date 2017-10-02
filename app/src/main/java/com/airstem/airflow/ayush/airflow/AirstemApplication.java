@@ -21,6 +21,8 @@ import com.airstem.airflow.ayush.airflow.model.collection.CollectionPlaylist;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionTrack;
 import com.airstem.airflow.ayush.airflow.model.collection.CollectionVideo;
 import com.airstem.airflow.ayush.airflow.service.MusicService;
+import com.anthonycr.grant.PermissionsManager;
+import com.anthonycr.grant.PermissionsResultAction;
 
 import java.util.ArrayList;
 
@@ -40,7 +42,6 @@ public class AirstemApplication extends Application implements PlayerListener {
 
     //helpers
     AirstemApplication airstemApplication = null;
-    protected StoreHelper storeHelper;
     Realm realm;
 
 
@@ -55,15 +56,7 @@ public class AirstemApplication extends Application implements PlayerListener {
                 .build();
 
         Realm.setDefaultConfiguration(config);
-
         airstemApplication = this;
-        storeHelper = new StoreHelper(this);
-
-        realm = Realm.getDefaultInstance();
-
-        //initService(airstemApplication);
-
-        initDatabase(airstemApplication);
     }
 
    /* private ServiceConnection musicConnection = new ServiceConnection() {
@@ -115,27 +108,6 @@ public class AirstemApplication extends Application implements PlayerListener {
     }
     */
 
-
-    private void initDatabase(final AirstemApplication airstemApplication){
-        //now get all cursors and save to realm
-        LocalArtistHelper.getAllArtists(airstemApplication, realm, new CursorListener() {
-            @Override
-            public void onSuccess(ArrayList<CollectionTrack> collectionTracks, ArrayList<CollectionVideo> collectionVideos, ArrayList<CollectionPlaylist> collectionPlaylists, ArrayList<CollectionArtist> collectionArtists) {
-
-            }
-
-            @Override
-            public void onArtistAndTracksFill(ArrayList<CollectionArtist> collectionArtists, ArrayList<CollectionTrack> collectionTracks) {
-                //ArrayList<CollectionPlaylist> collectionPlaylists = LocalPlaylistHelper.getAllPlaylists(airstemApplication);
-                ArrayList<CollectionVideo> collectionVideos = LocalVideoHelper.getAllVideos(airstemApplication);
-
-                DatabaseHelper.createOrUpdateTracks(realm, collectionTracks);
-                DatabaseHelper.createOrUpdateArtists(realm, collectionArtists);
-                DatabaseHelper.createOrUpdateVideos(realm, collectionVideos);
-                //DatabaseHelper.createOrUpdatePlaylists(realm, collectionPlaylists);
-            }
-        });
-    }
 
     @Override
     public void onNext(String databaseId) {

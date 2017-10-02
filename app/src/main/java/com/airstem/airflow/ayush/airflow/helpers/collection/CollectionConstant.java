@@ -13,7 +13,9 @@ public class CollectionConstant {
     public static final long FIND_SUGGESTION_SIMULATED_DELAY = 250;
 
     //internet constants
-    public static final String SERVER_BASE = "http://airstem.herokuapp.com";
+    //https://airstem.herokuapp.com
+    public static final String SERVER_BASE = "https://airstem.herokuapp.com";
+    public static final String MATCH_BASE = "http://192.168.3.100:2000";
     public static final String ENDPOINT_SEARCH = "/search";
     public static final String ENDPOINT_SEARCH_ALBUMS = "/searchAlbums";
     public static final String ENDPOINT_SEARCH_ARTISTS = "/searchArtists";
@@ -46,6 +48,7 @@ public class CollectionConstant {
 
     //intent constants
     public static final String SHARED_PASSING_COLLECTION_TRACK = "sharedPassingCollectionTrack";
+    public static final String SHARED_PASSING_COLLECTION_TRACK_LOCAL_ID = "sharedPassingCollectionTrackLocalId";
     public static final String SHARED_PASSING_COLLECTION_ARTIST_LOCAL_ID = "sharedPassingCollectionArtistLocalId";
     public static final String SHARED_PASSING_COLLECTION_VIDEO = "sharedPassingCollectionVideo";
     public static final String SHARED_PASSING_COLLECTION_PLAYLIST_TITLE = "sharedPassingCollectionPlaylistLocalId";
@@ -79,6 +82,7 @@ public class CollectionConstant {
     public static final String START_RADIO_OPTION = "Start radio";
     public static final String STREAM_TRACK_OPTION = "Stream track";
     public static final String STREAM_VIDEO_OPTION = "Stream video";
+    public static final String SAVE_TRACK_OPTION = "Save track";
     public static final String SHUFFLE_TRACKS_OPTION = "Shuffle tracks";
     public static final String ADD_TO_PLAYLIST_OPTION = "Add to playlist";
     public static final String ADD_TO_FAV_OPTION = "Add to fav";
@@ -106,7 +110,6 @@ public class CollectionConstant {
     }};
 
     public static final String[] COLLECTION_TRACK_OPTIONS = {"Play track", "Delete"};
-
     public static final String[] PLAYLIST_TRACK_OPTIONS = {"Play track", "Remove from playlist"};
     public static final String[] COLLECTION_ARTIST_OPTIONS = {"Shuffle artist", "Add to playlist", "Delete"};
     public static final String[] COLLECTION_VIDEO_OPTIONS = {"Play video", "Delete"};

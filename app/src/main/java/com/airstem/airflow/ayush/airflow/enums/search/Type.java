@@ -46,5 +46,5 @@ public enum Type {
     SOUNDCLOUD_TRACK,
     AIRSTEM_RADIO,
 
-
+    COLLECTION
 }

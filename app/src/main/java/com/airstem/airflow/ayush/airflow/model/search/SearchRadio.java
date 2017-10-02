@@ -15,7 +15,6 @@ public class SearchRadio  implements Serializable  {
     private String[] mStreamUrl;
     private String[] mTags;
     private String mCountry;
-    private String mColor;
 
 
     public SearchRadio(String mTitle, String mMaxUser, String[] mStreamUrl, String[] mTags, String mCountry, String mColor) {
@@ -24,7 +23,6 @@ public class SearchRadio  implements Serializable  {
         this.mStreamUrl = mStreamUrl;
         this.mTags = mTags;
         this.mCountry = mCountry;
-        this.mColor = mColor;
     }
 
 
@@ -46,14 +44,5 @@ public class SearchRadio  implements Serializable  {
 
     public String getCountry() {
         return mCountry;
-    }
-
-    public String getColor() {
-        int titleLength = this.mTitle.length();
-        int colorArrayLength = CollectionConstant.COLOR_ARRAY.size();
-        if(titleLength > 0){
-            return CollectionConstant.COLOR_ARRAY.get(titleLength % colorArrayLength);
-        }
-        return CollectionConstant.COLOR_ARRAY.get(0);
     }
 }

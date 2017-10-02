@@ -15,6 +15,7 @@ public class SearchVideo implements Serializable {
     private ArrayList<SearchImage> mArtworkUrl;
     private String mProvider;
     private String mId;
+    private String mUrl;
 
     public SearchVideo(String mTitle, String mDescription, String mAuthor, ArrayList<String> mTags, ArrayList<SearchImage> mArtworkUrl, String mProvider, String mId) {
         this.mTitle = mTitle;
@@ -24,6 +25,7 @@ public class SearchVideo implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
         this.mProvider = mProvider;
         this.mId = mId;
+        this.mUrl = "";
     }
 
     public String getTitle() {
@@ -52,5 +54,13 @@ public class SearchVideo implements Serializable {
 
     public String getId() {
         return mId;
+    }
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String mUrl) {
+        this.mUrl = mUrl;
     }
 }

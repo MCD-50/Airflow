@@ -2,10 +2,13 @@ package com.airstem.airflow.ayush.airflow.model.collection;
 
 import android.graphics.Bitmap;
 
+import com.airstem.airflow.ayush.airflow.enums.search.Type;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -30,8 +33,13 @@ public class CollectionVideo extends RealmObject implements Serializable {
 
     private String mModifiedOn;
     private String mBookmark;
+    private boolean mMatchError;
+
+    private String mInternetId;
+    private String mProvider;
 
     private CollectionDownload mDownload;
+    private RealmList<CollectionVideoSize> mVideoSize;
 
 
     public void init(){
@@ -43,11 +51,14 @@ public class CollectionVideo extends RealmObject implements Serializable {
         mArtworkUrl = "";
         mIsOffline = true;
         mIsMatched = true;
-
+        mMatchError = false;
         mIsFav = false;
         mDownload = new CollectionDownload();
+        mVideoSize = new RealmList<CollectionVideoSize>();
         mModifiedOn = new Date().toString();
+        mInternetId = "";
         mBookmark = "";
+        mProvider = String.valueOf(Type.COLLECTION);
     }
 
     public String getTitle() {
@@ -144,5 +155,38 @@ public class CollectionVideo extends RealmObject implements Serializable {
 
     public void setBookmark(String mBookmark) {
         this.mBookmark = mBookmark;
+    }
+
+    public boolean getIsMatchError() {
+        return mMatchError;
+    }
+
+    public void setIsMatchError(boolean mMatchError) {
+        this.mMatchError = mMatchError;
+    }
+
+    public String getInternetId() {
+        return mInternetId;
+    }
+
+    public void setInternetId(String mInternetId) {
+        this.mInternetId = mInternetId;
+    }
+
+    public String getProvider() {
+        return mProvider;
+    }
+
+    public void setProvider(String mProvider) {
+        this.mProvider = mProvider;
+    }
+
+
+    public RealmList<CollectionVideoSize> getVideoSize() {
+        return mVideoSize;
+    }
+
+    public void setVideoSize(RealmList<CollectionVideoSize> mVideoSize) {
+        this.mVideoSize = mVideoSize;
     }
 }

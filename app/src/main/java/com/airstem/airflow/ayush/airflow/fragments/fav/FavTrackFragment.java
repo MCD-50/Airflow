@@ -108,7 +108,7 @@ public class FavTrackFragment extends Fragment implements CollectionTrackListene
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        actionHelper.performAction(options.get(which), collectionTrack);
+                        actionHelper.performAction(options.get(which), collectionTrack, getContext());
                     }
                 })
                 .show();

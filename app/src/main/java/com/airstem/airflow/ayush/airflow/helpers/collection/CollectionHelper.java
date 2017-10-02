@@ -55,6 +55,26 @@ public class CollectionHelper {
         return index;
     }
 
+    public static String getHeroText(String title){
+        if(title.length() > 0){
+            String[] parts = title.split(" ");
+            if(parts.length > 1){
+                return String.valueOf(parts[0].substring(0, 1).toUpperCase() + parts[1].substring(0, 1).toUpperCase());
+            }else {
+                return String.valueOf(parts[0].substring(0, 1).toUpperCase());
+            }
+        }
+        return String.valueOf("UN");
+    }
+
+    public static String getColor(String title){
+        int titleLength = title.length();
+        int colorArrayLength = CollectionConstant.COLOR_ARRAY.size();
+        if(titleLength > 0){
+            return CollectionConstant.COLOR_ARRAY.get(titleLength % colorArrayLength);
+        }
+        return CollectionConstant.COLOR_ARRAY.get(0);
+    }
 
     public static ArrayList<String> prepareOptionFromTrack(CollectionTrack collectionTrack){
         ArrayList<String> options = new ArrayList<String>();
@@ -72,7 +92,6 @@ public class CollectionHelper {
             }else{
                 options.add(CollectionConstant.ADD_TO_FAV_OPTION);
             }
-            options.add(CollectionConstant.RE_MATCH_OPTION);
             options.add(CollectionConstant.DELETE_OPTION);
         }else if(collectionTrack.getIsMatched()){
             options.add(CollectionConstant.STREAM_TRACK_OPTION);
@@ -111,6 +130,13 @@ public class CollectionHelper {
         return options;
     }
 
+    public static ArrayList<String> prepareOptionFromMatchTrack(){
+        ArrayList<String> options = new ArrayList<String>();
+        options.add(CollectionConstant.STREAM_TRACK_OPTION);
+        options.add(CollectionConstant.SAVE_TRACK_OPTION);
+        return options;
+    }
+
     public static ArrayList<String> prepareOptionFromArtist(CollectionArtist collectionArtist){
         ArrayList<String> options = new ArrayList<String>();
 
@@ -144,15 +170,15 @@ public class CollectionHelper {
     }
 
 
-    public static String getLocalIdForTrack(SearchTrack searchTrack){
+    private static String getLocalIdForTrack(SearchTrack searchTrack){
         return searchTrack.getAlbumName() + '-' + searchTrack.getArtistName() + '-' + searchTrack.getTitle();
     }
 
-    public static String getLocalIdForVideo(SearchVideo searchVideo){
+    private static String getLocalIdForVideo(SearchVideo searchVideo){
         return searchVideo.getAuthor() + '-' + searchVideo.getTitle();
     }
 
-    public static String getLocalIdForArtist(SearchTrack searchTrack){
+    private static String getLocalIdForArtist(SearchTrack searchTrack){
         return searchTrack.getArtistName();
     }
 
@@ -166,6 +192,12 @@ public class CollectionHelper {
         collectionTrack.setIsMatched(false);
         collectionTrack.setLocalId(getLocalIdForTrack(searchTrack));
         collectionTrack.setArtistId(collectionArtist.getId());
+        collectionTrack.setInternetId(searchTrack.getId());
+        collectionTrack.setProvider(searchTrack.getProvider());
+        collectionTrack.setTrackOnlineUrl(searchTrack.getUrl());
+        if(!TextUtils.isEmpty(collectionTrack.getTrackOnlineUrl())){
+            collectionTrack.setIsMatched(true);
+        }
         if(searchTrack.getArtworkUrl().size() > 0){
             int lastIndex = searchTrack.getArtworkUrl().size() - 1;
             collectionTrack.setArtworkUrl(searchTrack.getArtworkUrl().get(lastIndex).getUri());
@@ -209,6 +241,12 @@ public class CollectionHelper {
         collectionVideo.setLocalId(getLocalIdForVideo(searchVideo));
         collectionVideo.setIsOffline(false);
         collectionVideo.setIsMatched(false);
+        collectionVideo.setInternetId(searchVideo.getId());
+        collectionVideo.setProvider(searchVideo.getProvider());
+        collectionVideo.setVideoOnlineUrl(searchVideo.getUrl());
+        if(!TextUtils.isEmpty(collectionVideo.getVideoOnlineUrl())){
+            collectionVideo.setIsMatched(true);
+        }
         if(searchVideo.getArtworkUrl().size() > 0){
             int lastIndex = searchVideo.getArtworkUrl().size() - 1;
             collectionVideo.setArtworkUrl(searchVideo.getArtworkUrl().get(lastIndex).getUri());

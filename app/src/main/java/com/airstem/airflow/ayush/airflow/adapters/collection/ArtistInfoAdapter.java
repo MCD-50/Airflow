@@ -2,10 +2,12 @@ package com.airstem.airflow.ayush.airflow.adapters.collection;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.airstem.airflow.ayush.airflow.R;
@@ -48,7 +50,25 @@ public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.Re
 
         holder.title.setText(collectionTrack.getTitle());
         holder.subTitle.setText(collectionTrack.getArtistName());
-        Picasso.with(mContext).load(collectionTrack.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        if(!TextUtils.isEmpty(collectionTrack.getArtworkUrl())){
+            Picasso.with(mContext).load(collectionTrack.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
+        }else{
+            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
+        }
+
+        if(!collectionTrack.getIsOffline() && !collectionTrack.getIsMatched() && collectionTrack.getIsMatchError()){
+            holder.status.setText(String.valueOf("Match failed. Try manual match"));
+            holder.relativeLayout.setAlpha(.5f);
+        }else if(!collectionTrack.getIsOffline() && !collectionTrack.getIsMatched()){
+            holder.status.setText(String.valueOf("Matching track..."));
+            holder.relativeLayout.setAlpha(.5f);
+        }else if(!collectionTrack.getIsOffline() && collectionTrack.getIsMatched()){
+            holder.status.setText(String.valueOf("Online"));
+            holder.relativeLayout.setAlpha(1);
+        }else{
+            holder.status.setText(String.valueOf(""));
+            holder.relativeLayout.setAlpha(1);
+        }
     }
 
     @Override
@@ -58,15 +78,19 @@ public class ArtistInfoAdapter extends RecyclerView.Adapter<ArtistInfoAdapter.Re
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, subTitle;
+        TextView title, subTitle, status;
         ImageView image;
+        RelativeLayout relativeLayout;
 
         RecyclerViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.collection_track_fragment_content_title);
             subTitle = (TextView) view.findViewById(R.id.collection_track_fragment_content_sub_title);
+            status = (TextView) view.findViewById(R.id.collection_track_fragment_content_status);
             image = (ImageView) view.findViewById(R.id.collection_track_fragment_content_image);
+            relativeLayout = (RelativeLayout) view.findViewById(R.id.collection_track_fragment_content_holder);
         }
+
 
         public void bindData(final CollectionTrack collectionTrack, final CollectionArtistListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {

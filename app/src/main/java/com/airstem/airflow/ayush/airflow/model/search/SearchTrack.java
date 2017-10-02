@@ -5,6 +5,8 @@ import com.airstem.airflow.ayush.airflow.model.home.DiscoverItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by mcd-50 on 8/7/17.
  */
@@ -16,7 +18,7 @@ public class SearchTrack extends DiscoverItem implements Serializable {
     private ArrayList<SearchImage> mArtworkUrl;
     private String mProvider;
     private String mId;
-
+    private String mUrl;
 
     public SearchTrack(String mTitle, String mArtistName, String mAlbumName, ArrayList<SearchImage> mArtworkUrl, String mProvider, String mId) {
         this.mTitle = mTitle;
@@ -25,6 +27,7 @@ public class SearchTrack extends DiscoverItem implements Serializable {
         this.mArtworkUrl = mArtworkUrl;
         this.mProvider = mProvider;
         this.mId = mId;
+        this.mUrl = "";
     }
     
     public SearchTrack(){
@@ -78,5 +81,13 @@ public class SearchTrack extends DiscoverItem implements Serializable {
 
     public void setId(String mId) {
         this.mId = mId;
+    }
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String mUrl) {
+        this.mUrl = mUrl;
     }
 }

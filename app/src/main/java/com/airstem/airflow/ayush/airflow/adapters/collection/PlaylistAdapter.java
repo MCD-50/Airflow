@@ -1,6 +1,7 @@
 package com.airstem.airflow.ayush.airflow.adapters.collection;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -50,12 +51,15 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Recycl
 
         holder.title.setText(collectionPlaylist.getTitle());
         holder.subTitle.setText(CollectionHelper.getSweetString(collectionPlaylist.getModifiedOn()));
-        Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
-        /*if(!TextUtils.isEmpty(collectionPlaylist.getArtworkUrl())){
-            Picasso.with(mContext).load(collectionPlaylist.getArtworkUrl()).placeholder(R.drawable.default_art).into(holder.image);
-        }else{
-            Picasso.with(mContext).load(R.drawable.default_art).placeholder(R.drawable.default_art).into(holder.image);
-        }*/
+        holder.heroText.setText(CollectionHelper.getHeroText(collectionPlaylist.getTitle()));
+        int backgroundColor = Color.parseColor(CollectionHelper.getColor(collectionPlaylist.getTitle()));
+        holder._view.setBackgroundColor(backgroundColor);
+
+        //style
+        holder._upper1.setBackgroundColor(backgroundColor);
+        holder._upper1.setAlpha(0.4f);
+        holder._upper2.setBackgroundColor(backgroundColor);
+        holder._upper2.setAlpha(0.5f);
     }
 
     @Override
@@ -65,14 +69,17 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Recycl
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, subTitle;
-        ImageView image;
+        TextView title, subTitle, heroText;
+        View _view, _upper1, _upper2;
 
         RecyclerViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.collection_playlist_fragment_content_title);
             subTitle = (TextView) view.findViewById(R.id.collection_playlist_fragment_content_sub_title);
-            image = (ImageView) view.findViewById(R.id.collection_playlist_fragment_content_image);
+            heroText = (TextView) view.findViewById(R.id.collection_playlist_fragment_content_hero_text);
+            _upper1 = view.findViewById(R.id.collection_playlist_fragment_content_upper1);
+            _upper2 = view.findViewById(R.id.collection_playlist_fragment_content_upper2);
+            _view = view.findViewById(R.id.collection_playlist_fragment_content_hero_view);
         }
 
         public void bindData(final CollectionPlaylist collectionPlaylist, final CollectionPlaylistListener listener) {
