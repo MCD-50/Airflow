@@ -22,6 +22,7 @@ import com.airstem.airflow.ayush.airflow.events.volly.Callback;
 import com.airstem.airflow.ayush.airflow.fragments.match.MatchMp3PmFragment;
 import com.airstem.airflow.ayush.airflow.fragments.match.MatchSoundCloudFragment;
 import com.airstem.airflow.ayush.airflow.fragments.match.MatchViezFragment;
+import com.airstem.airflow.ayush.airflow.fragments.match.MatchSpotifyFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchAlbumFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchArtistFragment;
 import com.airstem.airflow.ayush.airflow.fragments.search.SearchRadioFragment;
@@ -142,11 +143,13 @@ public class ManualMatchActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("MP3PM"));
         tabLayout.addTab(tabLayout.newTab().setText("SOUNDCLOUD"));
         tabLayout.addTab(tabLayout.newTab().setText("VIEZ"));
+        tabLayout.addTab(tabLayout.newTab().setText("Spotify"));
 
         adapter = new CustomPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new MatchMp3PmFragment());
         adapter.addFragment(new MatchSoundCloudFragment());
         adapter.addFragment(new MatchViezFragment());
+        adapter.addFragment(new MatchSpotifyFragment());
 
         viewPager.setAdapter(adapter);
         mItems = new ArrayList<>();
@@ -201,7 +204,13 @@ public class ManualMatchActivity extends AppCompatActivity {
             ((MatchViezFragment) adapter.getItem(currentItem)).reloadAdapter(manualMatches);
         }
     }
-
+            ((MatchSpotifyFragment) adapter.getItem(currentItem)).reloudAdapter(manualMatches);
+       }else if(currentItem==3){
+           for(ManualMatch manualMatch : mItems){
+               if(manualMatch.getProvider().equals(String.valueOf(Type.DEEZER_TRACK))){
+                  lmanualMatches.add(manualMatch);
+               }
+           }
     private void loadData(boolean showDialog) {
         try {
             if(showDialog){
